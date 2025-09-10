@@ -20,6 +20,19 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "tw", "tw.*"]
+          }
+        }
       }
     },
     "domains": {
@@ -30,7 +43,47 @@
   "assist": {
     "actions": {
       "source": {
-        "organizeImports": "on"
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ["react", "react/**", "react-dom", "react-dom/**"],
+
+              ":BLANK_LINE:",
+
+              ["next", "next/**"],
+
+              ":BLANK_LINE:",
+
+              [":PACKAGE:", "!@repo", "!@repo/**"],
+
+              ":BLANK_LINE:",
+
+              ["@repo/design-system", "@repo/design-system/**"],
+
+              [
+                "@repo/ui",
+                "@repo/ui/**",
+                "@repo/ui-table",
+                "@repo/ui-table/**",
+                "@repo/ui-richtext",
+                "@repo/ui-richtext/**"
+              ],
+
+              ["@repo/i18n", "@repo/i18n/**"],
+
+              ["@repo", "@repo/**"],
+
+              ":BLANK_LINE:",
+
+              ["~/", "~/**"],
+
+              ":BLANK_LINE:",
+
+              [":PATH:"]
+            ]
+          }
+        }
       }
     }
   }
