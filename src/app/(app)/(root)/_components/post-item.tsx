@@ -19,7 +19,7 @@ export function PostItem({
       className={cn(
         "group/post flex flex-col gap-2 p-2",
         "max-sm:screen-line-before max-sm:screen-line-after",
-        "sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after",
+        "sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after"
       )}
     >
       {post.metadata.image && (
@@ -32,6 +32,7 @@ export function PostItem({
             quality={100}
             priority={shouldPreloadImage}
             unoptimized
+            style={{ objectFit: "cover" }}
           />
 
           <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset dark:ring-white/10" />

@@ -29,18 +29,18 @@ export const TECH_STACK: TechStack[] = [
     href: "https://www.python.org/",
     categories: ["Language"],
   },
-  {
-    key: "php",
-    title: "PHP",
-    href: "https://www.php.net/",
-    categories: ["Language"],
-  },
-  {
-    key: "java",
-    title: "Java",
-    href: "https://www.java.com/",
-    categories: ["Language"],
-  },
+  // {
+  //   key: "php",
+  //   title: "PHP",
+  //   href: "https://www.php.net/",
+  //   categories: ["Language"],
+  // },
+  // {
+  //   key: "java",
+  //   title: "Java",
+  //   href: "https://www.java.com/",
+  //   categories: ["Language"],
+  // },
   {
     key: "nodejs",
     title: "Node.js",
@@ -104,12 +104,12 @@ export const TECH_STACK: TechStack[] = [
     href: "https://redux.js.org/",
     categories: ["State Management"],
   },
-  {
-    key: "antd",
-    title: "Ant Design",
-    href: "https://ant.design/",
-    categories: ["Library", "UI Library"],
-  },
+  // {
+  //   key: "antd",
+  //   title: "Ant Design",
+  //   href: "https://ant.design/",
+  //   categories: ["Library", "UI Library"],
+  // },
   {
     key: "react-router",
     title: "React Router",
@@ -117,24 +117,24 @@ export const TECH_STACK: TechStack[] = [
     categories: ["Library", "Navigation"],
     theme: true,
   },
-  {
-    key: "react-navigation",
-    title: "React Navigation",
-    href: "https://reactnavigation.org/",
-    categories: ["Library", "Navigation"],
-  },
-  {
-    key: "loopback",
-    title: "LoopBack",
-    href: "https://loopback.io/",
-    categories: ["Framework"],
-  },
-  {
-    key: "laravel",
-    title: "Laravel",
-    href: "https://laravel.com/",
-    categories: ["Framework"],
-  },
+  // {
+  //   key: "react-navigation",
+  //   title: "React Navigation",
+  //   href: "https://reactnavigation.org/",
+  //   categories: ["Library", "Navigation"],
+  // },
+  // {
+  //   key: "loopback",
+  //   title: "LoopBack",
+  //   href: "https://loopback.io/",
+  //   categories: ["Framework"],
+  // },
+  // {
+  //   key: "laravel",
+  //   title: "Laravel",
+  //   href: "https://laravel.com/",
+  //   categories: ["Framework"],
+  // },
   {
     key: "git",
     title: "Git",
@@ -171,12 +171,12 @@ export const TECH_STACK: TechStack[] = [
     href: "https://www.figma.com/",
     categories: ["Tools", "Design"],
   },
-  {
-    key: "ps",
-    title: "Adobe Photoshop",
-    href: "https://www.adobe.com/vn_en/products/photoshop.html",
-    categories: ["Tools", "Design"],
-  },
+  // {
+  //   key: "ps",
+  //   title: "Adobe Photoshop",
+  //   href: "https://www.adobe.com/vn_en/products/photoshop.html",
+  //   categories: ["Tools", "Design"],
+  // },
   {
     key: "chatgpt",
     title: "ChatGPT",

@@ -13,38 +13,38 @@ export type Project = {
 };
 
 export const PROJECTS: Project[] = [
-  {
-    id: "react-wheel-picker",
-    title: "React Wheel Picker",
-    period: {
-      start: "05.2025",
-    },
-    link: "https://react-wheel-picker.chanhdai.com",
-    skills: [
-      "Open Source",
-      "React",
-      "TypeScript",
-      "Monorepo",
-      "Turborepo",
-      "pnpm-workspace",
-      "Package Publishing",
-      "NPM Registry",
-      "GitHub Actions",
-    ],
-    description: `iOS-like wheel picker for React with smooth inertia scrolling and infinite loop support.
-- 📱 Natural touch scrolling with smooth inertia effect
-- 🖱️ Mouse drag and scroll support for desktop
-- 🔄 Infinite loop scrolling
-- 🎨 Unstyled components for complete style customization
-- ⚡️ Easy installation via shadcn CLI
+  //   {
+  //     id: "react-wheel-picker",
+  //     title: "React Wheel Picker",
+  //     period: {
+  //       start: "05.2025",
+  //     },
+  //     link: "https://react-wheel-picker.chanhdai.com",
+  //     skills: [
+  //       "Open Source",
+  //       "React",
+  //       "TypeScript",
+  //       "Monorepo",
+  //       "Turborepo",
+  //       "pnpm-workspace",
+  //       "Package Publishing",
+  //       "NPM Registry",
+  //       "GitHub Actions",
+  //     ],
+  //     description: `iOS-like wheel picker for React with smooth inertia scrolling and infinite loop support.
+  // - 📱 Natural touch scrolling with smooth inertia effect
+  // - 🖱️ Mouse drag and scroll support for desktop
+  // - 🔄 Infinite loop scrolling
+  // - 🎨 Unstyled components for complete style customization
+  // - ⚡️ Easy installation via shadcn CLI
 
-This project is proudly supported by:
+  // This project is proudly supported by:
 
-[![Vercel OSS Program](https://vercel.com/oss/program-badge.svg)](https://vercel.com/oss)
-`,
-    logo: "https://assets.chanhdai.com/images/project-logos/react-wheel-picker.svg",
-    isExpanded: true,
-  },
+  // [![Vercel OSS Program](https://vercel.com/oss/program-badge.svg)](https://vercel.com/oss)
+  // `,
+  //     logo: "https://assets.chanhdai.com/images/project-logos/react-wheel-picker.svg",
+  //     isExpanded: true,
+  //   },
   {
     id: "tonysantana.dev",
     title: "tonysantana.dev",
@@ -62,6 +62,7 @@ This project is proudly supported by:
       "Component Registry",
       "Vercel",
     ],
+    isExpanded: true,
     description: `A minimal portfolio, component registry, and blog.
 - Clean & modern design
 - Light & Dark theme support
