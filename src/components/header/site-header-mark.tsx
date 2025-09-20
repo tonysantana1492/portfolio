@@ -7,11 +7,11 @@ import { usePathname } from "next/navigation";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import * as motion from "motion/react-m";
 
-import { Mark } from "@/components/header/mark";
+import { Logo } from "@/components/header/logo";
 
 export function SiteHeaderMark() {
   const pathname = usePathname();
-  return pathname === "/" ? <MarkMotion /> : <Mark />;
+  return pathname === "/" ? <MarkMotion /> : <Logo />;
 }
 
 function MarkMotion() {
@@ -53,10 +53,7 @@ function MarkMotion() {
       }}
       transition={{ duration: 0.3 }}
     >
-      <path
-        d="M192 256H64v-64h128v64ZM448 64H320v128h128v64H256V0h192v64ZM64 192H0V64h64v128ZM512 192h-64V64h64v128ZM192 64H64V0h128v64Z"
-        fill="currentColor"
-      />
+      <Logo className="h-8 w-8" />
     </motion.svg>
   );
 }

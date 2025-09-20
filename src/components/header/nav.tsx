@@ -2,8 +2,8 @@ import type React from "react";
 
 import Link from "next/link";
 
+import type { INavItem } from "@/config/site.config";
 import { cn } from "@/lib/utils";
-import type { NavItem as INavItem } from "@/types/nav";
 
 export function Nav({
   items,

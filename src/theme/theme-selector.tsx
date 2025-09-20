@@ -20,7 +20,7 @@ const ThemeSelector = ({ className }: { className?: string }) => {
       <DropdownMenuTrigger
         className={cn(
           "rounded-sm transition-colors hover:bg-primary/10",
-          className
+          className,
         )}
         asChild
       >

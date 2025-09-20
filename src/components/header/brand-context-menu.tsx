@@ -1,13 +1,9 @@
 "use client";
 
-import Link from "next/link";
-
-import { DownloadIcon, TriangleDashedIcon, TypeIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 
-import { getMarkSVG, Mark } from "@/components/header/mark";
-import { getWordmarkSVG } from "@/components/header/wordmark";
+import { getLogoSVG, Logo } from "@/components/header/logo";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -26,40 +22,13 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
       <ContextMenuContent className="w-64">
         <ContextMenuItem
           onClick={() => {
-            const svg = getMarkSVG(resolvedTheme === "light" ? "#000" : "#fff");
+            const svg = getLogoSVG(resolvedTheme === "light" ? "#000" : "#fff");
             copyText(svg);
-            toast.success("Copied Mark as SVG");
+            toast.success("Copied Logo as SVG");
           }}
         >
-          <Mark />
-          Copy Mark as SVG
-        </ContextMenuItem>
-
-        <ContextMenuItem
-          onClick={() => {
-            const svg = getWordmarkSVG(
-              resolvedTheme === "light" ? "#000" : "#fff"
-            );
-            copyText(svg);
-            toast.success("Copied Logotype as SVG");
-          }}
-        >
-          <TypeIcon />
-          Copy Logotype as SVG
-        </ContextMenuItem>
-
-        <ContextMenuItem asChild>
-          <Link href="/blog/chanhdai-brand">
-            <TriangleDashedIcon />
-            Brand Guidelines
-          </Link>
-        </ContextMenuItem>
-
-        <ContextMenuItem asChild>
-          <a href="https://assets.chanhdai.com/chanhdai-brand.zip" download>
-            <DownloadIcon />
-            Download Brand Assets
-          </a>
+          <Logo />
+          Copy Logo as SVG
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

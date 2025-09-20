@@ -28,7 +28,7 @@ interface Props extends PropsWithChildren {
 
 export function ThemeColorProvider({ children, initialTheme }: Props) {
   const [activeTheme, setActiveTheme] = useState<string>(
-    () => initialTheme ?? DEFAULT_THEME
+    () => initialTheme ?? DEFAULT_THEME,
   );
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export function useThemeConfig() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     throw new Error(
-      "useThemeConfig must be used within an ActiveThemeProvider"
+      "useThemeConfig must be used within an ActiveThemeProvider",
     );
   }
   return context;

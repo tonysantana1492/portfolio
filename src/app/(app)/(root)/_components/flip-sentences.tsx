@@ -21,7 +21,7 @@ export function FlipSentences({
   const startAnimation = () => {
     intervalRef.current = setInterval(() => {
       setCurrentSentence((prev) => (prev + 1) % sentences.length);
-    }, 2500);
+    }, 4500);
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation >
@@ -42,7 +42,7 @@ export function FlipSentences({
           startAnimation(); // Restart the interval when the tab becomes visible
         }
       },
-      { signal }
+      { signal },
     );
 
     return () => {
@@ -60,7 +60,7 @@ export function FlipSentences({
         key={`current-sentence-${currentSentence}`}
         className={cn(
           "select-none text-balance font-mono text-muted-foreground text-sm",
-          className
+          className,
         )}
         initial={{
           y: 8,

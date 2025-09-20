@@ -3,6 +3,7 @@
 import type { PropsWithChildren } from "react";
 
 import { AppProgressProvider } from "@bprogress/next";
+import { LazyMotion, domMax as loadFeatures } from "motion/react";
 import { ThemeProvider } from "next-themes";
 
 import { TailwindIndicator } from "@/components/shared/tailwind-indicator";
@@ -25,11 +26,13 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
       <ThemeColorProvider initialTheme={activeThemeValue}>
         <AppProgressProvider
           color="var(--foreground)"
-          height="10px"
-          delay={500}
+          height="2px"
+          delay={200}
           options={{ showSpinner: false }}
         >
-          {children}
+          <LazyMotion features={loadFeatures} strict>
+            {children}
+          </LazyMotion>
         </AppProgressProvider>
       </ThemeColorProvider>
       <Toaster

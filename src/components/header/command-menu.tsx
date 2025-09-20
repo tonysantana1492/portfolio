@@ -8,23 +8,14 @@ import { useRouter } from "next/navigation";
 import { useCommandState } from "cmdk";
 import type { LucideProps } from "lucide-react";
 import {
-  BriefcaseBusinessIcon,
-  CircleUserIcon,
   CornerDownLeftIcon,
-  DownloadIcon,
-  LetterTextIcon,
   MoonStarIcon,
-  RssIcon,
   SunIcon,
   TextIcon,
-  TriangleDashedIcon,
-  TypeIcon,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { toast } from "sonner";
 
-import { getMarkSVG, Mark } from "@/components/header/mark";
-import { getWordmarkSVG } from "@/components/header/wordmark";
+import { Logo } from "@/components/header/logo";
 import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,88 +28,19 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
-import { SOCIAL_LINKS } from "@/config/social-links.config";
-import { copyText } from "@/lib/copy";
+import {
+  type CommandLinkItem,
+  MENU_LINKS,
+  PORTFOLIO_LINKS,
+  SOCIAL_LINK_ITEMS,
+} from "@/config/site.config";
+import type { Post } from "@/data/blog";
 import { cn } from "@/lib/utils";
-import type { Post } from "@/types/blog";
-
-type CommandLinkItem = {
-  title: string;
-  href: string;
-
-  icon?: React.ComponentType<LucideProps>;
-  iconImage?: string;
-  keywords?: string[];
-  openInNewTab?: boolean;
-};
-
-const MENU_LINKS: CommandLinkItem[] = [
-  {
-    title: "Daifolio",
-    href: "/",
-    icon: Mark,
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-    icon: RssIcon,
-  },
-  {
-    title: "Components",
-    href: "/components",
-    icon: Icons.react,
-  },
-];
-
-const DAIFOLIO_LINKS: CommandLinkItem[] = [
-  {
-    title: "About",
-    href: "/#about",
-    icon: LetterTextIcon,
-  },
-  {
-    title: "Tech Stack",
-    href: "/#stack",
-    icon: Icons.ts,
-  },
-  {
-    title: "Experience",
-    href: "/#experience",
-    icon: BriefcaseBusinessIcon,
-  },
-  {
-    title: "Projects",
-    href: "/#projects",
-    icon: Icons.project,
-  },
-  {
-    title: "Honors & Awards",
-    href: "/#awards",
-    icon: Icons.award,
-  },
-  {
-    title: "Certifications",
-    href: "/#certs",
-    icon: Icons.certificate,
-  },
-  {
-    title: "Download vCard",
-    href: "/vcard",
-    icon: CircleUserIcon,
-  },
-];
-
-const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
-  title: item.title,
-  href: item.href,
-  iconImage: item.icon,
-  openInNewTab: true,
-}));
 
 export function CommandMenu({ posts }: { posts: Post[] }) {
   const router = useRouter();
 
-  const { setTheme, resolvedTheme } = useTheme();
+  const { setTheme } = useTheme();
 
   const [open, setOpen] = useState(false);
 
@@ -143,7 +65,7 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
           setOpen((open) => !open);
         }
       },
-      { signal }
+      { signal },
     );
 
     return () => abortController.abort();
@@ -159,33 +81,24 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
         router.push(href);
       }
     },
-    [router]
+    [router],
   );
-
-  const handleCopyText = useCallback((text: string, message: string) => {
-    setOpen(false);
-    copyText(text);
-    toast.success(message);
-  }, []);
 
   const handleThemeChange = useCallback(
     (theme: "light" | "dark" | "system") => {
       setOpen(false);
       setTheme(theme);
     },
-    [setTheme]
+    [setTheme],
   );
 
-  const { blogLinks, componentLinks } = useMemo(
+  const { blogLinks } = useMemo(
     () => ({
       blogLinks: posts
         .filter((post) => post.metadata?.category !== "components")
         .map(postToCommandLinkItem),
-      componentLinks: posts
-        .filter((post) => post.metadata?.category === "components")
-        .map(postToCommandLinkItem),
     }),
-    [posts]
+    [posts],
   );
 
   return (
@@ -194,7 +107,7 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
         variant="secondary"
         className={cn(
           "h-8 select-none gap-1.5 rounded-full bg-zinc-50 px-2.5 text-muted-foreground hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-900",
-          "not-dark:border dark:inset-shadow-[1px_1px_1px,0px_0px_2px] dark:inset-shadow-white/15"
+          "not-dark:border dark:inset-shadow-[1px_1px_1px,0px_0px_2px] dark:inset-shadow-white/15",
         )}
         onClick={() => setOpen(true)}
       >
@@ -239,8 +152,8 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
           <CommandSeparator />
 
           <CommandLinkGroup
-            heading="Daifolio"
-            links={DAIFOLIO_LINKS}
+            heading="Portfolio"
+            links={PORTFOLIO_LINKS}
             onLinkSelect={handleOpenLink}
           />
 
@@ -255,13 +168,6 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
 
           <CommandSeparator />
 
-          <CommandLinkGroup
-            heading="Components"
-            links={componentLinks}
-            fallbackIcon={Icons.react}
-            onLinkSelect={handleOpenLink}
-          />
-
           <CommandSeparator />
 
           <CommandLinkGroup
@@ -269,48 +175,6 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
             links={SOCIAL_LINK_ITEMS}
             onLinkSelect={handleOpenLink}
           />
-
-          <CommandSeparator />
-
-          <CommandGroup heading="Brand Assets">
-            <CommandItem
-              onSelect={() => {
-                handleCopyText(
-                  getMarkSVG(resolvedTheme === "light" ? "#000" : "#fff"),
-                  "Copied Mark as SVG"
-                );
-              }}
-            >
-              <Mark />
-              Copy Mark as SVG
-            </CommandItem>
-
-            <CommandItem
-              onSelect={() => {
-                handleCopyText(
-                  getWordmarkSVG(resolvedTheme === "light" ? "#000" : "#fff"),
-                  "Copied Logotype as SVG"
-                );
-              }}
-            >
-              <TypeIcon />
-              Copy Logotype as SVG
-            </CommandItem>
-
-            <CommandItem
-              onSelect={() => handleOpenLink("/blog/chanhdai-brand")}
-            >
-              <TriangleDashedIcon />
-              Brand Guidelines
-            </CommandItem>
-
-            <CommandItem asChild>
-              <a href="https://assets.chanhdai.com/chanhdai-brand.zip" download>
-                <DownloadIcon />
-                Download Brand Assets
-              </a>
-            </CommandItem>
-          </CommandGroup>
 
           <CommandSeparator />
 
@@ -434,7 +298,7 @@ const ENTER_ACTION_LABELS: Record<CommandKind, string> = {
 
 function CommandMenuFooter() {
   const selectedCommandKind = useCommandState(
-    (state) => COMMAND_META_MAP.get(state.value)?.commandKind ?? "page"
+    (state) => COMMAND_META_MAP.get(state.value)?.commandKind ?? "page",
   );
 
   return (
@@ -442,7 +306,7 @@ function CommandMenuFooter() {
       <div className="flex h-10" />
 
       <div className="absolute inset-x-0 bottom-0 flex h-10 items-center justify-between gap-2 border-t bg-zinc-100/30 px-4 font-medium text-xs dark:bg-zinc-800/30">
-        <Mark className="size-6 text-muted-foreground" aria-hidden />
+        <Logo className="size-6 text-muted-foreground" aria-hidden />
 
         <div className="flex shrink-0 items-center gap-2">
           <span>{ENTER_ACTION_LABELS[selectedCommandKind]}</span>
@@ -466,7 +330,7 @@ function CommandMenuKbd({ className, ...props }: React.ComponentProps<"kbd">) {
     <kbd
       className={cn(
         "pointer-events-none flex h-5 min-w-6 select-none items-center justify-center gap-1 rounded-sm bg-black/5 px-1 font-normal font-sans text-[13px] text-muted-foreground shadow-[inset_0_-1px_2px] shadow-black/10 dark:bg-white/10 dark:text-shadow-xs dark:shadow-white/10 [&_svg:not([class*='size-'])]:size-3",
-        className
+        className,
       )}
       {...props}
     />

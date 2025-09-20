@@ -1,4 +1,4 @@
-import { GlobeIcon, MapPinIcon, MarsIcon, VenusIcon } from "lucide-react";
+import { MapPinIcon } from "lucide-react";
 
 import { EmailItem } from "@/app/(app)/(root)/_components/overview/email-item";
 import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
@@ -6,7 +6,6 @@ import { JobItem } from "@/app/(app)/(root)/_components/overview/job-item";
 import { PhoneItem } from "@/app/(app)/(root)/_components/overview/phone-item";
 import { Panel, PanelContent } from "@/app/(app)/(root)/_components/panel";
 import { USER } from "@/config/user.config";
-import { urlToName } from "@/lib/url";
 
 export function Overview() {
   return (
@@ -31,16 +30,16 @@ export function Overview() {
 
         <EmailItem email={USER.email} />
 
-        <IntroItem
+        {/* <IntroItem
           icon={GlobeIcon}
           content={urlToName(USER.website)}
           href={USER.website}
-        />
+        /> */}
 
-        <IntroItem
+        {/* <IntroItem
           icon={USER.gender === "male" ? MarsIcon : VenusIcon}
           content={USER.pronouns}
-        />
+        /> */}
       </PanelContent>
     </Panel>
   );

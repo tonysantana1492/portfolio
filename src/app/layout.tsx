@@ -50,23 +50,7 @@ export const metadata: Metadata = {
     creator: USER.twitterUsername, // Twitter username
     images: [SITE_INFO.ogImage],
   },
-  icons: {
-    icon: [
-      {
-        url: "https://assets.chanhdai.com/images/favicon.ico",
-        sizes: "any",
-      },
-      {
-        url: "https://assets.chanhdai.com/images/favicon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: {
-      url: "https://assets.chanhdai.com/images/apple-touch-icon.png",
-      type: "image/png",
-      sizes: "180x180",
-    },
-  },
+  icons: SITE_INFO.metadataIcons,
 };
 
 export const viewport: Viewport = {

@@ -4,7 +4,7 @@ export function urlToName(url: string) {
 
 export function addQueryParams(
   urlString: string,
-  query: Record<string, string>
+  query: Record<string, string>,
 ): string {
   try {
     const url = new URL(urlString);

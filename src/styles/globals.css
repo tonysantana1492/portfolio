@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -49,6 +51,7 @@
   --color-code-highlight: var(--code-highlight);
   --color-selection: var(--selection);
   --color-selection-foreground: var(--selection-foreground);
+  --color-info: var(--info);
 }
 
 :root {
@@ -92,6 +95,7 @@
   --code-highlight: oklch(0.967 0.001 286.375);
   --selection: oklch(0.141 0.005 285.823);
   --selection-foreground: oklch(0.985 0 0);
+  --info: oklch(0.67 0.17 244.98);
 }
 
 .dark {
@@ -134,6 +138,7 @@
   --code-highlight: oklch(0.274 0.006 286.033);
   --selection: oklch(0.985 0 0);
   --selection-foreground: oklch(0.141 0.005 285.823);
+  --info: oklch(0.67 0.17 244.98);
 }
 
 @layer base {
