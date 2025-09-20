@@ -4,11 +4,23 @@ import "@/styles/globals.css";
 import { cookies } from "next/headers";
 
 import { APP_CONFIG, NODE_ENV_ENUM } from "@/config/app.config";
-import { META_THEME_COLORS, SITE_INFO } from "@/config/site.config";
+import { SITE_INFO } from "@/config/site.config";
 import { USER } from "@/config/user.config";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
@@ -44,20 +56,20 @@ export const metadata: Metadata = {
         alt: SITE_INFO.name,
       },
     ],
+    locale: "en_US",
+    title: SITE_INFO.name,
+    description: SITE_INFO.description,
   },
   twitter: {
     card: "summary_large_image",
     creator: USER.twitterUsername, // Twitter username
     images: [SITE_INFO.ogImage],
+    title: SITE_INFO.name,
+    description: SITE_INFO.description,
+    siteId: "",
+    creatorId: "",
   },
   icons: SITE_INFO.metadataIcons,
-};
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: META_THEME_COLORS.light,
 };
 
 export default async function RootLayout({

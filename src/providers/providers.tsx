@@ -3,6 +3,8 @@
 import type { PropsWithChildren } from "react";
 
 import { AppProgressProvider } from "@bprogress/next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LazyMotion, domMax as loadFeatures } from "motion/react";
 import { ThemeProvider } from "next-themes";
 
@@ -18,7 +20,7 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
+      defaultTheme="dark"
       enableSystem
       disableTransitionOnChange
       enableColorScheme
@@ -43,6 +45,8 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
         expand={false}
       />
       <TailwindIndicator />
+      <SpeedInsights sampleRate={0.5} />
+      <Analytics />
     </ThemeProvider>
   );
 };

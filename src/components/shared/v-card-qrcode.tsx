@@ -20,7 +20,7 @@ export function VCardQR({
   className,
   showDownloadButtons = true,
 }: VCardQRProps) {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
 
   const vcardString = generateVCard();
   const firstName = USER.firstName;
@@ -66,7 +66,7 @@ export function VCardQR({
       <QRCode
         value={`${SITE_INFO.url}/vcard`}
         size={size}
-        fgColor={theme === "dark" ? "white" : "black"}
+        fgColor={resolvedTheme === "dark" ? "white" : "black"}
         bgColor="transparent"
         qrStyle="dots"
         eyeRadius={20}
