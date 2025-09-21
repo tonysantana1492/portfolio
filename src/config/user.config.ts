@@ -8,7 +8,7 @@ export const USER = {
   bio: "Creating with code. Small details matter.",
   flipSentences: [
     "Creating with code. Small details matter.",
-    "Senior Software Engineer at OfficePuzzle",
+    "Software Engineer at OfficePuzzle",
     "Open Source Contributor",
   ],
   twitterUsername: "@tonysantana1492",
@@ -27,7 +27,7 @@ export const USER = {
     },
   ],
   about: `
-  Senior Full‑Stack Engineer with 7+ years of experience spanning the entire web product lifecycle. I apply clean code principles, SOLID patterns, and design patterns while working comfortably across frontend (React/Next.js) and backend (NestJS/Node) with SQL/NoSQL databases and cloud deployments. In teams, I combine technical focus with project management and close collaboration with product teams.
+  Senior Software Engineer Full‑Stack with 7+ years of experience spanning the entire web product lifecycle. I apply clean code principles, SOLID patterns, and design patterns while working comfortably across frontend (React/Next.js) and backend (NestJS/Node) with SQL/NoSQL databases and cloud deployments. In teams, I combine technical focus with project management and close collaboration with product teams.
   `,
   avatar:
     "https://media.licdn.com/dms/image/v2/D4E03AQF3jFFbfh-y5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1695836709614?e=1760572800&v=beta&t=cBPdNTPr6877dVwCmn5PmvkVz-aztEYHOxjv5j3M95I",

@@ -36,13 +36,13 @@ export const EXPERIENCES: Experience[] = [
     positions: [
       {
         id: "1",
-        title: "Senior Software Engineer",
+        title: "Software Engineer",
         employmentPeriod: {
           start: "09.2024",
         },
         employmentType: "Full-time",
         icon: "code",
-        description: `- Led the development of scalable solutions to streamline provider–caregiver–admin interactions.
+        description: `- Development of scalable solutions to streamline provider–caregiver–admin interactions.
 - Designed and built modules for calendar management, online support, and mobile applications to optimize operational workflows.
 - Collaborated with security teams to ensure HIPAA compliance and system robustness.
 - Developed a custom website builder (similar to Webflow) to offer agile, personalized digital services.
