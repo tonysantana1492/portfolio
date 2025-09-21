@@ -2,9 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 
 import type { Post } from "@/data/blog";
 import { cn } from "@/lib/utils";
+
+dayjs.extend(utc);
 
 export function PostItem({
   post,
@@ -13,6 +16,8 @@ export function PostItem({
   post: Post;
   shouldPreloadImage?: boolean;
 }) {
+  const date = dayjs.utc(post.metadata.createdAt);
+
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -53,8 +58,8 @@ export function PostItem({
         <dl>
           <dt className="sr-only">Published on</dt>
           <dd className="text-muted-foreground text-sm">
-            <time dateTime={dayjs(post.metadata.createdAt).toISOString()}>
-              {dayjs(post.metadata.createdAt).format("DD.MM.YYYY")}
+            <time dateTime={date.format("YYYY-MM-DD")}>
+              {date.format("MM.DD.YYYY")}
             </time>
           </dd>
         </dl>

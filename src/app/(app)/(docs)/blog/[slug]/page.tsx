@@ -7,6 +7,7 @@ import { getTableOfContents } from "fumadocs-core/server";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
+import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 import { InlineTOC } from "@/components/shared/inline-toc";
 import { MDX } from "@/components/shared/mdx";
 import { PostKeyboardShortcuts } from "@/components/shared/post-keyboard-shortcuts";
@@ -135,12 +136,12 @@ export default async function Page({
         </Button>
 
         <div className="flex items-center gap-2">
-          <ShareMenu url={getPostUrl(post)} />
-
-          {/* <LLMCopyButtonWithViewOptions
+          <LLMCopyButtonWithViewOptions
             markdownUrl={`${getPostUrl(post)}.mdx`}
             isComponent={post.metadata.category === "components"}
-          /> */}
+          />
+
+          <ShareMenu url={getPostUrl(post)} />
 
           {previous && (
             <Button variant="secondary" size="icon:sm" asChild>
@@ -167,7 +168,7 @@ export default async function Page({
           className={cn(
             "h-8",
             "before:-left-[100vw] before:-z-1 before:absolute before:h-full before:w-[200vw]",
-            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56",
+            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56"
           )}
         />
       </div>
