@@ -35,6 +35,12 @@ export const SITE_INFO: ISiteInfo = {
   keywords: USER.keywords,
   icons: [
     {
+      src: "/images/icon-512x512.png",
+      type: "image/png",
+      sizes: "512x512",
+      purpose: "any",
+    },
+    {
       src: "/images/logo.svg",
       type: "image/svg+xml",
       sizes: "any",
@@ -47,15 +53,9 @@ export const SITE_INFO: ISiteInfo = {
       purpose: "any",
     },
     {
-      src: "/images/icon-512x512.png",
+      src: "/images/icon-192x192.png",
       type: "image/png",
-      sizes: "512x512",
-      purpose: "any",
-    },
-    {
-      src: "/images/logo.png",
-      type: "image/png",
-      sizes: "512x512",
+      sizes: "192x192",
       purpose: "maskable",
     },
   ],
@@ -89,7 +89,7 @@ export const SITE_INFO: ISiteInfo = {
     icon: [
       {
         url: "/images/favicon.ico",
-        sizes: "any",
+        sizes: "180x180",
       },
       {
         url: "/images/favicon.svg",
