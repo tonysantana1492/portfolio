@@ -13,13 +13,8 @@ import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  minimumScale: 1,
-  maximumScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+  themeColor: { color: "black" },
 };
 
 export const metadata: Metadata = {
