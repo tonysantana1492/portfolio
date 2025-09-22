@@ -77,6 +77,6 @@ Blog Features:
 - Syntax Highlighting for better readability
 - RSS Feed for easy content distribution
 - Dynamic OG Images for rich previews`,
-    logo: "images/logo.svg",
+    logo: "/images/logo.svg",
   },
 ];

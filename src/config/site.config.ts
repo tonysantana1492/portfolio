@@ -35,25 +35,25 @@ export const SITE_INFO: ISiteInfo = {
   keywords: USER.keywords,
   icons: [
     {
-      src: "images/logo.svg",
+      src: "/images/logo.svg",
       type: "image/svg+xml",
       sizes: "any",
       purpose: "any",
     },
     {
-      src: "images/icon-192x192.png",
+      src: "/images/icon-192x192.png",
       type: "image/png",
       sizes: "192x192",
       purpose: "any",
     },
     {
-      src: "images/icon-512x512.png",
+      src: "/images/icon-512x512.png",
       type: "image/png",
       sizes: "512x512",
       purpose: "any",
     },
     {
-      src: "images/logo.png",
+      src: "/images/logo.png",
       type: "image/png",
       sizes: "512x512",
       purpose: "maskable",
@@ -61,25 +61,25 @@ export const SITE_INFO: ISiteInfo = {
   ],
   screenshots: [
     {
-      src: "images/screenshot-mobile-dark.webp",
+      src: "/images/screenshot-mobile-dark.webp",
       type: "image/webp",
       sizes: "440x956",
       form_factor: "narrow",
     },
     {
-      src: "images/screenshot-mobile-light.webp",
+      src: "/images/screenshot-mobile-light.webp",
       type: "image/webp",
       sizes: "440x956",
       form_factor: "narrow",
     },
     {
-      src: "images/screenshot-desktop-dark.webp",
+      src: "/images/screenshot-desktop-dark.webp",
       type: "image/webp",
       sizes: "1920x1080",
       form_factor: "wide",
     },
     {
-      src: "images/screenshot-desktop-light.webp",
+      src: "/images/screenshot-desktop-light.webp",
       type: "image/webp",
       sizes: "1920x1080",
       form_factor: "wide",
@@ -88,16 +88,16 @@ export const SITE_INFO: ISiteInfo = {
   metadataIcons: {
     icon: [
       {
-        url: "images/favicon.ico",
+        url: "/images/favicon.ico",
         sizes: "any",
       },
       {
-        url: "images/favicon.svg",
+        url: "/images/favicon.svg",
         type: "image/svg+xml",
       },
     ],
     apple: {
-      url: "images/apple-touch-icon.png",
+      url: "/images/apple-touch-icon.png",
       type: "image/png",
       sizes: "180x180",
     },

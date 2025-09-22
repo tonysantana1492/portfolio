@@ -19,6 +19,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
+  themeColor: { color: "black" },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: SITE_INFO.name,
+  },
   alternates: {
     canonical: "/",
   },
