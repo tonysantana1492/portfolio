@@ -5,30 +5,29 @@ import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
 import { JobItem } from "@/app/(app)/(root)/_components/overview/job-item";
 import { PhoneItem } from "@/app/(app)/(root)/_components/overview/phone-item";
 import { Panel, PanelContent } from "@/app/(app)/(root)/_components/panel";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
+import { getLastCompany } from "@/services/experience";
 
 export function Overview() {
+  const lastCompany = getLastCompany(PROFILE.sections.experiences.items);
+
   return (
     <Panel>
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="space-y-2">
-        {USER.jobs.map((job) => {
-          return (
-            <JobItem
-              key={job.company}
-              title={job.title}
-              company={job.company}
-              website={job.website}
-            />
-          );
-        })}
+        <JobItem
+          key={lastCompany.companyName}
+          title={lastCompany.positions[0].title}
+          company={lastCompany.companyName}
+          website={lastCompany.website ?? ""}
+        />
 
-        <IntroItem icon={MapPinIcon} content={USER.address} />
+        <IntroItem icon={MapPinIcon} content={PROFILE.address} />
 
-        <PhoneItem phoneNumber={USER.phoneNumber} />
+        <PhoneItem phoneNumber={PROFILE.phoneNumber} />
 
-        <EmailItem email={USER.email} />
+        <EmailItem email={PROFILE.email} />
 
         {/* <IntroItem
           icon={GlobeIcon}

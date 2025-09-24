@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 import { APP_CONFIG, NODE_ENV_ENUM } from "@/config/app.config";
 import { SITE_INFO } from "@/config/site.config";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
@@ -24,25 +24,25 @@ export const metadata: Metadata = {
   },
   title: {
     template: `%s – ${SITE_INFO.name}`,
-    default: `${USER.displayName} – ${USER.jobTitle}`,
+    default: `${PROFILE.displayName} – ${PROFILE.jobTitle}`,
   },
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,
   authors: [
     {
-      name: USER.displayName,
+      name: PROFILE.displayName,
       url: SITE_INFO.url,
     },
   ],
-  creator: USER.displayName,
+  creator: PROFILE.displayName,
   openGraph: {
     siteName: SITE_INFO.name,
     url: "/",
     type: "profile",
-    firstName: USER.firstName,
-    lastName: USER.lastName,
-    username: USER.username,
-    gender: USER.gender,
+    firstName: PROFILE.firstName,
+    lastName: PROFILE.lastName,
+    username: PROFILE.username,
+    gender: PROFILE.gender,
     images: [
       {
         url: SITE_INFO.ogImage,
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    creator: USER.twitterUsername, // Twitter username
+    creator: PROFILE.twitterUsername, // Twitter username
     images: [SITE_INFO.ogImage],
     title: SITE_INFO.name,
     description: SITE_INFO.description,

@@ -15,7 +15,7 @@ import { ShareMenu } from "@/components/shared/share-menu";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { SITE_INFO } from "@/config/site.config";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
 import {
   findNeighbour,
@@ -87,9 +87,9 @@ function getPageJsonLd(post: Post): WithContext<PageSchema> {
     dateModified: dayjs(post.metadata.updatedAt).toISOString(),
     author: {
       "@type": "Person",
-      name: USER.displayName,
-      identifier: USER.username,
-      image: USER.avatar,
+      name: PROFILE.displayName,
+      identifier: PROFILE.username,
+      image: PROFILE.avatar,
     },
   };
 }
@@ -168,7 +168,7 @@ export default async function Page({
           className={cn(
             "h-8",
             "before:-left-[100vw] before:-z-1 before:absolute before:h-full before:w-[200vw]",
-            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56"
+            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56",
           )}
         />
       </div>

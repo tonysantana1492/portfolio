@@ -8,10 +8,9 @@ import {
   RssIcon,
 } from "lucide-react";
 
-import { USER } from "./user.config";
 import { Logo } from "@/components/header/logo";
 import { Icons } from "@/components/shared/icons";
-import { SOCIAL_LINKS } from "@/config/social-links.config";
+import { PROFILE } from "@/content/profile";
 
 interface ISiteInfo {
   name: string;
@@ -28,11 +27,11 @@ interface ISiteInfo {
 }
 
 export const SITE_INFO: ISiteInfo = {
-  name: USER.displayName,
+  name: PROFILE.displayName,
   url: process.env.APP_URL || "https://tonysantana.dev",
-  ogImage: USER.ogImage,
-  description: USER.bio,
-  keywords: USER.keywords,
+  ogImage: PROFILE.ogImage,
+  description: PROFILE.bio,
+  keywords: PROFILE.keywords.join(", "),
   icons: [
     {
       src: "/images/icon-512x512.png",
@@ -126,7 +125,7 @@ export const MAIN_NAV: INavItem[] = [
 ];
 
 export const UTM_PARAMS = {
-  utm_source: USER.website,
+  utm_source: PROFILE.website,
   utm_medium: "portfolio_website",
   utm_campaign: "referral",
 };
@@ -192,11 +191,10 @@ export const PORTFOLIO_LINKS: CommandLinkItem[] = [
   },
 ];
 
-export const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map(
-  (item) => ({
+export const SOCIAL_LINK_ITEMS: CommandLinkItem[] =
+  PROFILE.sections.socialLinks.items.map((item) => ({
     title: item.title,
     href: item.href,
     iconImage: item.icon,
     openInNewTab: true,
-  })
-);
+  }));

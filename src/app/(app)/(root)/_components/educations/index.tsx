@@ -1,16 +1,16 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { EducationItem } from "@/app/(app)/(root)/_components/educations/education-item";
-import { EDUCATIONS } from "@/config/experiences";
+import { PROFILE } from "@/content/profile";
 
 export function Educations() {
   return (
-    <Panel id="education">
+    <Panel id={PROFILE.sections.educations.id}>
       <PanelHeader>
-        <PanelTitle>Education</PanelTitle>
+        <PanelTitle>{PROFILE.sections.educations.name}</PanelTitle>
       </PanelHeader>
 
       <div className="pr-2 pl-4">
-        {EDUCATIONS.map((education) => (
+        {PROFILE.sections.educations.items.map((education) => (
           <EducationItem key={education.id} education={education} />
         ))}
       </div>

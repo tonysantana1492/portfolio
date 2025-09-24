@@ -1,8 +1,7 @@
 import { RssIcon } from "lucide-react";
 
 import { SITE_INFO } from "@/config/site.config";
-import { SOCIAL_LINKS } from "@/config/social-links.config";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 export function SiteFooter() {
@@ -15,16 +14,16 @@ export function SiteFooter() {
           Built by{" "}
           <a
             className="link"
-            href={SOCIAL_LINKS[1].href}
+            href={PROFILE.sections.socialLinks.items[1].href}
             target="_blank"
             rel="noopener"
           >
-            {SOCIAL_LINKS[1].description}
+            {PROFILE.sections.socialLinks.items[1].description}
           </a>
           . The source code is available on{" "}
           <a
             className="link"
-            href={USER.githubUrl}
+            href={PROFILE.githubUrl}
             target="_blank"
             rel="noopener"
           >

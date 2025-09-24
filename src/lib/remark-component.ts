@@ -17,9 +17,9 @@ export function remarkComponent() {
 
       if (node.name === "ComponentSource") {
         const name = getNodeAttributeByName(node, "name")?.value as string;
-        const fileName = getNodeAttributeByName(node, "fileName")?.value as
-          | string
-          | undefined;
+        // const fileName = getNodeAttributeByName(node, "fileName")?.value as
+        //   | string
+        //   | undefined;
 
         if (!name && !srcPath) {
           return null;
@@ -58,7 +58,7 @@ export function remarkComponent() {
           const title = getNodeAttributeByName(node, "title");
           const showLineNumbers = getNodeAttributeByName(
             node,
-            "showLineNumbers",
+            "showLineNumbers"
           );
 
           const codeBlock = {

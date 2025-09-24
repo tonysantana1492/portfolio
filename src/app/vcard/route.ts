@@ -3,8 +3,9 @@ import { NextResponse } from "next/server";
 import sharp from "sharp";
 import VCard from "vcard-creator";
 
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
+import { getLastCompany } from "@/services/experience";
 
 export const dynamic = "force-static";
 
@@ -12,20 +13,23 @@ export async function GET() {
   const card = new VCard();
 
   card
-    .addName(USER.lastName, USER.firstName)
-    .addPhoneNumber(decodePhoneNumber(USER.phoneNumber))
-    .addAddress(USER.address)
-    .addEmail(decodeEmail(USER.email))
-    .addURL(USER.website);
+    .addName(PROFILE.lastName, PROFILE.firstName)
+    .addPhoneNumber(decodePhoneNumber(PROFILE.phoneNumber))
+    .addAddress(PROFILE.address)
+    .addEmail(decodeEmail(PROFILE.email))
+    .addURL(PROFILE.website);
 
-  const photo = await getVCardPhoto(USER.avatar);
+  const photo = await getVCardPhoto(PROFILE.avatar);
   if (photo) {
     card.addPhoto(photo.image, photo.mine);
   }
 
-  if (USER.jobs.length > 0) {
-    const company = USER.jobs[0];
-    card.addCompany(company.company).addJobtitle(company.title);
+  const lastCompany = getLastCompany(PROFILE.sections.experiences.items);
+
+  if (lastCompany) {
+    card
+      .addCompany(lastCompany.companyName)
+      .addJobtitle(lastCompany.positions[0].title);
   }
 
   return new NextResponse(card.toString(), {

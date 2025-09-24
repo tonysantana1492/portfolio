@@ -1,5 +1,5 @@
 import { ExperiencePositionItem } from "@/app/(app)/(root)/_components/experiences/experience-position-item";
-import type { Experience } from "@/config/experiences";
+import type { Experience } from "@/content/profile";
 
 export function EducationItem({ education }: { education: Experience }) {
   return (

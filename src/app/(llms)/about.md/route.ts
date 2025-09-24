@@ -1,25 +1,27 @@
-import { SOCIAL_LINKS } from "@/config/social-links.config";
-import { TECH_STACK } from "@/config/tech-stack";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 
 const content = `# About
 
-${USER.about.trim()}
+${PROFILE.about.trim()}
 
 ## Personal Information
 
-- First Name: ${USER.firstName}
-- Last Name: ${USER.lastName}
-- Location: ${USER.address}
-- Website: ${USER.website}
+- First Name: ${PROFILE.firstName}
+- Last Name: ${PROFILE.lastName}
+- Location: ${PROFILE.address}
+- Website: ${PROFILE.website}
 
 ## Social Links
 
-${SOCIAL_LINKS.map((item) => `- [${item.title}](${item.href})`).join("\n")}
+${PROFILE.sections.socialLinks.items
+  .map((item) => `- [${item.title}](${item.href})`)
+  .join("\n")}
 
 ## Tech Stack
 
-${TECH_STACK.map((item) => `- [${item.title}](${item.href})`).join("\n")}\n`;
+${PROFILE.sections.techStack.items
+  .map((item) => `- [${item.title}](${item.href})`)
+  .join("\n")}\n`;
 
 export const dynamic = "force-static";
 

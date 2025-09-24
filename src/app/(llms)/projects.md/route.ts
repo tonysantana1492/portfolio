@@ -1,12 +1,16 @@
-import { PROJECTS } from "@/config/projects";
+import { PROFILE } from "@/content/profile";
 
 const content = `# Projects
 
-${PROJECTS.map((item) => {
-  const skills = `\n\nSkills: ${item.skills.join(", ")}`;
-  const description = item.description ? `\n\n${item.description.trim()}` : "";
-  return `## ${item.title}\n\nProject URL: ${item.link}${skills}${description}`;
-}).join("\n\n")}
+${PROFILE.sections.projects.items
+  .map((item) => {
+    const skills = `\n\nSkills: ${item.skills.join(", ")}`;
+    const description = item.description
+      ? `\n\n${item.description.trim()}`
+      : "";
+    return `## ${item.title}\n\nProject URL: ${item.link}${skills}${description}`;
+  })
+  .join("\n\n")}
 `;
 
 export const dynamic = "force-static";

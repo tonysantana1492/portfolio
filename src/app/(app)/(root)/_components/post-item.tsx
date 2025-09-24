@@ -24,7 +24,7 @@ export function PostItem({
       className={cn(
         "group/post flex flex-col gap-2 p-2",
         "max-sm:screen-line-before max-sm:screen-line-after",
-        "sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after"
+        "sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after",
       )}
     >
       {post.metadata.image && (

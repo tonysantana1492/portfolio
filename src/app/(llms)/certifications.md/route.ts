@@ -1,10 +1,10 @@
-import { CERTIFICATIONS } from "@/config/certifications";
+import { PROFILE } from "@/content/profile";
 
 const content = `# Certifications
 
-${CERTIFICATIONS.map((item) => `- [${item.title}](${item.credentialURL})`).join(
-  "\n"
-)}
+${PROFILE.sections.certifications.items
+  .map((item) => `- [${item.title}](${item.credentialURL})`)
+  .join("\n")}
 `;
 
 export const dynamic = "force-static";

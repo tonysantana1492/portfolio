@@ -57,7 +57,7 @@ export function getAllPosts() {
   return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime()
+      new Date(a.metadata.createdAt).getTime(),
   );
 }
 

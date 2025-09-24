@@ -17,8 +17,8 @@ import {
 import { Tag } from "@/components/ui/tag";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { Prose } from "@/components/ui/typography";
-import type { Project } from "@/config/projects";
 import { UTM_PARAMS } from "@/config/site.config";
+import type { Project } from "@/content/profile";
 import { addQueryParams } from "@/lib/url";
 
 export function ProjectItem({

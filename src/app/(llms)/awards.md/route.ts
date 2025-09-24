@@ -1,10 +1,10 @@
-import { AWARDS } from "@/config/awards";
+import { PROFILE } from "@/content/profile";
 
 const content = `# Awards
 
-${AWARDS.map(
-  (item) => `## ${item.prize} | ${item.title}\n\n${item.description}`
-).join("\n\n")}
+${PROFILE.sections.awards.items
+  .map((item) => `## ${item.prize} | ${item.title}\n\n${item.description}`)
+  .join("\n\n")}
 `;
 
 export const dynamic = "force-static";

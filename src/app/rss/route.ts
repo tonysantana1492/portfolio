@@ -16,7 +16,7 @@ export function GET() {
           <link>${SITE_INFO.url}/blog/${post.slug}</link>
           <description>${post.metadata.description || ""}</description>
           <pubDate>${dayjs(post.metadata.createdAt).toISOString()}</pubDate>
-        </item>`
+        </item>`,
     )
     .join("\n");
 

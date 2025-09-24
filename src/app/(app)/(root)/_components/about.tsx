@@ -1,18 +1,18 @@
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel";
 import { Markdown } from "@/components/shared/markdown";
 import { Prose } from "@/components/ui/typography";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 
 export function About() {
   return (
     <Panel id="about">
       <PanelHeader>
-        <PanelTitle>About</PanelTitle>
+        <PanelTitle>{PROFILE.about.label}</PanelTitle>
       </PanelHeader>
 
       <PanelContent>
         <Prose>
-          <Markdown>{USER.about}</Markdown>
+          <Markdown>{PROFILE.about.content}</Markdown>
         </Prose>
       </PanelContent>
     </Panel>

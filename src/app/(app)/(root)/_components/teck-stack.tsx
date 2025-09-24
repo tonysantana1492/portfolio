@@ -2,14 +2,16 @@ import Image from "next/image";
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel";
 import { SimpleTooltip } from "@/components/ui/tooltip";
-import { TECH_STACK } from "@/config/tech-stack";
+import { PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 export function TeckStack() {
+  const { items, name, id } = PROFILE.sections.techStack;
+
   return (
-    <Panel id="stack">
+    <Panel id={id}>
       <PanelHeader>
-        <PanelTitle>Stack</PanelTitle>
+        <PanelTitle>{name}</PanelTitle>
       </PanelHeader>
 
       <PanelContent
@@ -20,7 +22,7 @@ export function TeckStack() {
         )}
       >
         <ul className="flex select-none flex-wrap gap-4">
-          {TECH_STACK.map((tech) => {
+          {items.map((tech) => {
             return (
               <li key={tech.key} className="flex">
                 <SimpleTooltip content={tech.title}>

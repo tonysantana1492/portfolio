@@ -1,6 +1,6 @@
 import { FlipSentences } from "@/app/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 export function ProfileHeader() {
@@ -11,8 +11,8 @@ export function ProfileHeader() {
           {/** biome-ignore lint/performance/noImgElement: <explanation > */}
           <img
             className="size-32 select-none rounded-full ring-1 ring-border ring-offset-2 ring-offset-background sm:size-40"
-            alt={`${USER.displayName}'s avatar`}
-            src={USER.avatar}
+            alt={`${PROFILE.displayName}'s avatar`}
+            src={PROFILE.avatar}
             fetchPriority="high"
           />
         </div>
@@ -36,11 +36,11 @@ export function ProfileHeader() {
 
         <div className="border-edge border-t">
           <h1 className="flex items-center pl-4 font-semibold text-3xl">
-            {USER.displayName}
+            {PROFILE.displayName}
           </h1>
 
           <div className="h-12 border-edge border-t py-1 pl-4 sm:h-auto">
-            <FlipSentences sentences={USER.flipSentences} />
+            <FlipSentences sentences={PROFILE.flipSentences} />
           </div>
         </div>
       </div>

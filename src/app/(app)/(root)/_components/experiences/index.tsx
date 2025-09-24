@@ -1,16 +1,16 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ExperienceItem } from "./experience-item";
-import { EXPERIENCES } from "@/config/experiences";
+import { PROFILE } from "@/content/profile";
 
 export function Experiences() {
   return (
-    <Panel id="experience">
+    <Panel id={PROFILE.sections.experiences.id}>
       <PanelHeader>
-        <PanelTitle>Experience</PanelTitle>
+        <PanelTitle>{PROFILE.sections.experiences.name}</PanelTitle>
       </PanelHeader>
 
       <div className="pr-2 pl-4">
-        {EXPERIENCES.map((experience) => (
+        {PROFILE.sections.experiences.items.map((experience) => (
           <ExperienceItem key={experience.id} experience={experience} />
         ))}
       </div>

@@ -35,7 +35,7 @@ export default function Page() {
           {allPosts
             .slice()
             .sort((a, b) =>
-              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt))
+              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt)),
             )
             .map((post, index) => (
               <PostItem

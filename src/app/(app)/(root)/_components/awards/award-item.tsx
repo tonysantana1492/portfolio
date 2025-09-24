@@ -15,7 +15,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { Prose } from "@/components/ui/typography";
-import type { Award } from "@/config/awards";
+import type { Award } from "@/content/profile";
 
 export function AwardItem({
   className,

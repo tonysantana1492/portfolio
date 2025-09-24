@@ -14,7 +14,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Tag } from "@/components/ui/tag";
 import { Prose } from "@/components/ui/typography";
-import type { ExperiencePosition } from "@/config/experiences";
+import type { ExperiencePosition } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 export function ExperiencePositionItem({

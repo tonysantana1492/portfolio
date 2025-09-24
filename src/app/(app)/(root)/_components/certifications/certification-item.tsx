@@ -5,7 +5,7 @@ import { ArrowUpRightIcon } from "lucide-react";
 
 import { getIcon, Icons } from "@/components/shared/icons";
 import { Separator } from "@/components/ui/separator";
-import type { Certification } from "@/config/certifications";
+import type { Certification } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 export function CertificationItem({

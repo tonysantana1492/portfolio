@@ -50,7 +50,7 @@ export function PostKeyboardShortcuts({
           }
         }
       },
-      { signal }
+      { signal },
     );
 
     return () => abortController.abort();

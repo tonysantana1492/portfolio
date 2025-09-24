@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { ExperiencePositionItem } from "./experience-position-item";
-import type { Experience } from "@/config/experiences";
+import type { Experience } from "@/content/profile";
 
 export function ExperienceItem({ experience }: { experience: Experience }) {
   return (

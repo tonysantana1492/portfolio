@@ -1,22 +1,22 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ProjectItem } from "./project-item";
 import { CollapsibleList } from "@/components/shared/collapsible-list";
-import { PROJECTS } from "@/config/projects";
+import { PROFILE } from "@/content/profile";
 
 export function Projects() {
   return (
     <Panel id="projects">
       <PanelHeader>
         <PanelTitle>
-          Projects
+          {PROFILE.sections.projects.name}
           <sup className="ml-1 select-none font-mono text-muted-foreground text-sm">
-            ({PROJECTS.length})
+            ({PROFILE.sections.projects.items.length})
           </sup>
         </PanelTitle>
       </PanelHeader>
 
       <CollapsibleList
-        items={PROJECTS}
+        items={PROFILE.sections.projects.items}
         max={4}
         renderItem={(item) => <ProjectItem project={item} />}
       />

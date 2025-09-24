@@ -11,19 +11,19 @@ import { ProfileHeader } from "@/app/(app)/(root)/_components/profile-header";
 import { Projects } from "@/app/(app)/(root)/_components/projects";
 import { SocialLinks } from "@/app/(app)/(root)/_components/social-links";
 import { TeckStack } from "@/app/(app)/(root)/_components/teck-stack";
-import { USER } from "@/config/user.config";
+import { PROFILE } from "@/content/profile";
 
 function getPageJsonLd(): WithContext<ProfilePage> {
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    dateCreated: dayjs(USER.dateCreated).toISOString(),
+    dateCreated: dayjs(PROFILE.dateCreated).toISOString(),
     dateModified: dayjs().toISOString(),
     mainEntity: {
       "@type": "Person",
-      name: USER.displayName,
-      identifier: USER.username,
-      image: USER.avatar,
+      name: PROFILE.displayName,
+      identifier: PROFILE.username,
+      image: PROFILE.avatar,
     },
   };
 }
