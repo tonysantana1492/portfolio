@@ -4,8 +4,8 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import type { Post } from "@/data/blog";
 import { cn } from "@/lib/utils";
+import type { Post } from "@/services/blog";
 
 dayjs.extend(utc);
 

@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 
 import { getLLMText } from "@/lib/get-llm-text";
-import { getAllPosts } from "@/services/blog";
+import { getAllCVs } from "@/services/cv";
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const cvs = getAllCVs();
 
-  return posts.map((post) => ({
-    slug: post.slug,
+  return cvs.map((cv) => ({
+    slug: cv.slug,
   }));
 }
 
@@ -17,14 +17,14 @@ export async function GET(
 ) {
   const { slug } = await params;
 
-  const allPosts = getAllPosts();
-  const post = allPosts.find((post) => post.slug === slug);
+  const allCVs = getAllCVs();
+  const cv = allCVs.find((cv) => cv.slug === slug);
 
-  if (!post) {
+  if (!cv) {
     notFound();
   }
 
-  return new Response(await getLLMText(post), {
+  return new Response(await getLLMText(cv), {
     headers: {
       "Content-Type": "text/markdown;charset=utf-8",
     },

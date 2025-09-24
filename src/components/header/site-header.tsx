@@ -8,8 +8,8 @@ import { NavItemGitHub } from "@/components/header/nav-item-github";
 import { SiteHeaderMark } from "@/components/header/site-header-mark";
 import { SiteHeaderWrapper } from "@/components/header/site-header-wrapper";
 import { MAIN_NAV } from "@/config/site.config";
-import { getAllPosts } from "@/data/blog";
 import { cn } from "@/lib/utils";
+import { getAllPosts } from "@/services/blog";
 import { ToggleTheme } from "@/theme/toggle-theme";
 
 export function SiteHeader() {
@@ -21,7 +21,7 @@ export function SiteHeader() {
         "sticky inset-0 top-0 z-50 max-w-screen overflow-x-hidden bg-background px-2 pt-2",
         "data-[affix=true]:shadow-[0_0_16px_0_black]/8 dark:data-[affix=true]:shadow-[0_0_16px_0_black]/80",
         "not-dark:data-[affix=true]:**:data-header-container:after:bg-border",
-        "transition-shadow duration-300",
+        "transition-shadow duration-300"
       )}
     >
       <div

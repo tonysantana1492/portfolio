@@ -1,5 +1,5 @@
 import { SITE_INFO } from "@/config/site.config";
-import { getAllPosts } from "@/data/blog";
+import { getAllPosts } from "@/services/blog";
 
 const allPosts = getAllPosts();
 
@@ -26,7 +26,7 @@ const content = `# ${SITE_INFO.url}
 ${allPosts
   .map(
     (item) =>
-      `- [${item.metadata.title}](${SITE_INFO.url}/blog/${item.slug}.mdx): ${item.metadata.description}`,
+      `- [${item.metadata.title}](${SITE_INFO.url}/blog/${item.slug}.mdx): ${item.metadata.description}`
   )
   .join("\n")}
 `;

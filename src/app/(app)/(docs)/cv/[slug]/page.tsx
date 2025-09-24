@@ -4,31 +4,29 @@ import { notFound } from "next/navigation";
 
 import dayjs from "dayjs";
 import { getTableOfContents } from "fumadocs-core/server";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 import { InlineTOC } from "@/components/shared/inline-toc";
 import { MDX } from "@/components/shared/mdx";
-import { PostKeyboardShortcuts } from "@/components/shared/post-keyboard-shortcuts";
 import { ShareMenu } from "@/components/shared/share-menu";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { SITE_INFO } from "@/config/site.config";
 import { USER } from "@/config/user.config";
 import { cn } from "@/lib/utils";
-import {
-  findNeighbour,
-  getAllPosts,
-  getPostBySlug,
-  type Post,
-} from "@/services/blog";
+import { type Cv, getAllCVs, getCvBySlug } from "@/services/cv";
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
+  const cvs = getAllCVs();
+  return cvs.map((cv) => ({
+    slug: cv.slug,
   }));
+}
+
+function getCvUrl(cv: Cv) {
+  return `/cv/${cv.slug}`;
 }
 
 export async function generateMetadata({
@@ -37,25 +35,25 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const slug = (await params).slug;
-  const post = getPostBySlug(slug);
+  const cv = getCvBySlug(slug);
 
-  if (!post) {
+  if (!cv) {
     return notFound();
   }
 
-  const { title, description, image, createdAt, updatedAt } = post.metadata;
+  const { title, description, image, createdAt, updatedAt } = cv.metadata;
 
-  const postUrl = getPostUrl(post);
+  const cvUrl = getCvUrl(cv);
   const ogImage = image || `/og/simple?title=${encodeURIComponent(title)}`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: postUrl,
+      canonical: cvUrl,
     },
     openGraph: {
-      url: postUrl,
+      url: cvUrl,
       type: "article",
       publishedTime: dayjs(createdAt).toISOString(),
       modifiedTime: dayjs(updatedAt).toISOString(),
@@ -73,18 +71,18 @@ export async function generateMetadata({
   };
 }
 
-function getPageJsonLd(post: Post): WithContext<PageSchema> {
+function getPageJsonLd(cv: Cv): WithContext<PageSchema> {
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.metadata.title,
-    description: post.metadata.description,
+    headline: cv.metadata.title,
+    description: cv.metadata.description,
     image:
-      post.metadata.image ||
-      `/og/simple?title=${encodeURIComponent(post.metadata.title)}`,
-    url: `${SITE_INFO.url}${getPostUrl(post)}`,
-    datePublished: dayjs(post.metadata.createdAt).toISOString(),
-    dateModified: dayjs(post.metadata.updatedAt).toISOString(),
+      cv.metadata.image ||
+      `/og/simple?title=${encodeURIComponent(cv.metadata.title)}`,
+    url: `${SITE_INFO.url}${getCvUrl(cv)}`,
+    datePublished: dayjs(cv.metadata.createdAt).toISOString(),
+    dateModified: dayjs(cv.metadata.updatedAt).toISOString(),
     author: {
       "@type": "Person",
       name: USER.displayName,
@@ -102,26 +100,22 @@ export default async function Page({
   }>;
 }) {
   const slug = (await params).slug;
-  const post = getPostBySlug(slug);
+  const cv = getCvBySlug(slug);
 
-  if (!post) {
+  if (!cv) {
     notFound();
   }
 
-  const toc = getTableOfContents(post.content);
-
-  const allPosts = getAllPosts();
-  const { previous, next } = findNeighbour(allPosts, slug);
+  const toc = getTableOfContents(cv.content);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd(post)).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getPageJsonLd(cv)).replace(/</g, "\\u003c"),
         }}
       />
-      <PostKeyboardShortcuts basePath="/blog" previous={previous} next={next} />
 
       <div className="flex items-center justify-between p-2 pl-4">
         <Button
@@ -129,37 +123,19 @@ export default async function Page({
           variant="link"
           asChild
         >
-          <Link href="/blog">
+          <Link href="/">
             <ArrowLeftIcon />
-            Blog
+            Home
           </Link>
         </Button>
 
         <div className="flex items-center gap-2">
           <LLMCopyButtonWithViewOptions
-            markdownUrl={`${getPostUrl(post)}.mdx`}
-            isComponent={post.metadata.category === "components"}
+            markdownUrl={`${getCvUrl(cv)}.mdx`}
+            isComponent={false}
           />
 
-          <ShareMenu url={getPostUrl(post)} />
-
-          {previous && (
-            <Button variant="secondary" size="icon:sm" asChild>
-              <Link href={`/blog/${previous.slug}`}>
-                <ArrowLeftIcon />
-                <span className="sr-only">Previous</span>
-              </Link>
-            </Button>
-          )}
-
-          {next && (
-            <Button variant="secondary" size="icon:sm" asChild>
-              <Link href={`/blog/${next.slug}`}>
-                <span className="sr-only">Next</span>
-                <ArrowRightIcon />
-              </Link>
-            </Button>
-          )}
+          <ShareMenu url={getCvUrl(cv)} />
         </div>
       </div>
 
@@ -173,26 +149,15 @@ export default async function Page({
         />
       </div>
 
-      <Prose className="px-4">
-        <h1 className="screen-line-after mb-6 font-semibold">
-          {post.metadata.title}
-        </h1>
-
-        <p className="lead mt-6 mb-6">{post.metadata.description}</p>
-
-        <InlineTOC items={toc} />
+      <Prose className="px-12">
+        <InlineTOC className="mt-2" items={toc} />
 
         <div>
-          <MDX code={post.content} />
+          <MDX code={cv.content} />
         </div>
       </Prose>
 
       <div className="screen-line-before h-4 w-full" />
     </>
   );
-}
-
-function getPostUrl(post: Post) {
-  const isComponent = post.metadata.category === "components";
-  return isComponent ? `/components/${post.slug}` : `/blog/${post.slug}`;
 }

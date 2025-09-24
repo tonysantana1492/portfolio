@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 import dayjs from "dayjs";
 
 import { SITE_INFO } from "@/config/site.config";
-import { getAllPosts } from "@/data/blog";
+import { getAllPosts } from "@/services/blog";
 
 const ALL_ROUTES = ["", "/blog"];
 

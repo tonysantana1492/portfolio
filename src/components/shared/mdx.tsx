@@ -1,3 +1,5 @@
+import type React from "react";
+
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeExternalLinks from "rehype-external-links";
@@ -39,6 +41,12 @@ const components: MDXRemoteProps["components"] = {
   h4: (props: React.ComponentProps<"h4">) => <Heading as="h4" {...props} />,
   h5: (props: React.ComponentProps<"h5">) => <Heading as="h5" {...props} />,
   h6: (props: React.ComponentProps<"h6">) => <Heading as="h6" {...props} />,
+  p: (props: React.ComponentProps<"p">) => {
+    return <>{props.children}</>;
+  },
+  a: (props: React.ComponentProps<"a">) => {
+    return <>{props.children}</>;
+  },
   table: Table,
   thead: TableHeader,
   tbody: TableBody,

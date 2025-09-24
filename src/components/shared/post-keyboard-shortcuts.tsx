@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import type { Post } from "@/data/blog";
+import type { Post } from "@/services/blog";
 
 export function PostKeyboardShortcuts({
   basePath,
@@ -50,7 +50,7 @@ export function PostKeyboardShortcuts({
           }
         }
       },
-      { signal },
+      { signal }
     );
 
     return () => abortController.abort();

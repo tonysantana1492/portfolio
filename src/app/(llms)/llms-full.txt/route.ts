@@ -8,8 +8,8 @@ import { SITE_INFO } from "@/config/site.config";
 import { SOCIAL_LINKS } from "@/config/social-links.config";
 import { TECH_STACK } from "@/config/tech-stack";
 import { USER } from "@/config/user.config";
-import { getAllPosts } from "@/data/blog";
 import { getLLMText } from "@/lib/get-llm-text";
+import { getAllPosts } from "@/services/blog";
 
 const allPosts = getAllPosts();
 

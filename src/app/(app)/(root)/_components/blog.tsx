@@ -5,7 +5,7 @@ import { ArrowRightIcon } from "lucide-react";
 import { Panel, PanelHeader, PanelTitle } from "./panel";
 import { PostItem } from "@/app/(app)/(root)/_components/post-item";
 import { Button } from "@/components/ui/button";
-import { getAllPosts } from "@/data/blog";
+import { getAllPosts } from "@/services/blog";
 
 export function Blog() {
   const allPosts = getAllPosts();
