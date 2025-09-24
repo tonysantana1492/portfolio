@@ -9,7 +9,7 @@ const allPosts = getAllPosts();
 
 const aboutText = `## About
 
-${PROFILE.about.trim()}
+${PROFILE.about.content.trim()}
 
 ### Personal Information
 
@@ -45,7 +45,7 @@ ${PROFILE.sections.experiences.items
           position.employmentPeriod.end || "Present"
         }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
       })
-      .join("\n\n"),
+      .join("\n\n")
   )
   .join("\n\n")}
 `;
@@ -83,11 +83,11 @@ async function getBlogContent() {
         `---\ntitle: "${item.metadata.title}"\ndescription: "${
           item.metadata.description
         }"\nlast_updated: "${dayjs(item.metadata.updatedAt).format(
-          "MMMM D, YYYY",
+          "MMMM D, YYYY"
         )}"\nsource: "${SITE_INFO.url}/blog/${
           item.slug
-        }"\n---\n\n${await getLLMText(item)}`,
-    ),
+        }"\n---\n\n${await getLLMText(item)}`
+    )
   );
   return text.join("\n\n");
 }
