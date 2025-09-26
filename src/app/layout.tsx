@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 
 import { cookies } from "next/headers";
 
-import { APP_CONFIG, NODE_ENV_ENUM } from "@/config/app.config";
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
@@ -77,14 +76,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      {APP_CONFIG.NODE_ENV === NODE_ENV_ENUM.DEVELOPMENT ? (
+      {/* {APP_CONFIG.NODE_ENV === NODE_ENV_ENUM.DEVELOPMENT ? (
         <head>
           <script
             src="https://unpkg.com/react-scan/dist/auto.global.js"
             async
           />
         </head>
-      ) : null}
+      ) : null} */}
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning

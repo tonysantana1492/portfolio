@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   transpilePackages: ["next-mdx-remote"],
   allowedDevOrigins: [],
   devIndicators: false,
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   images: {
     remotePatterns: [
       {

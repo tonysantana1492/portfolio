@@ -1,0 +1,225 @@
+:root {
+  --text: #000;
+  --muted: #666;
+  --line: #000;
+  --bg: #fff;
+  --header-bg: #f8f9fa;
+}
+
+@page {
+  size: A4;
+  margin: 12mm 15mm;
+  background-color: #fff;
+}
+
+@media print {
+  html,
+  body {
+    height: auto;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #fff;
+    color: var(--text);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  img,
+  pre,
+  blockquote,
+  table,
+  code {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .page-break {
+    break-before: page;
+  }
+}
+
+.print-container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  font-family: "Arial", "Helvetica", sans-serif;
+}
+
+/* Header styling for name and contact info */
+.print-container header,
+.print-container .header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--line);
+}
+
+.print-container h1 {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+
+.print-container .subtitle,
+.print-container .contact-info {
+  font-size: 12px;
+  color: var(--text);
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+/* Section headings */
+.print-container h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+}
+
+.print-container h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 12px 0 6px;
+  color: var(--text);
+}
+
+.print-container h4 {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 8px 0 4px;
+  color: var(--text);
+}
+.print-container p,
+.print-container li {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 4px 10px;
+  text-align: left;
+}
+
+/* Add extra spacing for paragraphs before section headers */
+.print-container p + h2 {
+  margin-top: 24px;
+}
+
+/* Specific spacing for Summary section */
+.print-container .summary-section {
+  margin-bottom: 20px;
+}
+
+/* Ensure proper spacing after Summary section */
+.print-container h2:has(+ p) + p:last-of-type + h2,
+.print-container p:last-child + h2 {
+  margin-top: 28px;
+}
+
+/* Experience and Education entries */
+.print-container .experience-item,
+.print-container .education-item {
+  margin-bottom: 16px;
+}
+
+.print-container .company-name,
+.print-container .school-name {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.print-container .position-title,
+.print-container .degree {
+  font-style: italic;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.print-container .date-range,
+.print-container .location {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+/* Bullet points */
+.print-container ul {
+  margin: 8px 0;
+  padding-left: 18px;
+  list-style-type: disc;
+}
+
+.print-container li {
+  margin-bottom: 4px;
+  padding-left: 0;
+  line-height: 1.4;
+  text-align: left;
+  font-size: 16px;
+}
+
+.print-container ul li::marker {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Technology lists */
+.print-container .tech-list {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+.print-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+.print-container pre {
+  border: 1px solid var(--line);
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.print-container code {
+  font-size: 12px;
+  background: #f5f5f5;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.print-container hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 16px 0;
+}
+
+/* Spacing adjustments for compact layout */
+.print-container > *:first-child {
+  margin-top: 0;
+}
+
+.print-container > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Ensure proper page breaks */
+.print-container h2 {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+.print-container .experience-item,
+.print-container .education-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}

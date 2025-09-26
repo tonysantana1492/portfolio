@@ -44,7 +44,7 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
         duration={5000}
         expand={false}
       />
-      <TailwindIndicator />
+      {/* <TailwindIndicator /> */}
       <SpeedInsights sampleRate={0.5} />
       <Analytics />
     </ThemeProvider>

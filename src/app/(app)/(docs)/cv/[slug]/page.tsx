@@ -7,6 +7,7 @@ import { getTableOfContents } from "fumadocs-core/server";
 import { ArrowLeftIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
+import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 import { InlineTOC } from "@/components/shared/inline-toc";
 import { MDX } from "@/components/shared/mdx";
@@ -129,6 +130,10 @@ export default async function Page({
           </Link>
         </Button>
         <div className="flex items-center gap-2">
+          <div className="flex gap-2">
+            <ExportButton slug={slug} />
+          </div>
+
           <LLMCopyButtonWithViewOptions
             markdownUrl={`${getCvUrl(cv)}.mdx`}
             isComponent={false}
@@ -151,7 +156,7 @@ export default async function Page({
       <Prose className="px-12">
         <InlineTOC className="mt-2" items={toc} />
 
-        <div>
+        <div id="mdx-print-root">
           <MDX code={cv.content} />
         </div>
       </Prose>
