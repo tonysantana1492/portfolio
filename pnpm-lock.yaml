@@ -62,9 +62,6 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      puppeteer:
-        specifier: ^24.22.3
-        version: 24.22.3(typescript@5.9.2)
       puppeteer-core:
         specifier: ^24.22.3
         version: 24.22.3
@@ -150,6 +147,9 @@ importers:
       '@types/unist':
         specifier: ^3.0.3
         version: 3.0.3
+      puppeteer:
+        specifier: ^24.22.3
+        version: 24.22.3(typescript@5.9.2)
       shiki:
         specifier: 1.9.1
         version: 1.9.1

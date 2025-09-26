@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
   reactStrictMode: true,
   transpilePackages: ["next-mdx-remote"],
   allowedDevOrigins: [],
