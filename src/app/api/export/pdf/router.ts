@@ -3,12 +3,12 @@ import { type NextRequest, NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 
-export async function POST(request: NextRequest) {
-  const { html } = await request.json();
-
-  if (!html) {
-    return new NextResponse("Please provide the HTML.", { status: 400 });
-  }
+export async function GET(request: NextRequest) {
+  // const { searchParams } = new URL(request.url);
+  // const htmlParam = searchParams.get("html");
+  // if (!htmlParam) {
+  //   return new NextResponse("Please provide the HTML.", { status: 400 });
+  // }
 
   let browser: any;
 
@@ -32,8 +32,16 @@ export async function POST(request: NextRequest) {
           }
     );
 
+    const url = `https://tonysantana.dev/print/${encodeURIComponent(
+      "68d21822750a73c7d1738920"
+    )}`;
+
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "load" });
+    // await page.setContent(htmlParam, { waitUntil: 'load' });
+
+    await page.goto(url, {
+      waitUntil: "networkidle2",
+    });
 
     const pdf = await page.pdf({
       path: undefined,

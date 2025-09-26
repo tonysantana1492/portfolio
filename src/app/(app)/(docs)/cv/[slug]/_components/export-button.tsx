@@ -31,11 +31,10 @@ interface ExportOptions {
 // Service functions for PDF export
 async function exportToPdf(options: ExportOptions): Promise<Blob> {
   const response = await fetch("/api/export/pdf", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(options),
+    method: "GET",
+    // headers: {
+    //   "Content-Type": "application/json",
+    // },
   });
 
   if (!response.ok) {
