@@ -3,9 +3,6 @@ import { type NextRequest, NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 export async function POST(req: NextRequest) {
   const { slug } = await req.json();
 
@@ -20,14 +17,14 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl}/print/${encodeURIComponent(slug)}`;
 
-  const viewport = {
-    deviceScaleFactor: 1,
-    hasTouch: false,
-    height: 1080,
-    isLandscape: true,
-    isMobile: false,
-    width: 1920,
-  };
+  // const viewport = {
+  //   deviceScaleFactor: 1,
+  //   hasTouch: false,
+  //   height: 1080,
+  //   isLandscape: true,
+  //   isMobile: false,
+  //   width: 1920,
+  // };
 
   const isVercel = !!process.env.VERCEL_ENV;
 
