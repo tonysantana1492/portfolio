@@ -63,7 +63,7 @@ importers:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       puppeteer-core:
-        specifier: ^24.22.3
+        specifier: ^24.16.1
         version: 24.22.3
       radix-ui:
         specifier: ^1.4.3
@@ -148,7 +148,7 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       puppeteer:
-        specifier: ^24.22.3
+        specifier: ^24.16.1
         version: 24.22.3(typescript@5.9.2)
       shiki:
         specifier: 1.9.1
@@ -5831,7 +5831,7 @@ snapshots:
   micromark@4.0.2:
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.4.1
+      debug: 4.4.3
       decode-named-character-reference: 1.2.0
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.3
