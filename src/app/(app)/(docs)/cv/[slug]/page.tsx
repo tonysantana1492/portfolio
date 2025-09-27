@@ -3,19 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import dayjs from "dayjs";
-import { getTableOfContents } from "fumadocs-core/server";
 import { ArrowLeftIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
 import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
-import { InlineTOC } from "@/components/shared/inline-toc";
 import { MDX } from "@/components/shared/mdx";
 import { ShareMenu } from "@/components/shared/share-menu";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
+import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
 import { type Cv, getAllCVs, getCvBySlug } from "@/services/cv";
 
@@ -107,7 +106,7 @@ export default async function Page({
     notFound();
   }
 
-  const toc = getTableOfContents(cv.content);
+  const mdx = cvToMdx(PROFILE);
 
   return (
     <>
@@ -154,10 +153,8 @@ export default async function Page({
       </div>
 
       <Prose className="px-12">
-        {/* <InlineTOC className="mt-2" items={toc} /> */}
-
         <div id="mdx-print-root">
-          <MDX code={cv.content} />
+          <MDX code={mdx} />
         </div>
       </Prose>
 

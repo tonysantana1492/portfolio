@@ -24,16 +24,11 @@ export function ShareMenu({ url }: { url: string }) {
 
   const handleShareLink = () => {
     if (navigator.share) {
-      navigator
-        .share({
-          title: document.title,
-          text: "Check out this page",
-          url: absoluteUrl,
-        })
-        .catch((error) => {
-          console.error("Error sharing:", error);
-          toast.error("Error sharing");
-        });
+      navigator.share({
+        title: document.title,
+        // text: "Check out this page",
+        url: absoluteUrl,
+      });
     } else {
       handleCopyLink();
     }

@@ -141,6 +141,14 @@ const components: MDXRemoteProps["components"] = {
       shadcn CLI
     </TabsTrigger>
   ),
+  Right: ({ children }: { children: React.ReactNode }) => (
+    <span className="float-right text-muted-foreground text-sm">
+      {children}
+    </span>
+  ),
+  Center: ({ children }: { children: React.ReactNode }) => (
+    <div className="text-balance text-center">{children}</div>
+  ),
 };
 
 const options: MDXRemoteProps["options"] = {

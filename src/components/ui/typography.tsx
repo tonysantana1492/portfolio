@@ -27,7 +27,7 @@ function Prose({
         "prose-a:break-words prose-a:font-medium prose-a:text-foreground prose-a:underline prose-a:underline-offset-4",
         "prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:font-normal prose-code:text-sm prose-code:before:content-none prose-code:after:content-none",
         "prose-hr:border-edge",
-        className,
+        className
       )}
       {...props}
     />
@@ -43,7 +43,7 @@ function Code({ className, ...props }: React.ComponentProps<"code">) {
       className={cn(
         !isCodeBlock &&
           "not-prose rounded-md border bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm",
-        className,
+        className
       )}
       {...props}
     />
@@ -71,7 +71,7 @@ function Heading<T extends HeadingTypes = "h1">({
       className={cn("flex flex-row items-center gap-2", className)}
       {...props}
     >
-      <a href={`#${props.id}`} className="peer not-prose">
+      <a href={`#${props.id}`} className="peer not-prose w-full">
         {props.children}
       </a>
 

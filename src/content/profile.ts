@@ -55,6 +55,7 @@ export type ExperiencePosition = {
     start: string;
     end?: string;
   };
+  location?: string;
   employmentType?: string;
   description?: string;
   icon?: ExperiencePositionIcon;
@@ -297,7 +298,7 @@ export const PROFILE: IProfile = {
       ],
     },
     techStack: {
-      id: "tech-stack",
+      id: "tech-stack2",
       name: "Tech Stack",
       columns: 1,
       visible: true,
@@ -654,14 +655,14 @@ Blog Features:
           positions: [
             {
               id: "1",
-              title:
-                "Telecommunications and Electronics Engineer — Technological University of Havana (CUJAE)",
+              title: "Telecommunications and Electronics Engineer",
+              location: "Technological University of Havana (CUJAE)",
               employmentPeriod: {
                 start: "09.2011",
                 end: "06.2016",
               },
               icon: "education",
-              description: `- Bachelor's degree in Telecommunications and Electronics Engineering.`,
+              description: `Bachelor's degree in Telecommunications and Electronics Engineering.`,
               skills: [
                 "Electronics",
                 "Telecommunications",

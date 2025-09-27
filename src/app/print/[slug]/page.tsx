@@ -1,9 +1,8 @@
-import { notFound } from "next/navigation";
-
 import "./print.css";
 
 import { MDX } from "@/components/shared/mdx";
-import { getCvBySlug } from "@/services/cv";
+import { PROFILE } from "@/content/profile";
+import { cvToMdx } from "@/lib/cv-to-mdx";
 
 export const dynamic = "force-dynamic";
 
@@ -12,16 +11,13 @@ export default async function PrintPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const slug = (await params).slug;
-  const cv = getCvBySlug(slug);
+  // const slug = (await params).slug;
 
-  if (!cv) {
-    notFound();
-  }
+  const mdx = cvToMdx(PROFILE);
 
   return (
     <div className="print-container">
-      <MDX code={cv.content} />
+      <MDX code={mdx} />
     </div>
   );
 }
