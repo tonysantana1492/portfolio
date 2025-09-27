@@ -15,10 +15,6 @@ import {
 import { toast } from "@/components/ui/sonner";
 
 // Types for better type safety
-interface ExportResponse {
-  url: string;
-}
-
 interface ExportError {
   error: string;
 }
@@ -55,13 +51,13 @@ async function exportToPdf(options: ExportOptions): Promise<Blob> {
 }
 
 // Service functions for Word export
-async function exportToWord(options: ExportOptions): Promise<ExportResponse> {
+async function exportToWord(options: ExportOptions): Promise<Blob> {
   const response = await fetch("/api/export/word", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(options),
+    body: JSON.stringify({ slug: options.slug, format: options.format }),
   });
 
   if (!response.ok) {
@@ -77,19 +73,7 @@ async function exportToWord(options: ExportOptions): Promise<ExportResponse> {
     throw new Error(errorMessage);
   }
 
-  return response.json();
-}
-
-function downloadFile(url: string, filename: string): void {
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-
-  document.body.appendChild(link);
-  link.click();
-
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  return response.blob();
 }
 
 function downloadBlob(blob: Blob, filename: string): void {
@@ -113,8 +97,8 @@ async function exportAndDownloadPdf(slug: string): Promise<{ name: string }> {
 }
 
 async function exportAndDownloadWord(slug: string): Promise<{ name: string }> {
-  const exportData = await exportToWord({ slug, format: "A4" });
-  downloadFile(exportData.url, `${slug}.docx`);
+  const wordBlob = await exportToWord({ slug, format: "A4" });
+  downloadBlob(wordBlob, `${slug}.docx`);
 
   return { name: slug };
 }

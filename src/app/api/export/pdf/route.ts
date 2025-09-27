@@ -6,25 +6,16 @@ import puppeteer from "puppeteer-core";
 export async function POST(req: NextRequest) {
   const { slug } = await req.json();
 
-  // if (!slug || typeof slug !== "string") {
-  //   console.log("Invalid slug provided");
-  //   return NextResponse.json({ error: "Slug is required" }, { status: 400 });
-  // }
+  if (!slug || typeof slug !== "string") {
+    console.log("Invalid slug provided");
+    return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+  }
 
   const protocol = req.headers.get("x-forwarded-proto") || "http";
   const host = req.headers.get("host");
   const baseUrl = `${protocol}://${host}`;
 
   const url = `${baseUrl}/print/${encodeURIComponent(slug)}`;
-
-  // const viewport = {
-  //   deviceScaleFactor: 1,
-  //   hasTouch: false,
-  //   height: 1080,
-  //   isLandscape: true,
-  //   isMobile: false,
-  //   width: 1920,
-  // };
 
   const isVercel = !!process.env.VERCEL_ENV;
 
@@ -50,12 +41,13 @@ export async function POST(req: NextRequest) {
     waitUntil: "networkidle2",
   });
 
-  // await page.emulateMediaType("print");
-  // await page.emulateMediaFeatures([
-  //   { name: "prefers-color-scheme", value: "light" },
-  // ]);
+  await page.emulateMediaType("print");
+  await page.emulateMediaFeatures([
+    { name: "prefers-color-scheme", value: "light" },
+  ]);
 
   const pdfBuffer = await page.pdf({
+    format: "A4",
     path: undefined,
     printBackground: true,
     preferCSSPageSize: true,
