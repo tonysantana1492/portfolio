@@ -1,6 +1,6 @@
 "use client";
 
-import { LinkIcon, ShareIcon } from "lucide-react";
+import { LinkIcon, Share2Icon, ShareIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { Icons } from "@/components/shared/icons";
@@ -17,10 +17,32 @@ export function ShareMenu({ url }: { url: string }) {
   const absoluteUrl = url.startsWith("http")
     ? url
     : typeof window !== "undefined"
-      ? new URL(url, window.location.origin).toString()
-      : url;
+    ? new URL(url, window.location.origin).toString()
+    : url;
 
   const urlEncoded = encodeURIComponent(absoluteUrl);
+
+  const handleShareLink = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: document.title,
+          text: "Check out this page",
+          url: absoluteUrl,
+        })
+        .catch((error) => {
+          console.error("Error sharing:", error);
+          toast.error("Error sharing");
+        });
+    } else {
+      handleCopyLink();
+    }
+  };
+
+  const handleCopyLink = () => {
+    copyText(absoluteUrl);
+    toast.success("Copied link");
+  };
 
   return (
     <DropdownMenu>
@@ -31,12 +53,11 @@ export function ShareMenu({ url }: { url: string }) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
-        <DropdownMenuItem
-          onClick={() => {
-            copyText(absoluteUrl);
-            toast.success("Copied link");
-          }}
-        >
+        <DropdownMenuItem onClick={handleShareLink}>
+          <Share2Icon />
+          Share
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleCopyLink}>
           <LinkIcon />
           Copy link
         </DropdownMenuItem>

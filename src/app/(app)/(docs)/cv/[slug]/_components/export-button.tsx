@@ -14,18 +14,6 @@ interface IDownloadProps {
   fileName: string;
 }
 
-async function exportAndDownloadPdf({
-  slug,
-  fileName,
-}: IDownloadProps): Promise<{
-  name: string;
-}> {
-  const pdfBlob = await exportToPdf({ slug, format: "A4" });
-  downloadBlob(pdfBlob, `${fileName}.pdf`);
-
-  return { name: slug };
-}
-
 export function ExportButton({ slug, fileName }: IDownloadProps) {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,23 +22,41 @@ export function ExportButton({ slug, fileName }: IDownloadProps) {
 
     setIsLoading(true);
 
+    const toastId = toast.loading("Exporting PDF...");
+
     try {
-      const exportPromise = exportAndDownloadPdf({
-        slug,
-        fileName,
+      const pdfBlob = await exportToPdf({ slug, format: "A4" });
+      const url = downloadBlob(pdfBlob, `${fileName}.pdf`, false);
+
+      toast.success(`${fileName}.pdf has been downloaded successfully`, {
+        id: toastId,
       });
 
-      await toast.promise(exportPromise, {
-        loading: "Exporting PDF...",
-        success: () => {
-          return `${fileName}.pdf has been downloaded successfully`;
+      toast.success("PDF ready and downloaded", {
+        id: toastId,
+        description: fileName,
+        action: {
+          label: "Open PDF",
+          onClick: () => {
+            const win = window.open(url, "_blank", "noopener,noreferrer");
+            if (!win) {
+              const link = document.createElement("a");
+              link.href = url;
+              link.target = "_blank";
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+            }
+          },
         },
-        error: (error) => {
-          const errorMessage =
-            error instanceof Error ? error.message : "Failed to export PDF";
-          return `Export failed: ${errorMessage}`;
-        },
+        onDismiss: () => URL.revokeObjectURL(url),
       });
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000 * 60 * 1);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to export PDF";
+      return `Export failed: ${errorMessage}`;
     } finally {
       setIsLoading(false);
     }
