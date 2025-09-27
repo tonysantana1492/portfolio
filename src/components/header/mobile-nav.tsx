@@ -9,14 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { INavItem } from "@/config/site.config";
+import type { SerializableNavItem } from "@/config/site.config";
 import { cn } from "@/lib/utils";
 
 export function MobileNav({
   items,
   className,
 }: {
-  items: INavItem[];
+  items: SerializableNavItem[];
   className?: string;
 }) {
   return (

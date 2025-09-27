@@ -6,6 +6,7 @@ import {
   LetterTextIcon,
   type LucideProps,
   RssIcon,
+  UserStarIcon,
 } from "lucide-react";
 
 import { Logo } from "@/components/header/logo";
@@ -111,16 +112,29 @@ export const META_THEME_COLORS = {
 export type INavItem = {
   title: string;
   href: string;
+  icon: React.ComponentType<LucideProps>;
+};
+
+export type SerializableNavItem = {
+  title: string;
+  href: string;
 };
 
 export const MAIN_NAV: INavItem[] = [
   {
     title: "Portfolio",
     href: "/",
+    icon: Logo,
+  },
+  {
+    title: "CV",
+    href: "/cv/tony-santana",
+    icon: UserStarIcon,
   },
   {
     title: "Blog",
     href: "/blog",
+    icon: RssIcon,
   },
 ];
 
@@ -139,19 +153,6 @@ export type CommandLinkItem = {
   keywords?: string[];
   openInNewTab?: boolean;
 };
-
-export const MENU_LINKS: CommandLinkItem[] = [
-  {
-    title: "Portfolio",
-    href: "/",
-    icon: Logo,
-  },
-  {
-    title: "Blog",
-    href: "/blog",
-    icon: RssIcon,
-  },
-];
 
 export const PORTFOLIO_LINKS: CommandLinkItem[] = [
   {

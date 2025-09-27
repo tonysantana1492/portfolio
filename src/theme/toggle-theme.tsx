@@ -16,8 +16,8 @@ export function ToggleTheme() {
 
   return (
     <Button variant="outline" size="icon" onClick={handleToggle}>
-      <MoonStarIcon className="hidden [html.dark_&]:block" />
-      <SunIcon className="hidden [html.light_&]:block" />
+      <MoonStarIcon className="hidden text-primary [html.dark_&]:block" />
+      <SunIcon className="hidden text-primary [html.light_&]:block" />
       <span className="sr-only">Toggle Theme</span>
     </Button>
   );

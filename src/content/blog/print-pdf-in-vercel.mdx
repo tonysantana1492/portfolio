@@ -1,0 +1,212 @@
+---
+title: "Deploying an HTML-to-PDF API on Vercel with Puppeteer"
+author: "Tony Santana"
+description: "In this article, we will explore how to create an HTML-to-PDF API on Vercel using Puppeteer"
+readingTime: "4 min read"
+image: images/blog/print-pdf-in-vercel.webp
+createdAt: 2025-09-26
+updatedAt: 2025-09-26
+---
+
+## Step 1: Project Setup
+
+Start by creating a new Next.js project:
+
+```bash
+npx create-next-app@latest html-to-pdf-on-vercel --typescript --tailwind --app
+```
+
+Install the required packages for Puppeteer:
+
+```bash
+npm install puppeteer-core @sparticuz/chromium
+```
+
+```bash
+npm install -D puppeteer
+```
+
+---
+
+## Step 2: Setup the API Route
+
+Create a new file at `app/api/pdf/route.ts`:
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import puppeteer from "puppeteer-core";
+import chromium from "@sparticuz/chromium";
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const htmlParam = searchParams.get("html");
+  if (!htmlParam) {
+    return new NextResponse("Please provide the HTML.", { status: 400 });
+  }
+  let browser;
+  try {
+    const isVercel = !!process.env.VERCEL_ENV;
+    const pptr = isVercel
+      ? puppeteer
+      : ((await import("puppeteer")) as unknown as typeof puppeteer);
+    browser = await pptr.launch(
+      isVercel
+        ? {
+            args: chromium.args,
+            executablePath: await chromium.executablePath(),
+            headless: true,
+          }
+        : { headless: true, args: puppeteer.defaultArgs() }
+    );
+
+    const page = await browser.newPage();
+    await page.setContent(htmlParam, { waitUntil: "load" });
+    const pdf = await page.pdf({ printBackground: true });
+
+    return new NextResponse(Buffer.from(pdf), {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": 'inline; filename="page-output.pdf"',
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return new NextResponse("An error occurred while generating the PDF.", {
+      status: 500,
+    });
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
+  }
+}
+```
+
+This route takes an HTML string as a query param, renders it with Puppeteer, and returns a **PDF**.
+
+---
+
+## Step 3: Add a Frontend
+
+To interact with the API, replace the content of `app/page.tsx`:
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+const defaultHtml = `<p style="text-align:center">
+Hello World! <br />
+
+  <b>
+    This PDF was created using <br />
+    <a href="https://github.com/ivanalemunioz/html-to-pdf-on-vercel">
+      https://github.com/ivanalemunioz/html-to-pdf-on-vercel
+    </a>
+  </b>
+</p>`;
+
+export default function HomePage() {
+  const [html, setHtml] = useState(defaultHtml);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const createPDF = async () => {
+    if (!html) {
+      setError("Please enter a valid HTML.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(
+        `/api/pdf?html=\${encodeURIComponent(html)}`
+      );
+      if (!response.ok) throw new Error("Failed to create PDF.");
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = objectUrl;
+      link.download = "output.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gray-50">
+      <div className="w-full max-w-2xl text-center">
+        <h1 className="text-4xl font-bold mb-4 text-gray-800">
+          HTML to PDF on Vercel using Puppeteer
+        </h1>
+        <p className="text-lg text-gray-600 mb-8">
+          Enter the HTML below to generate a PDF using Puppeteer running in a
+          Vercel Function.
+        </p>
+        <div className="flex gap-2 flex-col">
+          <textarea
+            value={html}
+            rows={13}
+            onChange={(e) => setHtml(e.target.value)}
+            className="flex-grow p-3 border border-gray-300 rounded-lg font-mono"
+          />
+          <button
+            onClick={createPDF}
+            disabled={loading}
+            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+          >
+            {loading ? "Creating PDF..." : "Create PDF"}
+          </button>
+        </div>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
+      </div>
+    </main>
+  );
+}
+```
+
+---
+
+## Step 4: Configure Next.js
+
+Update your `next.config.ts` to ensure Puppeteer runs correctly:
+
+```ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
+};
+
+export default nextConfig;
+```
+
+---
+
+## Step 5: Run & Deploy
+
+Run locally:
+
+```bash
+npm run dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000) to test.
+Finally, deploy it to **Vercel** 🚀.
+
+---
+
+## Conclusion
+
+We built and deployed an **HTML-to-PDF API with Puppeteer** on Vercel, along with a simple frontend interface. This approach is lightweight, serverless, and works both in development and production.
+
+---

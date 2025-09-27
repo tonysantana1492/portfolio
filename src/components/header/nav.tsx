@@ -2,7 +2,7 @@ import type React from "react";
 
 import Link from "next/link";
 
-import type { INavItem } from "@/config/site.config";
+import type { SerializableNavItem } from "@/config/site.config";
 import { cn } from "@/lib/utils";
 
 export function Nav({
@@ -10,7 +10,7 @@ export function Nav({
   activeId,
   className,
 }: {
-  items: INavItem[];
+  items: SerializableNavItem[];
   activeId?: string | null;
   className?: string;
 }) {
@@ -40,7 +40,7 @@ export function NavItem({
     <Link
       className={cn(
         "font-medium font-mono text-muted-foreground text-sm transition-all duration-300",
-        active && "text-foreground",
+        active && "text-foreground"
       )}
       {...props}
     />

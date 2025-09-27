@@ -131,7 +131,7 @@ export default async function Page({
         </Button>
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
-            <ExportButton slug={slug} />
+            <ExportButton slug={slug} fileName={cv.metadata.title} />
           </div>
 
           <LLMCopyButtonWithViewOptions
@@ -154,7 +154,7 @@ export default async function Page({
       </div>
 
       <Prose className="px-12">
-        <InlineTOC className="mt-2" items={toc} />
+        {/* <InlineTOC className="mt-2" items={toc} /> */}
 
         <div id="mdx-print-root">
           <MDX code={cv.content} />
