@@ -193,9 +193,9 @@ export const PORTFOLIO_LINKS: CommandLinkItem[] = [
 ];
 
 export const SOCIAL_LINK_ITEMS: CommandLinkItem[] =
-  PROFILE.sections.socialLinks.items.map((item) => ({
+  PROFILE.sections.socialLinks?.items.map((item) => ({
     title: item.title,
     href: item.href,
     iconImage: item.icon,
     openInNewTab: true,
-  }));
+  })) || [];

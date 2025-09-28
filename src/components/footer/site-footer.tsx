@@ -1,12 +1,15 @@
 import { RssIcon } from "lucide-react";
 
 import { SITE_INFO } from "@/config/site.config";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
-export function SiteFooter() {
+export function SiteFooter({
+  profile,
+  className,
+}: React.ComponentProps<"footer"> & { profile: IProfile }) {
   return (
-    <footer className="max-w-screen overflow-x-hidden px-2">
+    <footer className={cn(className, "max-w-screen overflow-x-hidden px-2")}>
       <div className="screen-line-before mx-auto border-edge border-x pt-4 md:max-w-3xl">
         <p className="mb-1 text-balance px-4 text-center font-mono text-muted-foreground text-sm"></p>
 
@@ -14,16 +17,16 @@ export function SiteFooter() {
           Built by{" "}
           <a
             className="link"
-            href={PROFILE.sections.socialLinks.items[1].href}
+            href={profile.sections.socialLinks?.items[1].href}
             target="_blank"
             rel="noopener"
           >
-            {PROFILE.sections.socialLinks.items[1].description}
+            {profile.sections.socialLinks?.items[1].description}
           </a>
           . The source code is available on{" "}
           <a
             className="link"
-            href={PROFILE.githubUrl}
+            href={profile.githubUrl}
             target="_blank"
             rel="noopener"
           >
@@ -35,7 +38,7 @@ export function SiteFooter() {
         <div
           className={cn(
             "screen-line-before screen-line-after flex w-full before:z-1 after:z-1",
-            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56",
+            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56"
           )}
         >
           <div className="mx-auto flex items-center justify-center gap-3 border-edge border-x bg-background px-4">

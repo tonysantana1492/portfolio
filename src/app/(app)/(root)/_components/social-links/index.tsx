@@ -7,8 +7,8 @@ export function SocialLinks({
   className,
 }: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
   return (
-    <Panel className={className} id={profile.sections.socialLinks.id}>
-      <h2 className="sr-only">{profile.sections.socialLinks.name}</h2>
+    <Panel className={className} id={profile.sections.socialLinks?.id}>
+      <h2 className="sr-only">{profile.sections.socialLinks?.name}</h2>
 
       <div className="relative">
         <div className="-z-1 pointer-events-none absolute inset-0 grid grid-cols-1 gap-4 max-sm:hidden sm:grid-cols-2">
@@ -17,7 +17,7 @@ export function SocialLinks({
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {profile.sections.socialLinks.items.map((link) => {
+          {profile.sections.socialLinks?.items.map((link) => {
             return <SocialLinkItem key={link.href} {...link} />;
           })}
         </div>
