@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       undefined,
       {
         table: { row: { cantSplit: true } },
-      }
+      },
     );
 
     return new NextResponse(buffer, {
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "Content-Disposition": `attachment; filename=${JSON.stringify(
-          filename
+          filename,
         ).slice(1, -1)}`,
         "Cache-Control": "no-store",
       },
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     console.error(err);
     return NextResponse.json(
       { error: "Failed to export DOCX" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

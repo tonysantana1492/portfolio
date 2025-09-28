@@ -166,13 +166,13 @@ export interface IProfile {
   metadata: Metadata;
   // SECTIONS
   sections: {
-    awards: Section<Award>;
-    techStack: Section<TechStack>;
-    projects: Section<Project>;
-    experiences: Section<Experience>;
-    educations: Section<Experience>;
-    certifications: Section<Certification>;
-    socialLinks: Section<SocialLink>;
+    awards?: Section<Award>;
+    techStack?: Section<TechStack>;
+    projects?: Section<Project>;
+    experiences?: Section<Experience>;
+    educations?: Section<Experience>;
+    certifications?: Section<Certification>;
+    socialLinks?: Section<SocialLink>;
   };
 }
 
@@ -206,7 +206,7 @@ export const PROFILE: IProfile = {
   otherWebsites: [],
   jobTitle: "Software Engineer at OfficePuzzle",
   about: {
-    label: "About Me",
+    label: "Summary",
     content: `
   Senior Software Engineer Full‑Stack with 7+ years of experience spanning the entire web product lifecycle. I apply clean code principles, SOLID patterns, and design patterns while working comfortably across frontend (React/Next.js) and backend (NestJS/Node) with SQL/NoSQL databases and cloud deployments. In teams, I combine technical focus with project management and close collaboration with product teams.
   `,
@@ -266,37 +266,6 @@ export const PROFILE: IProfile = {
 
   // SECTIONS
   sections: {
-    awards: {
-      id: "awards",
-      name: "Awards & Honors",
-      columns: 1,
-      visible: true,
-      separateLinks: false,
-      items: [
-        {
-          id: "a144bd19-3706-4e4c-ba22-0e0d8302642a",
-          prize: "1st Prize",
-          title: "Can Tho City Young Informatics Contest 2014",
-          date: "2014-05",
-          grade: "Grade 8",
-          description:
-            "- Field: Creative Software\n- Project: Website Hành Trình Khám Phá Miền Tây",
-          referenceLink:
-            "https://drive.google.com/file/d/16bia3XoeVbSlfvg4FzVapQf3LVI8wUA-/view?usp=sharing",
-        },
-        {
-          id: "d9dc1a25-7976-47f8-925e-051285822d54",
-          prize: "Consolation Prize",
-          title: "National Young Informatics Contest 2014",
-          date: "2014-09",
-          grade: "Grade 8",
-          description:
-            "- Organized in Hanoi\n- Field: Creative Software\n- Project: Website Hành Trình Khám Phá Miền Tây",
-          referenceLink:
-            "https://drive.google.com/file/d/16OOVuKBxFAnROU-pmhkDFkbljkmeO-kc/view?usp=sharing",
-        },
-      ],
-    },
     techStack: {
       id: "tech-stack2",
       name: "Tech Stack",
@@ -675,33 +644,64 @@ Blog Features:
         },
       ],
     },
-    certifications: {
-      id: "certifications",
-      name: "Certifications",
-      columns: 1,
-      visible: true,
-      separateLinks: false,
-      items: [
-        {
-          title: "Certificate of Trademark Registration No. 543682",
-          issuer: "Intellectual Property Office of Viet Nam",
-          issuerLogoURL: "companies/ipvietnam.webp",
-          issueDate: "2025-05-08",
-          credentialID: "543682",
-          credentialURL:
-            "https://drive.google.com/file/d/1x7YzlK1kyz16h28ux9k3KAwnZFAabsvq/view?usp=sharing",
-        },
-        {
-          title: "Google Code-in 2016",
-          issuer: "Google",
-          issuerIconName: "google",
-          issueDate: "2017-01-16",
-          credentialID: "",
-          credentialURL:
-            "https://drive.google.com/file/d/162RXtAVIZEvfx6LvP3xeBj-cSI9ZpPUX/view?usp=sharing",
-        },
-      ],
-    },
+    // certifications: {
+    //   id: "certifications",
+    //   name: "Certifications",
+    //   columns: 1,
+    //   visible: true,
+    //   separateLinks: false,
+    //   items: [
+    //     {
+    //       title: "Certificate of Trademark Registration No. 543682",
+    //       issuer: "Intellectual Property Office of Viet Nam",
+    //       issuerLogoURL: "companies/ipvietnam.webp",
+    //       issueDate: "2025-05-08",
+    //       credentialID: "543682",
+    //       credentialURL:
+    //         "https://drive.google.com/file/d/1x7YzlK1kyz16h28ux9k3KAwnZFAabsvq/view?usp=sharing",
+    //     },
+    //     {
+    //       title: "Google Code-in 2016",
+    //       issuer: "Google",
+    //       issuerIconName: "google",
+    //       issueDate: "2017-01-16",
+    //       credentialID: "",
+    //       credentialURL:
+    //         "https://drive.google.com/file/d/162RXtAVIZEvfx6LvP3xeBj-cSI9ZpPUX/view?usp=sharing",
+    //     },
+    //   ],
+    // },
+    // awards: {
+    //   id: "awards",
+    //   name: "Awards & Honors",
+    //   columns: 1,
+    //   visible: true,
+    //   separateLinks: false,
+    //   items: [
+    //     {
+    //       id: "a144bd19-3706-4e4c-ba22-0e0d8302642a",
+    //       prize: "1st Prize",
+    //       title: "Can Tho City Young Informatics Contest 2014",
+    //       date: "2014-05",
+    //       grade: "Grade 8",
+    //       description:
+    //         "- Field: Creative Software\n- Project: Website Hành Trình Khám Phá Miền Tây",
+    //       referenceLink:
+    //         "https://drive.google.com/file/d/16bia3XoeVbSlfvg4FzVapQf3LVI8wUA-/view?usp=sharing",
+    //     },
+    //     {
+    //       id: "d9dc1a25-7976-47f8-925e-051285822d54",
+    //       prize: "Consolation Prize",
+    //       title: "National Young Informatics Contest 2014",
+    //       date: "2014-09",
+    //       grade: "Grade 8",
+    //       description:
+    //         "- Organized in Hanoi\n- Field: Creative Software\n- Project: Website Hành Trình Khám Phá Miền Tây",
+    //       referenceLink:
+    //         "https://drive.google.com/file/d/16OOVuKBxFAnROU-pmhkDFkbljkmeO-kc/view?usp=sharing",
+    //     },
+    //   ],
+    // },
     socialLinks: {
       id: "social-links",
       name: "Social Links",

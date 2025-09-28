@@ -2,14 +2,20 @@ import Image from "next/image";
 
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel";
 import { SimpleTooltip } from "@/components/ui/tooltip";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
-export function TeckStack() {
-  const { items, name, id } = PROFILE.sections.techStack;
+export function TeckStack({
+  profile,
+  className,
+}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+  const techStack = profile.sections.techStack;
+  const items = techStack?.items ?? [];
+  const name = techStack?.name ?? "";
+  const id = techStack?.id ?? "";
 
   return (
-    <Panel id={id}>
+    <Panel className={className} id={id}>
       <PanelHeader>
         <PanelTitle>{name}</PanelTitle>
       </PanelHeader>

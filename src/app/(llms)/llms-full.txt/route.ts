@@ -21,19 +21,19 @@ ${PROFILE.about.content.trim()}
 
 ### Social Links
 
-${PROFILE.sections.socialLinks.items
+${PROFILE.sections.socialLinks?.items
   .map((item) => `- [${item.title}](${item.href})`)
   .join("\n")}
 
 ### Tech Stack
 
-${PROFILE.sections.techStack.items
+${PROFILE.sections.techStack?.items
   .map((item) => `- [${item.title}](${item.href})`)
   .join("\n")}\n`;
 
 const experienceText = `## Experience
 
-${PROFILE.sections.experiences.items
+${PROFILE.sections.experiences?.items
   .map((item) =>
     item.positions
       .map((position) => {
@@ -45,14 +45,14 @@ ${PROFILE.sections.experiences.items
           position.employmentPeriod.end || "Present"
         }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
       })
-      .join("\n\n")
+      .join("\n\n"),
   )
   .join("\n\n")}
 `;
 
 const projectsText = `## Projects
 
-${PROFILE.sections.projects.items
+${PROFILE.sections.projects?.items
   .map((item) => {
     const skills = `\n\nSkills: ${item.skills.join(", ")}`;
     const description = item.description
@@ -65,14 +65,14 @@ ${PROFILE.sections.projects.items
 
 const awardsText = `## Awards
 
-${PROFILE.sections.awards.items
+${PROFILE.sections.awards?.items
   .map((item) => `### ${item.prize} | ${item.title}\n\n${item.description}`)
   .join("\n\n")}
 `;
 
 const certificationsText = `## Certifications
 
-${PROFILE.sections.certifications.items
+${PROFILE.sections.certifications?.items
   .map((item) => `- [${item.title}](${item.credentialURL})`)
   .join("\n")}`;
 
@@ -83,11 +83,11 @@ async function getBlogContent() {
         `---\ntitle: "${item.metadata.title}"\ndescription: "${
           item.metadata.description
         }"\nlast_updated: "${dayjs(item.metadata.updatedAt).format(
-          "MMMM D, YYYY"
+          "MMMM D, YYYY",
         )}"\nsource: "${SITE_INFO.url}/blog/${
           item.slug
-        }"\n---\n\n${await getLLMText(item)}`
-    )
+        }"\n---\n\n${await getLLMText(item)}`,
+    ),
   );
   return text.join("\n\n");
 }

@@ -13,15 +13,19 @@ ${PROFILE.about.content.trim()}
 
 ## Social Links
 
-${PROFILE.sections.socialLinks.items
-  .map((item) => `- [${item.title}](${item.href})`)
-  .join("\n")}
+${
+  PROFILE.sections.socialLinks?.items
+    ?.map((item) => `- [${item.title}](${item.href})`)
+    ?.join("\n") ?? ""
+}
 
 ## Tech Stack
 
-${PROFILE.sections.techStack.items
-  .map((item) => `- [${item.title}](${item.href})`)
-  .join("\n")}\n`;
+${
+  PROFILE.sections.techStack?.items
+    ?.map((item) => `- [${item.title}](${item.href})`)
+    ?.join("\n") ?? ""
+}\n`;
 
 export const dynamic = "force-static";
 

@@ -17,8 +17,8 @@ export function ShareMenu({ url }: { url: string }) {
   const absoluteUrl = url.startsWith("http")
     ? url
     : typeof window !== "undefined"
-    ? new URL(url, window.location.origin).toString()
-    : url;
+      ? new URL(url, window.location.origin).toString()
+      : url;
 
   const urlEncoded = encodeURIComponent(absoluteUrl);
 
@@ -48,13 +48,14 @@ export function ShareMenu({ url }: { url: string }) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent onCloseAutoFocus={(e) => e.preventDefault()}>
-        <DropdownMenuItem onClick={handleShareLink}>
-          <Share2Icon />
-          Share
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={handleCopyLink}>
           <LinkIcon />
           Copy link
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onClick={handleShareLink}>
+          <Share2Icon />
+          Share
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>

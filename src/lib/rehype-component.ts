@@ -59,7 +59,7 @@ export function rehypeComponent() {
           const title = getNodeAttributeByName(node, "title");
           const showLineNumbers = getNodeAttributeByName(
             node,
-            "showLineNumbers"
+            "showLineNumbers",
           );
 
           // Add code as children so that rehype can take over at build time.
@@ -87,7 +87,7 @@ export function rehypeComponent() {
                   ],
                 }),
               ],
-            })
+            }),
           );
         } catch (error) {
           console.error(error);

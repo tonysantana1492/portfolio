@@ -8,7 +8,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LazyMotion, domMax as loadFeatures } from "motion/react";
 import { ThemeProvider } from "next-themes";
 
-import { TailwindIndicator } from "@/components/shared/tailwind-indicator";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeColorProvider } from "@/theme/theme-color.provider";
 
@@ -39,12 +38,16 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
       </ThemeColorProvider>
       <Toaster
         richColors
-        // visibleToasts={2}
+        visibleToasts={4}
         closeButton
         duration={5000}
         expand={false}
+        toastOptions={{
+          classNames: {
+            loading: "!bg-primary !text-primary-foreground",
+          },
+        }}
       />
-      {/* <TailwindIndicator /> */}
       <SpeedInsights sampleRate={0.5} />
       <Analytics />
     </ThemeProvider>

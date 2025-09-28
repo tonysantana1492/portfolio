@@ -76,14 +76,6 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* {APP_CONFIG.NODE_ENV === NODE_ENV_ENUM.DEVELOPMENT ? (
-        <head>
-          <script
-            src="https://unpkg.com/react-scan/dist/auto.global.js"
-            async
-          />
-        </head>
-      ) : null} */}
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning

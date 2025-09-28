@@ -1,22 +1,25 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ProjectItem } from "./project-item";
 import { CollapsibleList } from "@/components/shared/collapsible-list";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 
-export function Projects() {
+export function Projects({
+  className,
+  profile,
+}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
   return (
-    <Panel id="projects">
+    <Panel className={className} id={profile.sections.projects?.id}>
       <PanelHeader>
         <PanelTitle>
-          {PROFILE.sections.projects.name}
+          {profile.sections.projects?.name}
           <sup className="ml-1 select-none font-mono text-muted-foreground text-sm">
-            ({PROFILE.sections.projects.items.length})
+            ({profile.sections.projects?.items.length})
           </sup>
         </PanelTitle>
       </PanelHeader>
 
       <CollapsibleList
-        items={PROFILE.sections.projects.items}
+        items={profile.sections.projects?.items ?? []}
         max={4}
         renderItem={(item) => <ProjectItem project={item} />}
       />

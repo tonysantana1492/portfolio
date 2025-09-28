@@ -11,7 +11,7 @@ export default async function PrintPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  // const slug = (await params).slug;
+  const _slug = (await params).slug;
 
   const mdx = cvToMdx(PROFILE);
 

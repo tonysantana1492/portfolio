@@ -1,7 +1,7 @@
 export function downloadBlob(
   blob: Blob,
   filename: string,
-  revokeUrl: boolean = true
+  revokeUrl: boolean = true,
 ): string {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");

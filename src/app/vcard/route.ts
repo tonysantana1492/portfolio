@@ -24,7 +24,7 @@ export async function GET() {
     card.addPhoto(photo.image, photo.mine);
   }
 
-  const lastCompany = getLastCompany(PROFILE.sections.experiences.items);
+  const lastCompany = getLastCompany(PROFILE.sections.experiences?.items ?? []);
 
   if (lastCompany) {
     card

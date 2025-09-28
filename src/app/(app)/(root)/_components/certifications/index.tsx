@@ -1,22 +1,25 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { CertificationItem } from "./certification-item";
 import { CollapsibleList } from "@/components/shared/collapsible-list";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 
-export function Certifications() {
+export function Certifications({
+  className,
+  profile,
+}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
   return (
-    <Panel id={PROFILE.sections.certifications.id}>
+    <Panel className={className} id={profile.sections.certifications?.id}>
       <PanelHeader>
         <PanelTitle>
-          {PROFILE.sections.certifications.name}
+          {profile.sections.certifications?.name}
           <sup className="ml-1 select-none font-medium font-mono text-muted-foreground text-sm">
-            ({PROFILE.sections.certifications.items.length})
+            ({profile.sections.certifications?.items.length})
           </sup>
         </PanelTitle>
       </PanelHeader>
 
       <CollapsibleList
-        items={PROFILE.sections.certifications.items}
+        items={profile.sections.certifications?.items ?? []}
         max={8}
         renderItem={(item) => <CertificationItem certification={item} />}
       />

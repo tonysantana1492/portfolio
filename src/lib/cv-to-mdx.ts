@@ -3,10 +3,11 @@ import type {
   Certification,
   Experience,
   IProfile,
-  Project,
   SocialLink,
   TechStack,
 } from "@/content/profile";
+import { formatPhone } from "@/lib/libphonenumber";
+import { formatPhoneNumber } from "@/lib/string";
 
 const esc = (s?: string) =>
   (s ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -74,8 +75,8 @@ export function cvToMdx(profile: IProfile) {
   lines.push("<Center>");
   lines.push(
     `# ${esc(
-      profile.displayName || `${profile.firstName} ${profile.lastName}`
-    )}`
+      profile.displayName || `${profile.firstName} ${profile.lastName}`,
+    )}`,
   );
 
   const emailPlain = b64(profile.email);
@@ -87,9 +88,16 @@ export function cvToMdx(profile: IProfile) {
   if (emailPlain) metaParts.push(`[${emailPlain}](mailto:${emailPlain})`);
   if (profile.website)
     metaParts.push(
-      mdxLink(profile.website.replace(/^https?:\/\//, ""), profile.website)
+      `[${profile.website.replace(/^https?:\/\//, "")}](${profile.website})`,
     );
-  if (phonePlain) metaParts.push(phonePlain);
+  if (phonePlain)
+    metaParts.push(
+      `[${formatPhoneNumber(phonePlain)}](tel:${formatPhone(
+        phonePlain,
+        undefined,
+        "e164",
+      )})`,
+    );
   if (metaParts.length) lines.push(metaParts.join(" • "));
   lines.push("</Center>");
   lines.push("");
@@ -110,7 +118,7 @@ export function cvToMdx(profile: IProfile) {
     const grouped = groupTechByCategory(techSec.items);
     const cats = Array.from(grouped.keys()).sort((a, b) => a.localeCompare(b));
     for (const cat of cats) {
-      const techs = grouped.get(cat)!;
+      const techs = grouped.get(cat) ?? [];
       lines.push(`**${esc(cat)}:** ${inlineLinks(techs)}`);
     }
     lines.push("");
@@ -129,7 +137,7 @@ export function cvToMdx(profile: IProfile) {
       for (const pos of company.positions ?? []) {
         const when = fmtRange(
           pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end
+          pos.employmentPeriod?.end,
         );
         const rightBits = [when, pos.employmentType]
           .filter(Boolean)
@@ -155,27 +163,27 @@ export function cvToMdx(profile: IProfile) {
   }
 
   // ===== Projects =====
-  const projSec = profile.sections?.projects;
-  if (projSec?.visible && projSec.items?.length) {
-    lines.push(`## ${esc(projSec.name || "Projects")}`);
-    lines.push("");
-    for (const p of projSec.items as Project[]) {
-      const title = mdxLink(p.title, p.link);
-      const when = fmtRange(p.period?.start, p.period?.end);
-      lines.push(`### ${title}`);
-      if (when) lines.push(`<Right>${esc(when)}</Right>`);
-      if (p.skills?.length)
-        lines.push(`*Tech:* ${p.skills.map(esc).join(", ")}`);
-      if (p.description?.trim()) {
-        // keeps line breaks and bullets from the original description
-        const descLines = p.description
-          .split(/\r?\n/)
-          .map((l) => (l.trim().startsWith("-") ? l : esc(l)));
-        lines.push(...descLines);
-      }
-      lines.push("");
-    }
-  }
+  // const projSec = profile.sections?.projects;
+  // if (projSec?.visible && projSec.items?.length) {
+  //   lines.push(`## ${esc(projSec.name || "Projects")}`);
+  //   lines.push("");
+  //   for (const p of projSec.items as Project[]) {
+  //     const title = mdxLink(p.title, p.link);
+  //     const when = fmtRange(p.period?.start, p.period?.end);
+  //     lines.push(`### ${title}`);
+  //     if (when) lines.push(`<Right>${esc(when)}</Right>`);
+  //     if (p.skills?.length)
+  //       lines.push(`*Tech:* ${p.skills.map(esc).join(", ")}`);
+  //     if (p.description?.trim()) {
+  //       // keeps line breaks and bullets from the original description
+  //       const descLines = p.description
+  //         .split(/\r?\n/)
+  //         .map((l) => (l.trim().startsWith("-") ? l : esc(l)));
+  //       lines.push(...descLines);
+  //     }
+  //     lines.push("");
+  //   }
+  // }
 
   // ===== Education =====
   const eduSec = profile.sections?.educations;
@@ -186,7 +194,7 @@ export function cvToMdx(profile: IProfile) {
       for (const pos of ed.positions ?? []) {
         const when = fmtRange(
           pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end
+          pos.employmentPeriod?.end,
         );
         lines.push(`### ${esc(pos.title || ed.companyName)}`);
         if (when) lines.push(`<Right>${esc(when)}</Right>`);
@@ -260,7 +268,7 @@ export function cvToMdx(profile: IProfile) {
       lines.push(
         (socialSec.items as SocialLink[])
           .map((s) => mdxLink(s.title, s.href))
-          .join(" • ")
+          .join(" • "),
       );
     }
     lines.push("");

@@ -7,11 +7,11 @@ import { PostItem } from "@/app/(app)/(root)/_components/post-item";
 import { Button } from "@/components/ui/button";
 import { getAllPosts } from "@/services/blog";
 
-export function Blog() {
+export function Blog({ className }: React.ComponentProps<typeof Panel>) {
   const allPosts = getAllPosts();
 
   return (
-    <Panel id="blog">
+    <Panel className={className} id="blog">
       <PanelHeader>
         <PanelTitle>Blog</PanelTitle>
       </PanelHeader>

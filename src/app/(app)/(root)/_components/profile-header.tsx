@@ -1,18 +1,23 @@
 import { FlipSentences } from "@/app/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
-import { PROFILE } from "@/content/profile";
+import { type IProfile, PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
-export function ProfileHeader() {
+export function ProfileHeader({
+  profile,
+  className,
+}: React.ComponentProps<"div"> & { profile: IProfile }) {
   return (
-    <div className="screen-line-after flex border-edge border-x">
+    <div
+      className={cn("screen-line-after flex border-edge border-x", className)}
+    >
       <div className="shrink-0 border-edge border-r">
         <div className="mx-[2px] my-[3px]">
           {/** biome-ignore lint/performance/noImgElement: <explanation > */}
           <img
             className="size-32 select-none rounded-full ring-1 ring-border ring-offset-2 ring-offset-background sm:size-40"
-            alt={`${PROFILE.displayName}'s avatar`}
-            src={PROFILE.avatar}
+            alt={`${profile.displayName}'s avatar`}
+            src={profile.avatar}
             fetchPriority="high"
           />
         </div>

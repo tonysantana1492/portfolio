@@ -43,7 +43,9 @@ export function remarkCodeImport(options: RemarkCodeImport = {}) {
     throw new Error(`"rootDir" has to be an absolute path`);
   }
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation >
   return function transformer(tree: any, file: any) {
+    // biome-ignore lint/suspicious/noExplicitAny: < explanation >
     const codes: [any, number | undefined, any][] = [];
 
     visit(tree, "code", (node, index, parent) => {

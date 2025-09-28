@@ -2,7 +2,9 @@ import dayjs from "dayjs";
 import type { ProfilePage, WithContext } from "schema-dts";
 
 import { About } from "@/app/(app)/(root)/_components/about";
+import { Awards } from "@/app/(app)/(root)/_components/awards";
 import { Blog } from "@/app/(app)/(root)/_components/blog";
+import { Certifications } from "@/app/(app)/(root)/_components/certifications";
 import { Educations } from "@/app/(app)/(root)/_components/educations";
 import { Experiences } from "@/app/(app)/(root)/_components/experiences";
 import { HeroSeparator } from "@/app/(app)/(root)/_components/hero-separator";
@@ -29,6 +31,7 @@ function getPageJsonLd(): WithContext<ProfilePage> {
 }
 
 export default function Page() {
+  const profile = PROFILE;
   return (
     <>
       <script
@@ -38,31 +41,66 @@ export default function Page() {
         }}
       />
       <div className="mx-auto md:max-w-3xl">
-        <ProfileHeader />
+        <ProfileHeader profile={profile} />
+        <HeroSeparator />
+        <Overview profile={profile} />
         <HeroSeparator />
 
-        <Overview />
-        <HeroSeparator />
+        {profile.sections.socialLinks && (
+          <>
+            <SocialLinks profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        <SocialLinks />
-        <HeroSeparator />
+        {profile.about && (
+          <>
+            <About profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        <About />
-        <HeroSeparator />
+        {profile.sections.techStack && (
+          <>
+            <TeckStack profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        <TeckStack />
-        <HeroSeparator />
+        {profile.sections.experiences && (
+          <>
+            <Experiences profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        <Experiences />
-        <HeroSeparator />
+        {profile.sections.educations && (
+          <>
+            <Educations profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        <Educations />
-        <HeroSeparator />
+        {profile.sections.projects && (
+          <>
+            <Projects profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        <Projects />
-        <HeroSeparator />
+        {profile.sections.certifications && (
+          <>
+            <Certifications profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
-        {/* <Awards /> */}
+        {profile.sections.awards && (
+          <>
+            <Awards profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
         <Blog />
         <HeroSeparator />

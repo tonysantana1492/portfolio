@@ -5,14 +5,17 @@ import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
 import { JobItem } from "@/app/(app)/(root)/_components/overview/job-item";
 import { PhoneItem } from "@/app/(app)/(root)/_components/overview/phone-item";
 import { Panel, PanelContent } from "@/app/(app)/(root)/_components/panel";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 import { getLastCompany } from "@/services/experience";
 
-export function Overview() {
-  const lastCompany = getLastCompany(PROFILE.sections.experiences.items);
+export function Overview({
+  profile,
+  className,
+}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+  const lastCompany = getLastCompany(profile.sections.experiences?.items ?? []);
 
   return (
-    <Panel>
+    <Panel className={className}>
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="space-y-2">
@@ -23,11 +26,11 @@ export function Overview() {
           website={lastCompany.website ?? ""}
         />
 
-        <IntroItem icon={MapPinIcon} content={PROFILE.address} />
+        <IntroItem icon={MapPinIcon} content={profile.address} />
 
-        <PhoneItem phoneNumber={PROFILE.phoneNumber} />
+        <PhoneItem phoneNumber={profile.phoneNumber} />
 
-        <EmailItem email={PROFILE.email} />
+        <EmailItem email={profile.email} />
 
         {/* <IntroItem
           icon={GlobeIcon}

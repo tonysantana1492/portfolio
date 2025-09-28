@@ -1,16 +1,19 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ExperienceItem } from "./experience-item";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 
-export function Experiences() {
+export function Experiences({
+  className,
+  profile,
+}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
   return (
-    <Panel id={PROFILE.sections.experiences.id}>
+    <Panel className={className} id={profile.sections.experiences?.id}>
       <PanelHeader>
-        <PanelTitle>{PROFILE.sections.experiences.name}</PanelTitle>
+        <PanelTitle>{profile.sections.experiences?.name}</PanelTitle>
       </PanelHeader>
 
       <div className="pr-2 pl-4">
-        {PROFILE.sections.experiences.items.map((experience) => (
+        {profile.sections.experiences?.items.map((experience) => (
           <ExperienceItem key={experience.id} experience={experience} />
         ))}
       </div>

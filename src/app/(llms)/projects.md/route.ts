@@ -2,7 +2,7 @@ import { PROFILE } from "@/content/profile";
 
 const content = `# Projects
 
-${PROFILE.sections.projects.items
+${PROFILE.sections.projects?.items
   .map((item) => {
     const skills = `\n\nSkills: ${item.skills.join(", ")}`;
     const description = item.description
