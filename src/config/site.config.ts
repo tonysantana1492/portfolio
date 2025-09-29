@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 
 import { Logo } from "@/components/header/logo";
+import { getIcon } from "@/components/shared/icons";
 import { PROFILE } from "@/content/profile";
 
 interface ISiteInfo {
@@ -158,7 +159,7 @@ const PORTFOLIO_LINKS_FROM_SECTIONS: CommandLinkItem[] = sections.map(
   (section) => ({
     title: section.name,
     href: `/#${section.id}`,
-    icon: section.icon,
+    icon: getIcon(section.icon),
   })
 );
 
