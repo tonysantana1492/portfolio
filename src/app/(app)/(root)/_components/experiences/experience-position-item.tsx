@@ -4,7 +4,7 @@ import {
   InfinityIcon,
 } from "lucide-react";
 
-import { ExperienceIcon } from "./experience-position-icon";
+import { Icon } from "@/components/shared/icons";
 import { Markdown } from "@/components/shared/markdown";
 import {
   Collapsible,
@@ -31,7 +31,7 @@ export function ExperiencePositionItem({
         <CollapsibleTrigger
           className={cn(
             "group/experience block w-full select-none text-left",
-            "after:-top-1 after:-right-1 after:-bottom-1.5 after:-z-1 relative after:absolute after:left-7 after:rounded-lg hover:after:bg-accent/50",
+            "after:-top-1 after:-right-1 after:-bottom-1.5 after:-z-1 relative after:absolute after:left-7 after:rounded-lg hover:after:bg-accent/50"
           )}
         >
           <div className="relative z-1 mb-1 flex items-center gap-3">
@@ -39,7 +39,7 @@ export function ExperiencePositionItem({
               className="flex size-6 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground dark:inset-shadow-[1px_1px_1px,0px_0px_1px] dark:inset-shadow-white/15"
               aria-hidden
             >
-              <ExperienceIcon className="size-4" icon={position.icon} />
+              <Icon name={position.icon} className="size-4" />
             </div>
 
             <h4 className="flex-1 text-balance font-medium">

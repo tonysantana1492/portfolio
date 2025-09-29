@@ -335,15 +335,21 @@ export function getIconForPackageManager(manager: string) {
   }
 }
 
-export const Icon = ({ name }: { name: string | undefined }) => {
+export const Icon = ({
+  name,
+  className,
+}: {
+  name: string | undefined;
+  className?: string;
+}) => {
   if (!name) return null;
   const IconComponent = Icons[name as keyof typeof Icons] as React.FC<
     React.SVGProps<SVGSVGElement>
   >;
 
   if (IconComponent) {
-    return <IconComponent />;
+    return <IconComponent className={className} />;
   }
 
-  return <Icons.TerminalSquareIcon />;
+  return <Icons.TerminalSquareIcon className={className} />;
 };

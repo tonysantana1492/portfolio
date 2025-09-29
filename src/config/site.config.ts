@@ -2,14 +2,12 @@ import type { MetadataRoute } from "next";
 
 import {
   CircleUserIcon,
-  LetterTextIcon,
   type LucideProps,
   RssIcon,
   UserStarIcon,
 } from "lucide-react";
 
 import { Logo } from "@/components/header/logo";
-import { Icons } from "@/components/shared/icons";
 import { PROFILE } from "@/content/profile";
 
 interface ISiteInfo {
@@ -146,7 +144,7 @@ export const UTM_PARAMS = {
 export type CommandLinkItem = {
   title: string;
   href: string;
-  icon?: React.ComponentType<LucideProps>;
+  icon?: string | React.ComponentType<LucideProps>;
   iconImage?: string;
   keywords?: string[];
   openInNewTab?: boolean;
@@ -160,10 +158,7 @@ const PORTFOLIO_LINKS_FROM_SECTIONS: CommandLinkItem[] = sections.map(
   (section) => ({
     title: section.name,
     href: `/#${section.id}`,
-    icon:
-      (Icons as Record<string, React.ComponentType<LucideProps>>)[
-        section.icon
-      ] || LetterTextIcon,
+    icon: section.icon,
   })
 );
 
