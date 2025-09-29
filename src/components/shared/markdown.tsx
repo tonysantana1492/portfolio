@@ -5,10 +5,12 @@ import remarkGfm from "remark-gfm";
 
 import { UTM_PARAMS } from "@/config/site.config";
 import { rehypeAddQueryParams } from "@/lib/rehype-add-query-params";
+import { components } from "@/components/shared/mdx";
 
 export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
   return (
     <MarkdownAsync
+      components={components}
       remarkPlugins={[remarkGfm]}
       rehypePlugins={[
         rehypeRaw,

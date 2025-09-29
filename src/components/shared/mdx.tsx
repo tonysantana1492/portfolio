@@ -2,6 +2,7 @@ import type React from "react";
 
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import type ReactMarkdown from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
 import type { LineElement } from "rehype-pretty-code";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -34,7 +35,10 @@ import { remarkCodeImport } from "@/lib/remark-code-import";
 import type { NpmCommands } from "@/lib/unist";
 import { cn } from "@/lib/utils";
 
-const components: MDXRemoteProps["components"] = {
+export const components: React.ComponentProps<
+  typeof ReactMarkdown
+>["components"] &
+  MDXRemoteProps["components"] = {
   h1: (props: React.ComponentProps<"h1">) => <Heading as="h1" {...props} />,
   h2: (props: React.ComponentProps<"h2">) => <Heading as="h2" {...props} />,
   h3: (props: React.ComponentProps<"h3">) => <Heading as="h3" {...props} />,
@@ -44,9 +48,16 @@ const components: MDXRemoteProps["components"] = {
   p: (props: React.ComponentProps<"p">) => {
     return <>{props.children}</>;
   },
-  a: (props: React.ComponentProps<"a">) => {
-    return <>{props.children}</>;
-  },
+  // a: (props: React.ComponentProps<"a">) => {
+  //   return <a {...props} />;
+  // },
+  // a({ children, href, ...props }: React.ComponentProps<"a">) {
+  //   return (
+  //     <PreviewLink href={href} className="text-blue-400" {...props}>
+  //       {children}
+  //     </PreviewLink>
+  //   );
+  // },
   table: Table,
   thead: TableHeader,
   tbody: TableBody,
@@ -122,9 +133,12 @@ const components: MDXRemoteProps["components"] = {
   ComponentSource,
   CodeCollapsibleWrapper,
   CodeTabs,
-  Steps: (props) => (
+  Steps: ({ className, ...props }: React.ComponentProps<"h3">) => (
     <div
-      className="prose-h3:text-wrap md:ml-3.5 md:border-l md:pl-7.5"
+      className={cn(
+        "prose-h3:text-wrap md:ml-3.5 md:border-l md:pl-7.5",
+        className
+      )}
       {...props}
     />
   ),
@@ -141,13 +155,14 @@ const components: MDXRemoteProps["components"] = {
       shadcn CLI
     </TabsTrigger>
   ),
-  Right: ({ children }: { children: React.ReactNode }) => (
-    <span className="float-right text-muted-foreground text-sm">
-      {children}
-    </span>
+  Right: ({ className, ...props }: React.ComponentProps<"span">) => (
+    <span
+      className={cn("float-right text-muted-foreground text-sm", className)}
+      {...props}
+    />
   ),
-  Center: ({ children }: { children: React.ReactNode }) => (
-    <div className="text-balance text-center">{children}</div>
+  Center: ({ className, ...props }: React.ComponentProps<"div">) => (
+    <div className={cn("text-balance text-center", className)} {...props} />
   ),
 };
 

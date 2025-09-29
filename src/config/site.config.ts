@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
 import {
-  BriefcaseBusinessIcon,
   CircleUserIcon,
   LetterTextIcon,
   type LucideProps,
@@ -147,44 +146,29 @@ export const UTM_PARAMS = {
 export type CommandLinkItem = {
   title: string;
   href: string;
-
   icon?: React.ComponentType<LucideProps>;
   iconImage?: string;
   keywords?: string[];
   openInNewTab?: boolean;
 };
 
+const sections = Object.entries(PROFILE.sections).map(
+  ([_key, section]) => section
+);
+
+const PORTFOLIO_LINKS_FROM_SECTIONS: CommandLinkItem[] = sections.map(
+  (section) => ({
+    title: section.name,
+    href: `/#${section.id}`,
+    icon:
+      (Icons as Record<string, React.ComponentType<LucideProps>>)[
+        section.icon
+      ] || LetterTextIcon,
+  })
+);
+
 export const PORTFOLIO_LINKS: CommandLinkItem[] = [
-  {
-    title: "About",
-    href: "/#about",
-    icon: LetterTextIcon,
-  },
-  {
-    title: "Tech Stack",
-    href: "/#stack",
-    icon: Icons.ts,
-  },
-  {
-    title: "Experience",
-    href: "/#experience",
-    icon: BriefcaseBusinessIcon,
-  },
-  {
-    title: "Projects",
-    href: "/#projects",
-    icon: Icons.project,
-  },
-  {
-    title: "Honors & Awards",
-    href: "/#awards",
-    icon: Icons.award,
-  },
-  {
-    title: "Certifications",
-    href: "/#certs",
-    icon: Icons.certificate,
-  },
+  ...PORTFOLIO_LINKS_FROM_SECTIONS,
   {
     title: "Download vCard",
     href: "/vcard",

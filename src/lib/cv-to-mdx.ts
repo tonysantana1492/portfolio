@@ -75,8 +75,8 @@ export function cvToMdx(profile: IProfile) {
   lines.push("<Center>");
   lines.push(
     `# ${esc(
-      profile.displayName || `${profile.firstName} ${profile.lastName}`,
-    )}`,
+      profile.displayName || `${profile.firstName} ${profile.lastName}`
+    )}`
   );
 
   const emailPlain = b64(profile.email);
@@ -86,27 +86,30 @@ export function cvToMdx(profile: IProfile) {
 
   const metaParts: string[] = [];
   if (emailPlain) metaParts.push(`[${emailPlain}](mailto:${emailPlain})`);
-  if (profile.website)
+  if (profile.githubUserName)
     metaParts.push(
-      `[${profile.website.replace(/^https?:\/\//, "")}](${profile.website})`,
+      `[${profile.githubUserName.replace(
+        /^https?:\/\//,
+        ""
+      )}](https://github.com/${profile.githubUserName})`
     );
   if (phonePlain)
     metaParts.push(
       `[${formatPhoneNumber(phonePlain)}](tel:${formatPhone(
         phonePlain,
         undefined,
-        "e164",
-      )})`,
+        "e164"
+      )})`
     );
   if (metaParts.length) lines.push(metaParts.join(" • "));
   lines.push("</Center>");
   lines.push("");
 
   // ===== Summary / About =====
-  if (profile.about?.content?.trim()) {
-    lines.push(`## ${esc(profile.about.label || "About")}`);
+  if (profile.sections.about?.content?.trim()) {
+    lines.push(`## ${esc(profile.sections.about.name || "About")}`);
     lines.push("");
-    lines.push(`_${esc(profile.about.content.trim())}_`);
+    lines.push(`_${esc(profile.sections.about.content.trim())}_`);
     lines.push("");
   }
 
@@ -117,11 +120,17 @@ export function cvToMdx(profile: IProfile) {
     lines.push("");
     const grouped = groupTechByCategory(techSec.items);
     const cats = Array.from(grouped.keys()).sort((a, b) => a.localeCompare(b));
+
+    const catParts: string[] = [];
+
     for (const cat of cats) {
       const techs = grouped.get(cat) ?? [];
-      lines.push(`**${esc(cat)}:** ${inlineLinks(techs)}`);
+      catParts.push(
+        `${esc(cat)}: ${techs.map((tech) => `**${tech.title}**`).join(", ")}`
+      );
     }
-    lines.push("");
+
+    lines.push(catParts.join(" • "));
   }
 
   // ===== Experience (Company -> Positions) =====
@@ -130,18 +139,20 @@ export function cvToMdx(profile: IProfile) {
     lines.push(`## ${esc(expSec.name || "Experience")}`);
     lines.push("");
     for (const company of expSec.items as Experience[]) {
-      const companyTitle = company.website
-        ? `[${esc(company.companyName)}](${company.website})`
-        : esc(company.companyName);
+      // const companyTitle = company.website
+      //   ? `[${esc(company.companyName)}](${company.website})`
+      //   : esc(company.companyName);
+
+      const companyTitle = esc(company.companyName);
 
       for (const pos of company.positions ?? []) {
         const when = fmtRange(
           pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end,
+          pos.employmentPeriod?.end
         );
         const rightBits = [when, pos.employmentType]
           .filter(Boolean)
-          .join(" · ");
+          .join(" • ");
 
         lines.push(`### ${esc(companyTitle)}`);
         if (rightBits) lines.push(`<Right>${esc(rightBits)}</Right>`);
@@ -194,7 +205,7 @@ export function cvToMdx(profile: IProfile) {
       for (const pos of ed.positions ?? []) {
         const when = fmtRange(
           pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end,
+          pos.employmentPeriod?.end
         );
         lines.push(`### ${esc(pos.title || ed.companyName)}`);
         if (when) lines.push(`<Right>${esc(when)}</Right>`);
@@ -268,7 +279,7 @@ export function cvToMdx(profile: IProfile) {
       lines.push(
         (socialSec.items as SocialLink[])
           .map((s) => mdxLink(s.title, s.href))
-          .join(" • "),
+          .join(" • ")
       );
     }
     lines.push("");

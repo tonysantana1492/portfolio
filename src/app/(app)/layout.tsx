@@ -6,7 +6,7 @@ import { PROFILE } from "@/content/profile";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <SiteHeader />
+      <SiteHeader profile={PROFILE} />
       <main className="max-w-screen overflow-x-hidden px-2">{children}</main>
       <SiteFooter profile={PROFILE} />
       <ScrollTop />

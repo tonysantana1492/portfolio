@@ -3,7 +3,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import { ArrowUpRightIcon } from "lucide-react";
 
-import { getIcon, Icons } from "@/components/shared/icons";
+import { Icon } from "@/components/shared/icons";
 import { Separator } from "@/components/ui/separator";
 import type { Certification } from "@/content/profile";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ export function CertificationItem({
           className="mx-4 flex size-6 shrink-0 items-center justify-center [&_svg]:size-5 [&_svg]:text-muted-foreground"
           aria-hidden
         >
-          {getIcon(certification.issuerIconName) ?? <Icons.certificate />}
+          <Icon name={certification.issuerIconName} />
         </div>
       )}
 

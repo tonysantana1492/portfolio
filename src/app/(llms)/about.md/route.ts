@@ -2,7 +2,7 @@ import { PROFILE } from "@/content/profile";
 
 const content = `# About
 
-${PROFILE.about.content.trim()}
+${PROFILE.sections.about?.content ? PROFILE.sections.about.content.trim() : ""}
 
 ## Personal Information
 

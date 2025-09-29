@@ -1,8 +1,9 @@
-import { FileIcon, TerminalSquareIcon } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
+  ...LucideIcons,
   // Source: https://simpleicons.org
   json: (props: IconProps) => (
     <svg viewBox="0 0 24 24" {...props}>
@@ -315,7 +316,7 @@ export function getIconForLanguageExtension(language: string) {
     case "tsx":
       return <Icons.react />;
     default:
-      return <FileIcon />;
+      return <Icons.FileIcon />;
   }
 }
 
@@ -330,12 +331,19 @@ export function getIconForPackageManager(manager: string) {
     case "bun":
       return <Icons.bun />;
     default:
-      return <TerminalSquareIcon />;
+      return <Icons.TerminalSquareIcon />;
   }
 }
 
-export function getIcon(name: string | undefined) {
-  if (!name || !(name in Icons)) return null;
-  const Icon = Icons[name as keyof typeof Icons];
-  return <Icon />;
-}
+export const Icon = ({ name }: { name: string | undefined }) => {
+  if (!name) return null;
+  const IconComponent = Icons[name as keyof typeof Icons] as React.FC<
+    React.SVGProps<SVGSVGElement>
+  >;
+
+  if (IconComponent) {
+    return <IconComponent />;
+  }
+
+  return <Icons.TerminalSquareIcon />;
+};

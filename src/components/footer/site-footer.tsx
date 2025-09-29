@@ -26,7 +26,7 @@ export function SiteFooter({
           . The source code is available on{" "}
           <a
             className="link"
-            href={profile.githubUrl}
+            href={`https://github.com/${profile.githubUserName}`}
             target="_blank"
             rel="noopener"
           >

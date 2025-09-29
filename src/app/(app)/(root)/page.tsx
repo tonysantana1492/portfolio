@@ -7,6 +7,7 @@ import { Blog } from "@/app/(app)/(root)/_components/blog";
 import { Certifications } from "@/app/(app)/(root)/_components/certifications";
 import { Educations } from "@/app/(app)/(root)/_components/educations";
 import { Experiences } from "@/app/(app)/(root)/_components/experiences";
+import { GitHubContributions } from "@/app/(app)/(root)/_components/github-contributions";
 import { HeroSeparator } from "@/app/(app)/(root)/_components/hero-separator";
 import { Overview } from "@/app/(app)/(root)/_components/overview";
 import { ProfileHeader } from "@/app/(app)/(root)/_components/profile-header";
@@ -53,12 +54,15 @@ export default function Page() {
           </>
         )}
 
-        {profile.about && (
+        {profile.sections.about && (
           <>
             <About profile={profile} />
             <HeroSeparator />
           </>
         )}
+
+        <GitHubContributions />
+        <HeroSeparator />
 
         {profile.sections.techStack && (
           <>

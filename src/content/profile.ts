@@ -1,4 +1,4 @@
-export interface Section<T> {
+export interface Section<T = any> {
   id: string;
   name: string;
   columns: number;
@@ -6,6 +6,7 @@ export interface Section<T> {
   visible: boolean;
   separateLinks: boolean;
   items: T[];
+  icon: string;
 }
 
 export type TechStack = {
@@ -41,13 +42,6 @@ export type Project = {
   isExpanded?: boolean;
 };
 
-export type ExperiencePositionIcon =
-  | "code"
-  | "design"
-  | "education"
-  | "business"
-  | "idea";
-
 export type ExperiencePosition = {
   id: string;
   title: string;
@@ -58,7 +52,7 @@ export type ExperiencePosition = {
   location?: string;
   employmentType?: string;
   description?: string;
-  icon?: ExperiencePositionIcon;
+  icon?: string;
   skills?: string[];
   isExpanded?: boolean;
 };
@@ -90,6 +84,13 @@ export type Award = {
   grade: string;
   description?: string;
   referenceLink?: string;
+};
+
+export type About = {
+  id: string;
+  title: string;
+  icon?: string;
+  content: string;
 };
 
 export interface Metadata {
@@ -149,23 +150,20 @@ export interface IProfile {
   bio: string;
   flipSentences: string[];
   twitterUsername: string;
-  githubUrl: string;
+  githubUserName: string;
   address: string;
   phoneNumber: string; // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: string; // base64 encoded
   website: string;
   otherWebsites: string[];
   jobTitle: string;
-  about: {
-    label: string;
-    content: string;
-  };
   avatar: string;
   ogImage: string;
   keywords: string[];
   metadata: Metadata;
   // SECTIONS
   sections: {
+    about?: Section;
     awards?: Section<Award>;
     techStack?: Section<TechStack>;
     projects?: Section<Project>;
@@ -198,19 +196,13 @@ export const PROFILE: IProfile = {
     "Open Source Contributor",
   ],
   twitterUsername: "@tonysantana1492",
-  githubUrl: "https://github.com/tonysantana1492",
+  githubUserName: "tonysantana1492",
   address: "Miami, USA",
   phoneNumber: "KzEgNzg2IDczNSA3NzQ5", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "dG9ueXNhbnRhbmExNDkyQGdtYWlsLmNvbQ==", // base64 encoded
   website: "https://tonysantana1492.com",
   otherWebsites: [],
   jobTitle: "Software Engineer at OfficePuzzle",
-  about: {
-    label: "Summary",
-    content: `
-  Senior Software Engineer Full‑Stack with 7+ years of experience spanning the entire web product lifecycle. I apply clean code principles, SOLID patterns, and design patterns while working comfortably across frontend (React/Next.js) and backend (NestJS/Node) with SQL/NoSQL databases and cloud deployments. In teams, I combine technical focus with project management and close collaboration with product teams.
-  `,
-  },
   avatar:
     "https://media.licdn.com/dms/image/v2/D4E03AQF3jFFbfh-y5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1695836709614?e=1760572800&v=beta&t=cBPdNTPr6877dVwCmn5PmvkVz-aztEYHOxjv5j3M95I",
   ogImage:
@@ -266,9 +258,21 @@ export const PROFILE: IProfile = {
 
   // SECTIONS
   sections: {
+    about: {
+      id: "about",
+      name: "Summary",
+      icon: "user",
+      columns: 1,
+      visible: true,
+      separateLinks: false,
+      content: `Senior Software Engineer Full‑Stack with 7+ years of experience spanning the entire web product lifecycle. I apply clean code principles, SOLID patterns, and design patterns while working comfortably across frontend (React/Next.js) and backend (NestJS/Node) with SQL/NoSQL databases and cloud deployments. In teams, I combine technical focus with project management and close collaboration with product teams.
+      `,
+      items: [],
+    },
     techStack: {
-      id: "tech-stack2",
+      id: "tech-stack",
       name: "Tech Stack",
+      icon: "ts",
       columns: 1,
       visible: true,
       separateLinks: false,
@@ -412,6 +416,7 @@ export const PROFILE: IProfile = {
       columns: 1,
       visible: true,
       separateLinks: false,
+      icon: "project",
       items: [
         {
           id: "tonysantana.dev",
@@ -455,6 +460,7 @@ Blog Features:
       columns: 1,
       visible: true,
       separateLinks: false,
+      icon: "BriefcaseBusinessIcon",
       items: [
         {
           id: "officepuzzle",
@@ -615,6 +621,7 @@ Blog Features:
       columns: 1,
       visible: true,
       separateLinks: false,
+      icon: "GraduationCapIcon",
       items: [
         {
           id: "education",
@@ -630,7 +637,7 @@ Blog Features:
                 start: "09.2011",
                 end: "06.2016",
               },
-              icon: "education",
+              icon: "GraduationCapIcon",
               description: `Bachelor's degree in Telecommunications and Electronics Engineering.`,
               skills: [
                 "Electronics",
@@ -650,6 +657,7 @@ Blog Features:
     //   columns: 1,
     //   visible: true,
     //   separateLinks: false,
+    //   icon: "certificate",
     //   items: [
     //     {
     //       title: "Certificate of Trademark Registration No. 543682",
@@ -677,6 +685,7 @@ Blog Features:
     //   columns: 1,
     //   visible: true,
     //   separateLinks: false,
+    //   icon: "award",
     //   items: [
     //     {
     //       id: "a144bd19-3706-4e4c-ba22-0e0d8302642a",
@@ -708,6 +717,7 @@ Blog Features:
       columns: 1,
       visible: true,
       separateLinks: true,
+      icon: "Facebook",
       items: [
         {
           icon: "/images/link-icons/linkedin.webp",

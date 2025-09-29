@@ -8,14 +8,14 @@ export function About({
   className,
 }: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
   return (
-    <Panel className={className} id="about">
+    <Panel className={className} id={profile.sections.about?.id}>
       <PanelHeader>
-        <PanelTitle>{profile.about.label}</PanelTitle>
+        <PanelTitle>{profile.sections.about?.name}</PanelTitle>
       </PanelHeader>
 
       <PanelContent>
         <Prose>
-          <Markdown>{profile.about.content}</Markdown>
+          <Markdown>{profile.sections.about?.content}</Markdown>
         </Prose>
       </PanelContent>
     </Panel>
