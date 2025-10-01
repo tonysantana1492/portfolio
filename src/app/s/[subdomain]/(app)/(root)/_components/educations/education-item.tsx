@@ -1,4 +1,4 @@
-import { ExperiencePositionItem } from "@/app/(app)/(root)/_components/experiences/experience-position-item";
+import { ExperiencePositionItem } from "@/app/s/[subdomain]/(app)/(root)/_components/experiences/experience-position-item";
 import type { Experience } from "@/content/profile";
 
 export function EducationItem({ education }: { education: Experience }) {

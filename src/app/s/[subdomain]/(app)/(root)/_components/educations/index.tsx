@@ -1,5 +1,5 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
-import { EducationItem } from "@/app/(app)/(root)/_components/educations/education-item";
+import { EducationItem } from "@/app/s/[subdomain]/(app)/(root)/_components/educations/education-item";
 import type { IProfile } from "@/content/profile";
 
 export function Educations({

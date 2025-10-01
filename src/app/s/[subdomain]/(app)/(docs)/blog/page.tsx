@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import dayjs from "dayjs";
 
-import { PostItem } from "@/app/(app)/(root)/_components/post-item";
+import { PostItem } from "@/app/s/[subdomain]/(app)/(root)/_components/post-item";
 import { getAllPosts } from "@/services/blog";
 
 export const metadata: Metadata = {
@@ -35,7 +35,7 @@ export default function Page() {
           {allPosts
             .slice()
             .sort((a, b) =>
-              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt)),
+              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt))
             )
             .map((post, index) => (
               <PostItem

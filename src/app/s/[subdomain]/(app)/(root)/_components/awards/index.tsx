@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { AwardItem } from "@/app/(app)/(root)/_components/awards/award-item";
+import { AwardItem } from "@/app/s/[subdomain]/(app)/(root)/_components/awards/award-item";
 import { CollapsibleList } from "@/components/shared/collapsible-list";
 import { Panel, PanelHeader, PanelTitle } from "@/components/ui/panel";
 import type { IProfile } from "@/content/profile";
@@ -12,7 +12,7 @@ export function Awards({
   const SORTED_AWARDS = [...(profile.sections.awards?.items ?? [])].sort(
     (a, b) => {
       return dayjs(b.date).diff(dayjs(a.date));
-    },
+    }
   );
 
   return (

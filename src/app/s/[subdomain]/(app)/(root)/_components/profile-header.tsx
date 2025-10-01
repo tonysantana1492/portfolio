@@ -1,4 +1,4 @@
-import { FlipSentences } from "@/app/(app)/(root)/_components/flip-sentences";
+import { FlipSentences } from "@/app/s/[subdomain]/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
 import { type IProfile, PROFILE } from "@/content/profile";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,7 @@ export function ProfileHeader({
         <div
           className={cn(
             "flex grow items-end pb-1 pl-4",
-            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56",
+            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56"
           )}
         >
           <div className="line-clamp-1 flex w-full select-none justify-end font-mono text-xs text-zinc-300 max-sm:hidden dark:text-zinc-800">

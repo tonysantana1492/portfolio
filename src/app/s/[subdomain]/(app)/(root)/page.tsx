@@ -1,19 +1,19 @@
 import dayjs from "dayjs";
 import type { ProfilePage, WithContext } from "schema-dts";
 
-import { About } from "@/app/(app)/(root)/_components/about";
-import { Awards } from "@/app/(app)/(root)/_components/awards";
-import { Blog } from "@/app/(app)/(root)/_components/blog";
-import { Certifications } from "@/app/(app)/(root)/_components/certifications";
-import { Educations } from "@/app/(app)/(root)/_components/educations";
-import { Experiences } from "@/app/(app)/(root)/_components/experiences";
-import { GitHubContributions } from "@/app/(app)/(root)/_components/github-contributions";
-import { HeroSeparator } from "@/app/(app)/(root)/_components/hero-separator";
-import { Overview } from "@/app/(app)/(root)/_components/overview";
-import { ProfileHeader } from "@/app/(app)/(root)/_components/profile-header";
-import { Projects } from "@/app/(app)/(root)/_components/projects";
-import { SocialLinks } from "@/app/(app)/(root)/_components/social-links";
-import { TeckStack } from "@/app/(app)/(root)/_components/teck-stack";
+import { About } from "@/app/s/[subdomain]/(app)/(root)/_components/about";
+import { Awards } from "@/app/s/[subdomain]/(app)/(root)/_components/awards";
+import { Blog } from "@/app/s/[subdomain]/(app)/(root)/_components/blog";
+import { Certifications } from "@/app/s/[subdomain]/(app)/(root)/_components/certifications";
+import { Educations } from "@/app/s/[subdomain]/(app)/(root)/_components/educations";
+import { Experiences } from "@/app/s/[subdomain]/(app)/(root)/_components/experiences";
+import { GitHubContributions } from "@/app/s/[subdomain]/(app)/(root)/_components/github-contributions";
+import { HeroSeparator } from "@/app/s/[subdomain]/(app)/(root)/_components/hero-separator";
+import { Overview } from "@/app/s/[subdomain]/(app)/(root)/_components/overview";
+import { ProfileHeader } from "@/app/s/[subdomain]/(app)/(root)/_components/profile-header";
+import { Projects } from "@/app/s/[subdomain]/(app)/(root)/_components/projects";
+import { SocialLinks } from "@/app/s/[subdomain]/(app)/(root)/_components/social-links";
+import { TeckStack } from "@/app/s/[subdomain]/(app)/(root)/_components/teck-stack";
 import { PROFILE } from "@/content/profile";
 
 function getPageJsonLd(): WithContext<ProfilePage> {

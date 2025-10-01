@@ -2,7 +2,7 @@
 
 import { PhoneIcon } from "lucide-react";
 
-import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
+import { IntroItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/intro-item";
 import { useIsClient } from "@/hooks/use-is-client";
 import { decodePhoneNumber, formatPhoneNumber } from "@/lib/string";
 

@@ -1,10 +1,13 @@
 import { MapPinIcon } from "lucide-react";
 
-import { EmailItem } from "@/app/(app)/(root)/_components/overview/email-item";
-import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
-import { JobItem } from "@/app/(app)/(root)/_components/overview/job-item";
-import { PhoneItem } from "@/app/(app)/(root)/_components/overview/phone-item";
-import { Panel, PanelContent } from "@/app/(app)/(root)/_components/panel";
+import { EmailItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/email-item";
+import { IntroItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/intro-item";
+import { JobItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/job-item";
+import { PhoneItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/phone-item";
+import {
+  Panel,
+  PanelContent,
+} from "@/app/s/[subdomain]/(app)/(root)/_components/panel";
 import type { IProfile } from "@/content/profile";
 import { getLastCompany } from "@/services/experience";
 

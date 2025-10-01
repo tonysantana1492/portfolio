@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { ArrowLeftIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
-import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
+import { ExportButton } from "@/app/s/[subdomain]/(app)/(docs)/cv/[slug]/_components/export-button";
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 import { MDX } from "@/components/shared/mdx";
 import { ShareMenu } from "@/components/shared/share-menu";

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
 
 import { Panel, PanelHeader, PanelTitle } from "./panel";
-import { PostItem } from "@/app/(app)/(root)/_components/post-item";
+import { PostItem } from "@/app/s/[subdomain]/(app)/(root)/_components/post-item";
 import { Button } from "@/components/ui/button";
 import { getAllPosts } from "@/services/blog";
 

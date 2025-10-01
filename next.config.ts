@@ -21,18 +21,18 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75, 100],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/blog/:slug.mdx",
-        destination: "/blog.mdx/:slug",
-      },
-      {
-        source: "/cv/:slug.mdx",
-        destination: "/cv.mdx/:slug",
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/blog/:slug.mdx",
+  //       destination: "/blog.mdx/:slug",
+  //     },
+  //     {
+  //       source: "/cv/:slug.mdx",
+  //       destination: "/cv.mdx/:slug",
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;

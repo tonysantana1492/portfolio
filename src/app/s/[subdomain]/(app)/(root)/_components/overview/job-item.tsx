@@ -4,7 +4,7 @@ import {
   LightbulbIcon,
 } from "lucide-react";
 
-import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
+import { IntroItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/intro-item";
 import { UTM_PARAMS } from "@/config/site.config";
 import { addQueryParams } from "@/lib/url";
 
