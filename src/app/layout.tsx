@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import "@/styles/globals.css";
 
 import { cookies } from "next/headers";
@@ -9,15 +9,9 @@ import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: { color: "black" },
-};
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
+  themeColor: "#000000",
   alternates: {
     canonical: "/",
   },
