@@ -3,7 +3,8 @@ import "@/styles/globals.css";
 
 import { cookies } from "next/headers";
 
-import { SITE_INFO } from "@/config/site.config";
+import { PWAPrompts } from "@/components/shared/pwa-prompts";
+import { PWA_CONFIG, SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
@@ -13,7 +14,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: { color: "black" },
+  themeColor: PWA_CONFIG.themeColor,
 };
 
 export const metadata: Metadata = {
@@ -34,6 +35,15 @@ export const metadata: Metadata = {
     },
   ],
   creator: PROFILE.displayName,
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: SITE_INFO.name,
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     siteName: SITE_INFO.name,
     url: "/",
@@ -76,11 +86,15 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <meta name="apple-mobile-web-app-title" content={SITE_INFO.name} />
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Providers activeThemeValue={activeThemeValue}>{children}</Providers>
+        <Providers activeThemeValue={activeThemeValue}>
+          {children}
+          <PWAPrompts />
+        </Providers>
       </body>
     </html>
   );

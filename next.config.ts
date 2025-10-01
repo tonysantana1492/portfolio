@@ -21,18 +21,44 @@ const nextConfig: NextConfig = {
     ],
     qualities: [75, 100],
   },
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: "/blog/:slug.mdx",
-  //       destination: "/blog.mdx/:slug",
-  //     },
-  //     {
-  //       source: "/cv/:slug.mdx",
-  //       destination: "/cv.mdx/:slug",
-  //     },
-  //   ];
-  // },
+  async headers() {
+    return [
+      {
+        source: "/sw.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+          {
+            key: "Service-Worker-Allowed",
+            value: "/",
+          },
+        ],
+      },
+      {
+        source: "/manifest.webmanifest",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/blog/:slug.mdx",
+        destination: "/blog.mdx/:slug",
+      },
+      {
+        source: "/cv/:slug.mdx",
+        destination: "/cv.mdx/:slug",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

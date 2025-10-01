@@ -33,22 +33,16 @@ export const SITE_INFO: ISiteInfo = {
   keywords: PROFILE.keywords.join(", "),
   icons: [
     {
-      src: "/images/icon-512x512.png",
-      type: "image/png",
-      sizes: "512x512",
-      purpose: "any",
-    },
-    {
       src: "/images/logo.svg",
       type: "image/svg+xml",
       sizes: "any",
       purpose: "any",
     },
     {
-      src: "/images/icon-192x192.png",
+      src: "/images/icon-512x512.png",
       type: "image/png",
-      sizes: "192x192",
-      purpose: "any",
+      sizes: "512x512",
+      purpose: "maskable",
     },
     {
       src: "/images/icon-192x192.png",
@@ -105,6 +99,20 @@ export const SITE_INFO: ISiteInfo = {
 export const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
+};
+
+export const PWA_CONFIG = {
+  name: SITE_INFO.name,
+  shortName: PROFILE.displayName,
+  description: SITE_INFO.description,
+  themeColor: "#000000",
+  backgroundColor: "#000000",
+  display: "standalone" as const,
+  orientation: "portrait" as const,
+  scope: "/",
+  startUrl: "/?utm_source=pwa",
+  icons: SITE_INFO.icons,
+  screenshots: SITE_INFO.screenshots,
 };
 
 export type INavItem = {
