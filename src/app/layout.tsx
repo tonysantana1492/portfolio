@@ -3,6 +3,7 @@ import "@/styles/globals.css";
 
 import { cookies } from "next/headers";
 
+import { PWAPrompts } from "@/components/shared/pwa-prompts";
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
@@ -34,6 +35,15 @@ export const metadata: Metadata = {
     },
   ],
   creator: PROFILE.displayName,
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: SITE_INFO.name,
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     siteName: SITE_INFO.name,
     url: "/",
@@ -80,7 +90,10 @@ export default async function RootLayout({
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Providers activeThemeValue={activeThemeValue}>{children}</Providers>
+        <Providers activeThemeValue={activeThemeValue}>
+          {children}
+          <PWAPrompts />
+        </Providers>
       </body>
     </html>
   );

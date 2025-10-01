@@ -98,6 +98,20 @@ export const META_THEME_COLORS = {
   dark: "#09090b",
 };
 
+export const PWA_CONFIG = {
+  name: SITE_INFO.name,
+  shortName: PROFILE.displayName,
+  description: SITE_INFO.description,
+  themeColor: "#000000",
+  backgroundColor: "#000000",
+  display: "standalone" as const,
+  orientation: "portrait" as const,
+  scope: "/",
+  startUrl: "/?utm_source=pwa",
+  icons: SITE_INFO.icons,
+  screenshots: SITE_INFO.screenshots,
+};
+
 export type INavItem = {
   title: string;
   href: string;
