@@ -36,16 +36,19 @@ export const SITE_INFO: ISiteInfo = {
       src: "/images/logo.svg",
       type: "image/svg+xml",
       sizes: "any",
+      purpose: "any",
     },
     {
       src: "/images/icon-512x512.png",
       type: "image/png",
       sizes: "512x512",
+      purpose: "maskable",
     },
     {
       src: "/images/icon-192x192.png",
       type: "image/png",
       sizes: "192x192",
+      purpose: "maskable",
     },
   ],
   screenshots: [

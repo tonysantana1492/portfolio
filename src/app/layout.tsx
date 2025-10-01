@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 import { cookies } from "next/headers";
 
 import { PWAPrompts } from "@/components/shared/pwa-prompts";
-import { SITE_INFO } from "@/config/site.config";
+import { PWA_CONFIG, SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
@@ -14,7 +14,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#000000",
+  themeColor: PWA_CONFIG.themeColor,
 };
 
 export const metadata: Metadata = {
@@ -86,6 +86,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <meta name="apple-mobile-web-app-title" content={SITE_INFO.name} />
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
