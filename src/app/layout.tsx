@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 import { cookies } from "next/headers";
 
 import { PWAPrompts } from "@/components/shared/pwa-prompts";
-import { PWA_CONFIG, SITE_INFO } from "@/config/site.config";
+import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
@@ -14,7 +14,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: PWA_CONFIG.themeColor,
+  themeColor: { color: "black" },
 };
 
 export const metadata: Metadata = {
