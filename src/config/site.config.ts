@@ -33,28 +33,19 @@ export const SITE_INFO: ISiteInfo = {
   keywords: PROFILE.keywords.join(", "),
   icons: [
     {
-      src: "/images/icon-512x512.png",
-      type: "image/png",
-      sizes: "512x512",
-      purpose: "any",
-    },
-    {
       src: "/images/logo.svg",
       type: "image/svg+xml",
       sizes: "any",
-      purpose: "any",
+    },
+    {
+      src: "/images/icon-512x512.png",
+      type: "image/png",
+      sizes: "512x512",
     },
     {
       src: "/images/icon-192x192.png",
       type: "image/png",
       sizes: "192x192",
-      purpose: "any",
-    },
-    {
-      src: "/images/icon-192x192.png",
-      type: "image/png",
-      sizes: "192x192",
-      purpose: "maskable",
     },
   ],
   screenshots: [

@@ -11,6 +11,7 @@ export default function manifest(): MetadataRoute.Manifest {
     id: "/?utm_source=pwa",
     start_url: "/?utm_source=pwa",
     display: "standalone",
+    orientation: "portrait",
     scope: "/",
     screenshots: SITE_INFO.screenshots,
     theme_color: "#000000",
