@@ -87,6 +87,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content={SITE_INFO.name} />
+      <link rel="manifest" href="/manifest.webmanifest" />
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning

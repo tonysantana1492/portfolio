@@ -40,5 +40,23 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# prisma
+prisma/migrations
 
+# mongodb
+mongodb_data/
+
+# docker
+.docker/
 /mongo
+
+# prisma
+prisma/migrations
+
+# mongodb
+mongodb_data/
+
+# docker
+.docker/
+/mongo
+/src/generated/prisma

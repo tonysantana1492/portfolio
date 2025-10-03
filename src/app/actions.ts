@@ -4,11 +4,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { PROTOCOL, ROOT_DOMAIN } from "@/config/app.config";
-import { redis } from "@/lib/redis";
+import prisma from "@/lib/prisma";
 import { isValidIcon } from "@/services/subdomains";
 
 export async function createSubdomainAction(
-  prevState: any,
+  _prevState: unknown,
   formData: FormData
 ) {
   const subdomain = formData.get("subdomain") as string;
@@ -39,9 +39,12 @@ export async function createSubdomainAction(
     };
   }
 
-  const subdomainAlreadyExists = await redis.get(
-    `subdomain:${sanitizedSubdomain}`
-  );
+  const subdomainAlreadyExists = await prisma.subdomain.findUnique({
+    where: {
+      subdomain: sanitizedSubdomain,
+    },
+  });
+
   if (subdomainAlreadyExists) {
     return {
       subdomain,
@@ -51,20 +54,33 @@ export async function createSubdomainAction(
     };
   }
 
-  await redis.set(`subdomain:${sanitizedSubdomain}`, {
-    emoji: icon,
-    createdAt: Date.now(),
+  await prisma.subdomain.create({
+    data: {
+      subdomain: sanitizedSubdomain,
+      emoji: icon,
+    },
   });
 
   redirect(`${PROTOCOL}://${sanitizedSubdomain}.${ROOT_DOMAIN}`);
 }
 
 export async function deleteSubdomainAction(
-  prevState: any,
+  _prevState: unknown,
   formData: FormData
 ) {
-  const subdomain = formData.get("subdomain");
-  await redis.del(`subdomain:${subdomain}`);
-  revalidatePath("/admin");
-  return { success: "Domain deleted successfully" };
+  const subdomain = formData.get("subdomain") as string;
+
+  try {
+    await prisma.subdomain.delete({
+      where: {
+        subdomain: subdomain,
+      },
+    });
+
+    revalidatePath("/admin");
+    return { success: "Domain deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting subdomain:", error);
+    return { success: false, error: "Failed to delete domain" };
+  }
 }

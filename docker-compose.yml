@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  portfolio-db:
+    image: mongo:6.0
+    container_name: portfolio-db
+    ports:
+      - "37017:27017"
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - ./mongo:/data/db
+    healthcheck:
+      test: >
+        bash -c '
+          echo "try { rs.status() } catch(e) { rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"localhost:27017\"}]}); }" |
+          mongosh --quiet --port 27017
+        '
+      interval: 5s
+      timeout: 30s
+      retries: 10
