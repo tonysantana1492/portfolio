@@ -24,13 +24,18 @@ function MarkMotion() {
   });
 
   useEffect(() => {
-    const coverMark = document.getElementById("js-cover-mark");
-    if (!coverMark) return;
+    const coverMark = document.getElementById("js-cover-logo");
+    if (!coverMark) {
+      console.warn("Element with id 'js-cover-logo' not found");
+      return;
+    }
 
     distanceRef.current = calcDistance(coverMark);
 
     const resizeObserver = new ResizeObserver(() => {
-      distanceRef.current = calcDistance(coverMark);
+      if (coverMark && document.contains(coverMark)) {
+        distanceRef.current = calcDistance(coverMark);
+      }
     });
     resizeObserver.observe(coverMark);
 
@@ -58,7 +63,12 @@ function MarkMotion() {
   );
 }
 
-const calcDistance = (el: HTMLElement) => {
+const calcDistance = (el: HTMLElement | null) => {
+  if (!el) {
+    console.warn("calcDistance called with null element");
+    return 160; // Return default distance
+  }
+
   const rect = el.getBoundingClientRect();
   const scrollTop = document.documentElement.scrollTop;
   const headerHeight = 56;

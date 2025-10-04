@@ -25,12 +25,12 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/blog/:slug.mdx",
-        destination: "/blog.mdx/:slug",
+        source: "/s/:subdomain/blog/:slug.mdx",
+        destination: "/s/:subdomain/blog.mdx/:slug",
       },
       {
-        source: "/cv/:slug.mdx",
-        destination: "/cv.mdx/:slug",
+        source: "/s/:subdomain/cv/:slug.mdx",
+        destination: "/s/:subdomain/cv.mdx/:slug",
       },
     ];
   },
