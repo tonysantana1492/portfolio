@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { PWAPrompts } from "@/components/shared/pwa-prompts";
 import { getSiteInfo } from "@/config/site.config";
 import { fontMono, fontSans } from "@/lib/fonts";
+import { getProfileBySubdomain } from "@/lib/profile";
 import { Providers } from "@/providers/providers";
 import { profileService } from "@/services/profile";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
@@ -17,8 +18,13 @@ export const viewport: Viewport = {
   themeColor: "#000000",
 };
 
-export const generateMetadata = async (): Promise<Metadata> => {
-  const profile = await profileService.getProfile();
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ subdomain: string }>;
+}): Promise<Metadata> => {
+  const { subdomain } = await params;
+  const profile = await getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return {};

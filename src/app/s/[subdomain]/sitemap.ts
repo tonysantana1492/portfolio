@@ -17,6 +17,15 @@ interface SitemapProps {
 export default async function sitemap({
   params,
 }: SitemapProps): Promise<MetadataRoute.Sitemap> {
+  // Validate subdomain parameter
+  if (
+    !params.subdomain ||
+    typeof params.subdomain !== "string" ||
+    params.subdomain.trim() === ""
+  ) {
+    return [];
+  }
+
   const profile = await getProfileBySubdomain(params.subdomain);
 
   if (!profile) {

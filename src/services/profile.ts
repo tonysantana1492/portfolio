@@ -1,15 +1,5 @@
 import type { IProfile, Metadata } from "@/content/profile";
-import { PrismaClient } from "@/generated/prisma";
-
-// Singleton pattern for Prisma client
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
+import prisma from "@/lib/prisma";
 export interface ProfileService {
   getProfile(): Promise<IProfile | null>;
   createProfile(profile: IProfile): Promise<IProfile>;

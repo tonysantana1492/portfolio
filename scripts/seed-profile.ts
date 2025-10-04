@@ -1,5 +1,5 @@
-import { PROFILE } from "../src/content/profile";
-import prisma from "../src/lib/prisma";
+import { PROFILE } from "@/content/profile";
+import prisma from "@/lib/prisma";
 
 async function seedProfile() {
   try {
@@ -85,7 +85,6 @@ async function seedProfile() {
       console.log("✅ Profile created successfully!");
     }
 
-    // Create or update subdomain for tonysantana1492
     const existingSubdomain = await prisma.subdomain.findUnique({
       where: {
         subdomain: PROFILE.username,
@@ -99,12 +98,8 @@ async function seedProfile() {
           emoji: "💼",
         },
       });
-      console.log(`✅ Subdomain '${PROFILE.username}' created successfully!`);
-    } else {
-      console.log(`📝 Subdomain '${PROFILE.username}' already exists`);
     }
   } catch (error) {
-    console.error("❌ Error seeding profile:", error);
     throw error;
   }
 }

@@ -56,10 +56,19 @@ export async function getProfileBySubdomain(
   subdomain: string
 ): Promise<IProfile | null> {
   try {
+    // Validate subdomain input
+    if (
+      !subdomain ||
+      typeof subdomain !== "string" ||
+      subdomain.trim() === ""
+    ) {
+      return null;
+    }
+
     // First, get the subdomain record to validate it exists
     const subdomainRecord = await prisma.subdomain.findUnique({
       where: {
-        subdomain: subdomain,
+        subdomain: subdomain.trim(),
       },
     });
 
@@ -110,8 +119,7 @@ export async function getProfileBySubdomain(
     };
 
     return transformedProfile;
-  } catch (error) {
-    console.error("Error fetching profile by subdomain:", error);
+  } catch {
     return null;
   }
 }

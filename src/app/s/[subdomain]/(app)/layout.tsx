@@ -18,6 +18,12 @@ export async function generateMetadata({
   params,
 }: AppLayoutProps): Promise<Metadata> {
   const { subdomain } = await params;
+
+  // Validate subdomain parameter
+  if (!subdomain || typeof subdomain !== "string" || subdomain.trim() === "") {
+    return {};
+  }
+
   const profile = await getProfileBySubdomain(subdomain);
 
   if (!profile) {
@@ -29,6 +35,12 @@ export async function generateMetadata({
 
 export default async function AppLayout({ children, params }: AppLayoutProps) {
   const { subdomain } = await params;
+
+  // Validate subdomain parameter
+  if (!subdomain || typeof subdomain !== "string" || subdomain.trim() === "") {
+    notFound();
+  }
+
   const profile = await getProfileBySubdomain(subdomain);
 
   if (!profile) {

@@ -40,6 +40,12 @@ export default async function Page({
   params: Promise<{ subdomain: string }>;
 }) {
   const { subdomain } = await params;
+
+  // Validate subdomain parameter
+  if (!subdomain || typeof subdomain !== "string" || subdomain.trim() === "") {
+    notFound();
+  }
+
   const profile = await getProfileBySubdomain(subdomain);
 
   if (!profile) {

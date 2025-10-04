@@ -16,6 +16,15 @@ interface RouteParams {
 }
 
 export async function GET(_request: Request, { params }: RouteParams) {
+  // Validate subdomain parameter
+  if (
+    !params.subdomain ||
+    typeof params.subdomain !== "string" ||
+    params.subdomain.trim() === ""
+  ) {
+    return NextResponse.json({ error: "Invalid subdomain" }, { status: 400 });
+  }
+
   const profile = await getProfileBySubdomain(params.subdomain);
 
   if (!profile) {

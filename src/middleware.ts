@@ -7,17 +7,23 @@ function extractSubdomain(request: NextRequest): string | null {
   const host = request.headers.get("host") || "";
   const hostname = host.split(":")[0];
 
+  // Validate inputs
+  if (!url || !host || !hostname) {
+    return null;
+  }
+
   // Local development environment
   if (url.includes("localhost") || url.includes("127.0.0.1")) {
     // Try to extract subdomain from the full URL
     const fullUrlMatch = url.match(/http:\/\/([^.]+)\.localhost/);
-    if (fullUrlMatch && fullUrlMatch[1]) {
+    if (fullUrlMatch?.[1]) {
       return fullUrlMatch[1];
     }
 
     // Fallback to host header approach
     if (hostname.includes(".localhost")) {
-      return hostname.split(".")[0];
+      const subdomain = hostname.split(".")[0];
+      return subdomain && subdomain !== "localhost" ? subdomain : null;
     }
 
     return null;
@@ -29,7 +35,8 @@ function extractSubdomain(request: NextRequest): string | null {
   // Handle preview deployment URLs
   if (hostname.includes("---") && hostname.endsWith(".vercel.app")) {
     const parts = hostname.split("---");
-    return parts.length > 0 ? parts[0] : null;
+    const subdomain = parts.length > 0 ? parts[0] : null;
+    return subdomain && subdomain.trim() !== "" ? subdomain : null;
   }
 
   // Regular subdomain detection
@@ -38,12 +45,29 @@ function extractSubdomain(request: NextRequest): string | null {
     hostname !== `www.${rootDomainFormatted}` &&
     hostname.endsWith(`.${rootDomainFormatted}`);
 
-  return isSubdomain ? hostname.replace(`.${rootDomainFormatted}`, "") : null;
+  if (isSubdomain) {
+    const subdomain = hostname.replace(`.${rootDomainFormatted}`, "");
+    return subdomain && subdomain.trim() !== "" ? subdomain : null;
+  }
+
+  return null;
 }
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const subdomain = extractSubdomain(request);
+
+  // Debug logging
+  if (process.env.NODE_ENV === "development") {
+    console.log(
+      "Middleware - pathname:",
+      pathname,
+      "subdomain:",
+      subdomain,
+      "host:",
+      request.headers.get("host")
+    );
+  }
 
   if (subdomain) {
     // Block access to admin page from subdomains
@@ -52,8 +76,14 @@ export async function middleware(request: NextRequest) {
     }
 
     // For the root path on a subdomain, rewrite to the subdomain page
-    if (pathname === "/") {
-      return NextResponse.rewrite(new URL(`/s/${subdomain}`, request.url));
+    if (pathname.startsWith("/")) {
+      const url = `/s/${subdomain}${pathname}`;
+
+      if (process.env.NODE_ENV === "development") {
+        console.log("Middleware - rewriting to:", url);
+      }
+
+      return NextResponse.rewrite(new URL(url, request.url));
     }
   }
 
@@ -70,6 +100,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Add specific patterns you want to match
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sw|images|.well-known).*)",
   ],
 };

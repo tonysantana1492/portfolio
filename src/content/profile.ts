@@ -174,7 +174,7 @@ export interface IProfile {
   };
 }
 
-const PROFILE: IProfile = {
+export const PROFILE: IProfile = {
   // BASE
   id: "123456789",
   dateCreated: "2025-09-23",
