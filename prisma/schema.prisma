@@ -24,3 +24,44 @@ model Subdomain {
   @@map("subdomains")
 }
 
+model Profile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId     String   @unique // External profile ID
+  dateCreated   DateTime
+  dateUpdated   DateTime
+  dateDeleted   DateTime?
+  isActive      Boolean  @default(true)
+  
+  // BASICS
+  firstName     String
+  lastName      String
+  displayName   String
+  username      String   @unique
+  gender        String
+  pronouns      String
+  bio           String
+  flipSentences String[]
+  twitterUsername String
+  githubUserName  String
+  address       String
+  phoneNumber   String
+  email         String
+  website       String
+  otherWebsites String[]
+  jobTitle      String
+  avatar        String
+  ogImage       String
+  keywords      String[]
+  
+  // METADATA (stored as JSON)
+  metadata      Json
+  
+  // SECTIONS (stored as JSON)
+  sections      Json
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("profiles")
+}
+
