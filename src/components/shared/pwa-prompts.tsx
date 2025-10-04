@@ -2,22 +2,20 @@
 
 import { useState } from "react";
 
-import { Download, RefreshCw, Wifi, WifiOff, X } from "lucide-react";
+import { RefreshCw, Wifi, WifiOff, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { usePWA } from "@/hooks/use-pwa";
 
 export function PWAPrompts() {
   const {
-    isInstallable,
     isOffline,
     isUpdateAvailable,
     isSupported,
-    install,
     skipWaiting,
+    forceRefresh,
   } = usePWA();
 
-  const [dismissedInstall, setDismissedInstall] = useState(false);
   const [dismissedUpdate, setDismissedUpdate] = useState(false);
 
   if (!isSupported) return null;
@@ -32,8 +30,9 @@ export function PWAPrompts() {
         </div>
       )}
 
-      {/* Install App Prompt */}
-      {isInstallable && !dismissedInstall && (
+      {/* Install App Prompt - DISABLED */}
+      {/* Commented out to disable automatic install popup */}
+      {/* {isInstallable && !dismissedInstall && (
         <div className="fixed right-4 bottom-4 z-50 max-w-sm rounded-lg border bg-background p-4 shadow-lg">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -70,7 +69,7 @@ export function PWAPrompts() {
             </Button>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Update Available Prompt */}
       {isUpdateAvailable && !dismissedUpdate && (
@@ -102,6 +101,14 @@ export function PWAPrompts() {
             </Button>
             <Button
               variant="outline"
+              size="sm"
+              onClick={forceRefresh}
+              className="flex-1"
+            >
+              Force Refresh
+            </Button>
+            <Button
+              variant="ghost"
               size="sm"
               onClick={() => setDismissedUpdate(true)}
               className="flex-1"

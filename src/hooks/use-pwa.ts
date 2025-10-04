@@ -22,7 +22,8 @@ interface PWAState {
 interface PWAActions {
   install: () => Promise<void>;
   skipWaiting: () => void;
-  checkForUpdates: () => void;
+  checkForUpdates: () => Promise<void>;
+  forceRefresh: () => Promise<void>;
 }
 
 export function usePWA(): PWAState & PWAActions {
@@ -83,16 +84,30 @@ export function usePWA(): PWAState & PWAActions {
           console.log("Service Worker registered successfully", reg);
           setRegistration(reg);
 
+          // Check for updates immediately
+          reg.update();
+
+          // Check for updates more frequently
+          const updateCheckInterval = setInterval(() => {
+            console.log("Checking for service worker updates...");
+            reg.update();
+          }, 30000); // Check every 30 seconds
+
           // Check for updates
           reg.addEventListener("updatefound", () => {
             const newWorker = reg.installing;
+            console.log("New service worker found, installing...");
+
             if (newWorker) {
               newWorker.addEventListener("statechange", () => {
+                console.log("New service worker state:", newWorker.state);
                 if (
                   newWorker.state === "installed" &&
                   navigator.serviceWorker.controller
                 ) {
+                  console.log("New service worker installed, update available");
                   setIsUpdateAvailable(true);
+                  clearInterval(updateCheckInterval);
                 }
               });
             }
@@ -100,8 +115,15 @@ export function usePWA(): PWAState & PWAActions {
 
           // Listen for controlling service worker change
           navigator.serviceWorker.addEventListener("controllerchange", () => {
+            console.log("Service worker controller changed, reloading...");
+            clearInterval(updateCheckInterval);
             window.location.reload();
           });
+
+          // Clean up interval on component unmount
+          return () => {
+            clearInterval(updateCheckInterval);
+          };
         })
         .catch((error) => {
           console.error("Service Worker registration failed", error);
@@ -144,9 +166,48 @@ export function usePWA(): PWAState & PWAActions {
     setIsUpdateAvailable(false);
   };
 
-  const checkForUpdates = () => {
+  const checkForUpdates = async () => {
     if (registration) {
-      registration.update();
+      try {
+        console.log("Manually checking for updates...");
+        await registration.update();
+
+        // Also clear dynamic cache to force fresh content
+        if ("caches" in window) {
+          const cacheNames = await caches.keys();
+          const dynamicCaches = cacheNames.filter((name) =>
+            name.includes("dynamic")
+          );
+          await Promise.all(dynamicCaches.map((name) => caches.delete(name)));
+          console.log("Cleared dynamic caches for fresh content");
+        }
+      } catch (error) {
+        console.error("Failed to check for updates:", error);
+      }
+    }
+  };
+
+  const forceRefresh = async () => {
+    try {
+      // Clear all caches
+      if ("caches" in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map((name) => caches.delete(name)));
+        console.log("All caches cleared");
+      }
+
+      // Unregister service worker and reload
+      if (registration) {
+        await registration.unregister();
+        console.log("Service worker unregistered");
+      }
+
+      // Force reload from server
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to force refresh:", error);
+      // Fallback to simple reload
+      window.location.reload();
     }
   };
 
@@ -159,5 +220,6 @@ export function usePWA(): PWAState & PWAActions {
     install,
     skipWaiting,
     checkForUpdates,
+    forceRefresh,
   };
 }

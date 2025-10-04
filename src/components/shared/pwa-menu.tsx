@@ -33,6 +33,7 @@ export function PWAMenu() {
     install,
     skipWaiting,
     checkForUpdates,
+    forceRefresh,
   } = usePWA();
 
   const [showInstructions, setShowInstructions] = useState(false);
@@ -125,6 +126,11 @@ export function PWAMenu() {
         <DropdownMenuItem onClick={checkForUpdates}>
           <RefreshCw className="mr-2 h-4 w-4" />
           Check for updates
+        </DropdownMenuItem>
+
+        <DropdownMenuItem onClick={forceRefresh}>
+          <RefreshCw className="mr-2 h-4 w-4" />
+          Force refresh
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
