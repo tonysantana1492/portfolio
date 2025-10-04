@@ -1,26 +1,26 @@
 // import sharp from "sharp";
 import VCard from "vcard-creator";
 
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 import { decodePhoneNumber } from "@/lib/string";
 
-export const generateVCard = () => {
+export const generateVCard = (profile: IProfile) => {
   const card = new VCard();
 
   card
-    .addName(PROFILE.lastName, PROFILE.firstName)
-    .addPhoneNumber(decodePhoneNumber(PROFILE.phoneNumber));
-  // .addAddress(PROFILE.address)
-  // .addEmail(decodeEmail(PROFILE.email));
-  // .addURL(PROFILE.website);
+    .addName(profile.lastName, profile.firstName)
+    .addPhoneNumber(decodePhoneNumber(profile.phoneNumber));
+  // .addAddress(profile.address)
+  // .addEmail(decodeEmail(profile.email));
+  // .addURL(profile.website);
 
-  // const photo = await getVCardPhoto(PROFILE.avatar);
+  // const photo = await getVCardPhoto(profile.avatar);
   // if (photo) {
   //   card.addPhoto(photo.image, photo.mine);
   // }
 
-  // if (PROFILE.jobs.length > 0) {
-  //   const company = PROFILE.jobs[0];
+  // if (profile.jobs.length > 0) {
+  //   const company = profile.jobs[0];
   //   card.addCompany(company.company).addJobtitle(company.title);
   // }
 

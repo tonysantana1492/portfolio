@@ -1,6 +1,6 @@
 import { FlipSentences } from "@/app/s/[subdomain]/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
-import { type IProfile, PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
 export function ProfileHeader({
@@ -35,17 +35,17 @@ export function ProfileHeader({
             <span className="inline dark:hidden">text-zinc-950</span>
             <span className="hidden dark:inline">text-zinc-50</span>
             {" font-medium"} */}
-            <VCardQR size={70} showDownloadButtons={false} />
+            <VCardQR profile={profile} size={70} showDownloadButtons={false} />
           </div>
         </div>
 
         <div className="border-edge border-t">
           <h1 className="flex items-center pl-4 font-semibold text-3xl">
-            {PROFILE.displayName}
+            {profile.displayName}
           </h1>
 
           <div className="h-12 border-edge border-t py-1 pl-4 sm:h-auto">
-            <FlipSentences sentences={PROFILE.flipSentences} />
+            <FlipSentences sentences={profile.flipSentences} />
           </div>
         </div>
       </div>

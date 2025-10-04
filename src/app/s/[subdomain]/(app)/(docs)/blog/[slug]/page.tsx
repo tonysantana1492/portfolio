@@ -14,8 +14,8 @@ import { PostKeyboardShortcuts } from "@/components/shared/post-keyboard-shortcu
 import { ShareMenu } from "@/components/shared/share-menu";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
-import { SITE_INFO } from "@/config/site.config";
-import { PROFILE } from "@/content/profile";
+import { getSiteInfo } from "@/config/site.config";
+import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 import {
   findNeighbour,
@@ -23,6 +23,7 @@ import {
   getPostBySlug,
   type Post,
 } from "@/services/blog";
+import { profileService } from "@/services/profile";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -73,7 +74,9 @@ export async function generateMetadata({
   };
 }
 
-function getPageJsonLd(post: Post): WithContext<PageSchema> {
+function getPageJsonLd(post: Post, profile: IProfile): WithContext<PageSchema> {
+  const siteInfo = getSiteInfo(profile);
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -82,14 +85,14 @@ function getPageJsonLd(post: Post): WithContext<PageSchema> {
     image:
       post.metadata.image ||
       `/og/simple?title=${encodeURIComponent(post.metadata.title)}`,
-    url: `${SITE_INFO.url}${getPostUrl(post)}`,
+    url: `${siteInfo.url}${getPostUrl(post)}`,
     datePublished: dayjs(post.metadata.createdAt).toISOString(),
     dateModified: dayjs(post.metadata.updatedAt).toISOString(),
     author: {
       "@type": "Person",
-      name: PROFILE.displayName,
-      identifier: PROFILE.username,
-      image: PROFILE.avatar,
+      name: profile.displayName,
+      identifier: profile.username,
+      image: profile?.avatar,
     },
   };
 }
@@ -108,6 +111,12 @@ export default async function Page({
     notFound();
   }
 
+  const profile = await profileService.getProfile();
+
+  if (!profile) {
+    notFound();
+  }
+
   const toc = getTableOfContents(post.content);
 
   const allPosts = getAllPosts();
@@ -118,7 +127,10 @@ export default async function Page({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd(post)).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getPageJsonLd(post, profile)).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
       <PostKeyboardShortcuts basePath="/blog" previous={previous} next={next} />
@@ -168,7 +180,7 @@ export default async function Page({
           className={cn(
             "h-8",
             "before:-left-[100vw] before:-z-1 before:absolute before:h-full before:w-[200vw]",
-            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56",
+            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56"
           )}
         />
       </div>

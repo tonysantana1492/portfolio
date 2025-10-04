@@ -9,7 +9,7 @@ import {
 
 import { Logo } from "@/components/header/logo";
 import { getIcon } from "@/components/shared/icons";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
 
 interface ISiteInfo {
   name: string;
@@ -25,89 +25,94 @@ interface ISiteInfo {
   };
 }
 
-export const SITE_INFO: ISiteInfo = {
-  name: PROFILE.displayName,
-  url: process.env.APP_URL || "https://tonysantana.dev",
-  ogImage: PROFILE.ogImage,
-  description: PROFILE.bio,
-  keywords: PROFILE.keywords.join(", "),
-  icons: [
-    {
-      src: "/images/icon-512x512.png",
-      type: "image/png",
-      sizes: "512x512",
-      purpose: "maskable",
-    },
-    {
-      src: "/images/icon-192x192.png",
-      type: "image/png",
-      sizes: "192x192",
-      purpose: "maskable",
-    },
-  ],
-  screenshots: [
-    {
-      src: "/images/screenshot-mobile-dark.webp",
-      type: "image/webp",
-      sizes: "440x956",
-      form_factor: "narrow",
-    },
-    {
-      src: "/images/screenshot-mobile-light.webp",
-      type: "image/webp",
-      sizes: "440x956",
-      form_factor: "narrow",
-    },
-    {
-      src: "/images/screenshot-desktop-dark.webp",
-      type: "image/webp",
-      sizes: "1920x1080",
-      form_factor: "wide",
-    },
-    {
-      src: "/images/screenshot-desktop-light.webp",
-      type: "image/webp",
-      sizes: "1920x1080",
-      form_factor: "wide",
-    },
-  ],
-  metadataIcons: {
-    icon: [
+export function getSiteInfo(profile: IProfile): ISiteInfo {
+  return {
+    name: profile.displayName,
+    url: process.env.APP_URL || "https://tonysantana.dev",
+    ogImage: profile.ogImage,
+    description: profile.bio,
+    keywords: profile.keywords.join(", "),
+    icons: [
       {
-        url: "/images/favicon.ico",
-        sizes: "180x180",
+        src: "/images/icon-512x512.png",
+        type: "image/png",
+        sizes: "512x512",
+        purpose: "maskable",
       },
       {
-        url: "/images/favicon.svg",
-        type: "image/svg+xml",
+        src: "/images/icon-192x192.png",
+        type: "image/png",
+        sizes: "192x192",
+        purpose: "maskable",
       },
     ],
-    apple: {
-      url: "/images/apple-touch-icon.png",
-      type: "image/png",
-      sizes: "180x180",
+    screenshots: [
+      {
+        src: "/images/screenshot-mobile-dark.webp",
+        type: "image/webp",
+        sizes: "440x956",
+        form_factor: "narrow",
+      },
+      {
+        src: "/images/screenshot-mobile-light.webp",
+        type: "image/webp",
+        sizes: "440x956",
+        form_factor: "narrow",
+      },
+      {
+        src: "/images/screenshot-desktop-dark.webp",
+        type: "image/webp",
+        sizes: "1920x1080",
+        form_factor: "wide",
+      },
+      {
+        src: "/images/screenshot-desktop-light.webp",
+        type: "image/webp",
+        sizes: "1920x1080",
+        form_factor: "wide",
+      },
+    ],
+    metadataIcons: {
+      icon: [
+        {
+          url: "/images/favicon.ico",
+          sizes: "180x180",
+        },
+        {
+          url: "/images/favicon.svg",
+          type: "image/svg+xml",
+        },
+      ],
+      apple: {
+        url: "/images/apple-touch-icon.png",
+        type: "image/png",
+        sizes: "180x180",
+      },
     },
-  },
-};
+  };
+}
 
 export const META_THEME_COLORS = {
   light: "#ffffff",
   dark: "#09090b",
 };
 
-export const PWA_CONFIG = {
-  name: SITE_INFO.name,
-  shortName: PROFILE.displayName,
-  description: SITE_INFO.description,
-  themeColor: "#000000",
-  backgroundColor: "#000000",
-  display: "standalone" as const,
-  orientation: "portrait" as const,
-  scope: "/",
-  startUrl: "/?utm_source=pwa",
-  icons: SITE_INFO.icons,
-  screenshots: SITE_INFO.screenshots,
-};
+export function getPWAConfig(profile: IProfile) {
+  const siteInfo = getSiteInfo(profile);
+  return {
+    name: siteInfo.name,
+    shortName: profile.displayName,
+    description: siteInfo.description,
+    themeColor: "#000000",
+    backgroundColor: "#000000",
+    display: "standalone" as const,
+    orientation: "portrait" as const,
+    scope: "/",
+    startUrl: "/?utm_source=pwa",
+    icons: siteInfo.icons,
+    screenshots: siteInfo.screenshots,
+  };
+}
 
 export type INavItem = {
   title: string;
@@ -138,11 +143,13 @@ export const MAIN_NAV: INavItem[] = [
   },
 ];
 
-export const UTM_PARAMS = {
-  utm_source: PROFILE.website,
-  utm_medium: "portfolio_website",
-  utm_campaign: "referral",
-};
+export function getUTMParams(website?: string) {
+  return {
+    utm_source: website ? new URL(website).hostname : "unknown",
+    utm_medium: "portfolio_website",
+    utm_campaign: "referral",
+  };
+}
 
 export type CommandLinkItem = {
   title: string;
@@ -153,31 +160,36 @@ export type CommandLinkItem = {
   openInNewTab?: boolean;
 };
 
-const sections = Object.entries(PROFILE.sections).map(
-  ([_key, section]) => section
-);
+export function getPortfolioLinks(profile: IProfile): CommandLinkItem[] {
+  const sections = Object.entries(profile?.sections).map(
+    ([_key, section]) => section
+  );
 
-const PORTFOLIO_LINKS_FROM_SECTIONS: CommandLinkItem[] = sections.map(
-  (section) => ({
-    title: section.name,
-    href: `/#${section.id}`,
-    icon: getIcon(section.icon),
-  })
-);
+  const portfolioLinksFromSections: CommandLinkItem[] = sections.map(
+    (section) => ({
+      title: section.name,
+      href: `/#${section.id}`,
+      icon: getIcon(section.icon),
+    })
+  );
 
-export const PORTFOLIO_LINKS: CommandLinkItem[] = [
-  ...PORTFOLIO_LINKS_FROM_SECTIONS,
-  {
-    title: "Download vCard",
-    href: "/vcard",
-    icon: CircleUserIcon,
-  },
-];
+  return [
+    ...portfolioLinksFromSections,
+    {
+      title: "Download vCard",
+      href: "/vcard",
+      icon: CircleUserIcon,
+    },
+  ];
+}
 
-export const SOCIAL_LINK_ITEMS: CommandLinkItem[] =
-  PROFILE.sections.socialLinks?.items.map((item) => ({
-    title: item.title,
-    href: item.href,
-    iconImage: item.icon,
-    openInNewTab: true,
-  })) || [];
+export function getSocialLinkItems(profile: IProfile): CommandLinkItem[] {
+  return (
+    profile.sections.socialLinks?.items.map((item) => ({
+      title: item.title,
+      href: item.href,
+      iconImage: item.icon,
+      openInNewTab: true,
+    })) || []
+  );
+}

@@ -1,4 +1,4 @@
-export interface Section<T = any> {
+export interface Section<T = unknown> {
   id: string;
   name: string;
   columns: number;
@@ -174,7 +174,7 @@ export interface IProfile {
   };
 }
 
-export const PROFILE: IProfile = {
+const PROFILE: IProfile = {
   // BASE
   id: "123456789",
   dateCreated: "2025-09-23",

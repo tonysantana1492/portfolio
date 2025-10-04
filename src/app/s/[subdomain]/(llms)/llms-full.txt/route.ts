@@ -1,105 +1,130 @@
 import dayjs from "dayjs";
+import { NextResponse } from "next/server";
 
-import { SITE_INFO } from "@/config/site.config";
-import { PROFILE } from "@/content/profile";
+import { getSiteInfo } from "@/config/site.config";
 import { getLLMText } from "@/lib/get-llm-text";
 import { getAllPosts } from "@/services/blog";
+import { profileService } from "@/services/profile";
 
-const allPosts = getAllPosts();
+export const dynamic = "force-dynamic";
 
-const aboutText = `## About
+export async function GET() {
+  try {
+    const profile = await profileService.getProfile();
 
-${PROFILE.sections.about?.content?.trim() ?? ""}
+    if (!profile) {
+      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    }
+
+    const allPosts = getAllPosts();
+    const siteInfo = getSiteInfo(profile);
+
+    const aboutText = `## About
+
+${profile.sections.about?.content?.trim() ?? ""}
 
 ### Personal Information
 
-- First Name: ${PROFILE.firstName}
-- Last Name: ${PROFILE.lastName}
-- Display Name: ${PROFILE.displayName}
-- Location: ${PROFILE.address}
-- Website: ${PROFILE.website}
+- First Name: ${profile.firstName}
+- Last Name: ${profile.lastName}
+- Display Name: ${profile.displayName}
+- Location: ${profile.address}
+- Website: ${profile.website}
 
 ### Social Links
 
-${PROFILE.sections.socialLinks?.items
-  .map((item) => `- [${item.title}](${item.href})`)
-  .join("\n")}
+${
+  profile.sections.socialLinks?.items
+    ?.map((item) => `- [${item.title}](${item.href})`)
+    ?.join("\n") ?? ""
+}
 
 ### Tech Stack
 
-${PROFILE.sections.techStack?.items
-  .map((item) => `- [${item.title}](${item.href})`)
-  .join("\n")}\n`;
+${
+  profile.sections.techStack?.items
+    ?.map((item) => `- [${item.title}](${item.href})`)
+    ?.join("\n") ?? ""
+}\n`;
 
-const experienceText = `## Experience
+    const experienceText = `## Experience
 
-${PROFILE.sections.experiences?.items
-  .map((item) =>
-    item.positions
-      .map((position) => {
-        const skills =
-          position.skills?.map((skill) => skill).join(", ") || "N/A";
-        return `### ${position.title} | ${item.companyName}\n\nDuration: ${
-          position.employmentPeriod.start
-        } - ${
-          position.employmentPeriod.end || "Present"
-        }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
-      })
-      .join("\n\n")
-  )
-  .join("\n\n")}
-`;
-
-const projectsText = `## Projects
-
-${PROFILE.sections.projects?.items
-  .map((item) => {
-    const skills = `\n\nSkills: ${item.skills.join(", ")}`;
-    const description = item.description
-      ? `\n\n${item.description.trim()}`
-      : "";
-    return `### ${item.title}\n\nProject URL: ${item.link}${skills}${description}`;
-  })
-  .join("\n\n")}
-`;
-
-const awardsText = `## Awards
-
-${PROFILE.sections.awards?.items
-  .map((item) => `### ${item.prize} | ${item.title}\n\n${item.description}`)
-  .join("\n\n")}
-`;
-
-const certificationsText = `## Certifications
-
-${PROFILE.sections.certifications?.items
-  .map((item) => `- [${item.title}](${item.credentialURL})`)
-  .join("\n")}`;
-
-async function getBlogContent() {
-  const text = await Promise.all(
-    allPosts.map(
-      async (item) =>
-        `---\ntitle: "${item.metadata.title}"\ndescription: "${
-          item.metadata.description
-        }"\nlast_updated: "${dayjs(item.metadata.updatedAt).format(
-          "MMMM D, YYYY"
-        )}"\nsource: "${SITE_INFO.url}/blog/${
-          item.slug
-        }"\n---\n\n${await getLLMText(item)}`
+${
+  profile.sections.experiences?.items
+    ?.map((item) =>
+      item.positions
+        .map((position) => {
+          const skills =
+            position.skills?.map((skill) => skill).join(", ") || "N/A";
+          return `### ${position.title} | ${item.companyName}\n\nDuration: ${
+            position.employmentPeriod.start
+          } - ${
+            position.employmentPeriod.end || "Present"
+          }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
+        })
+        .join("\n\n")
     )
-  );
-  return text.join("\n\n");
+    ?.join("\n\n") ?? ""
 }
+`;
 
-async function getContent() {
-  return `<SYSTEM>This document contains comprehensive information about ${
-    PROFILE.displayName
-  }'s professional profile, portfolio, and blog content. It includes personal details, work experience, projects, achievements, certifications, and all published blog posts. This data is formatted for consumption by Large Language Models (LLMs) to provide accurate and up-to-date information about ${
-    PROFILE.displayName
-  }'s background, skills, and expertise as a Design Engineer.</SYSTEM>
+    const projectsText = `## Projects
 
-# ${PROFILE.website}
+${
+  profile.sections.projects?.items
+    ?.map((item) => {
+      const skills = item.skills?.length
+        ? `\n\nSkills: ${item.skills.join(", ")}`
+        : "";
+      const description = item.description
+        ? `\n\n${item.description.trim()}`
+        : "";
+      return `### ${item.title}\n\nProject URL: ${item.link}${skills}${description}`;
+    })
+    ?.join("\n\n") ?? ""
+}
+`;
+
+    const awardsText = `## Awards
+
+${
+  profile.sections.awards?.items
+    ?.map((item) => `### ${item.prize} | ${item.title}\n\n${item.description}`)
+    ?.join("\n\n") ?? ""
+}
+`;
+
+    const certificationsText = `## Certifications
+
+${
+  profile.sections.certifications?.items
+    ?.map((item) => `- [${item.title}](${item.credentialURL})`)
+    ?.join("\n") ?? ""
+}`;
+
+    async function getBlogContent() {
+      const text = await Promise.all(
+        allPosts.map(
+          async (item) =>
+            `---\ntitle: "${item.metadata.title}"\ndescription: "${
+              item.metadata.description
+            }"\nlast_updated: "${dayjs(item.metadata.updatedAt).format(
+              "MMMM D, YYYY"
+            )}"\nsource: "${siteInfo.url}/blog/${
+              item.slug
+            }"\n---\n\n${await getLLMText(item)}`
+        )
+      );
+      return text.join("\n\n");
+    }
+
+    const content = `<SYSTEM>This document contains comprehensive information about ${
+      profile.displayName
+    }'s professional profile, portfolio, and blog content. It includes personal details, work experience, projects, achievements, certifications, and all published blog posts. This data is formatted for consumption by Large Language Models (LLMs) to provide accurate and up-to-date information about ${
+      profile.displayName
+    }'s background, skills, and expertise as a Design Engineer.</SYSTEM>
+
+# ${profile.website}
 
 > A minimal portfolio, component registry, and blog to showcase my work.
 
@@ -112,14 +137,18 @@ ${certificationsText}
 ## Blog
 
 ${await getBlogContent()}`;
-}
 
-export const dynamic = "force-static";
-
-export async function GET() {
-  return new Response(await getContent(), {
-    headers: {
-      "Content-Type": "text/markdown;charset=utf-8",
-    },
-  });
+    return new Response(content, {
+      headers: {
+        "Content-Type": "text/markdown;charset=utf-8",
+        "Cache-Control": "public, max-age=1800", // Cache for 30 minutes
+      },
+    });
+  } catch (error) {
+    console.error("Error generating full LLM content:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }

@@ -177,7 +177,6 @@ class ProfileServiceImpl implements ProfileService {
 // Export singleton instance
 export const profileService = new ProfileServiceImpl();
 
-// Helper function to migrate current PROFILE to database
 export async function migrateProfileToDatabase(
   profile: IProfile
 ): Promise<void> {

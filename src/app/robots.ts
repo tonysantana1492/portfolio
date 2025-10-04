@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next";
 
-import { SITE_INFO } from "@/config/site.config";
-
 export default function robots(): MetadataRoute.Robots {
+  const url = process.env.APP_URL || "https://tonysantana.dev";
+
   return {
     rules: [
       {
         userAgent: "*",
       },
     ],
-    sitemap: `${SITE_INFO.url}/sitemap.xml`,
+    sitemap: `${url}/sitemap.xml`,
   };
 }

@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 
 import { IntroItem } from "@/app/s/[subdomain]/(app)/(root)/_components/overview/intro-item";
-import { UTM_PARAMS } from "@/config/site.config";
+import { getUTMParams } from "@/config/site.config";
 import { addQueryParams } from "@/lib/url";
 
 function getJobIcon(title: string) {
@@ -29,6 +29,8 @@ export function JobItem({
   company: string;
   website: string;
 }) {
+  const utmParams = getUTMParams(website);
+
   return (
     <IntroItem
       icon={getJobIcon(title)}
@@ -37,7 +39,7 @@ export function JobItem({
           {title} @
           <a
             className="ml-0.5 font-medium underline-offset-4 hover:underline"
-            href={addQueryParams(website, UTM_PARAMS)}
+            href={addQueryParams(website, utmParams)}
             target="_blank"
             rel="noopener"
           >

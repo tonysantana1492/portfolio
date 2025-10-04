@@ -1,6 +1,6 @@
 import { RssIcon } from "lucide-react";
 
-import { SITE_INFO } from "@/config/site.config";
+import { getSiteInfo } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,8 @@ export function SiteFooter({
   profile,
   className,
 }: React.ComponentProps<"footer"> & { profile: IProfile }) {
+  const siteInfo = getSiteInfo(profile);
+
   return (
     <footer className={cn(className, "max-w-screen overflow-x-hidden px-2")}>
       <div className="screen-line-before mx-auto border-edge border-x pt-4 md:max-w-3xl">
@@ -44,7 +46,7 @@ export function SiteFooter({
           <div className="mx-auto flex items-center justify-center gap-3 border-edge border-x bg-background px-4">
             <a
               className="flex font-medium font-mono text-muted-foreground text-xs"
-              href={`${SITE_INFO.url}/llms.txt`}
+              href={`${siteInfo.url}/llms.txt`}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -55,7 +57,7 @@ export function SiteFooter({
 
             <a
               className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
-              href={`${SITE_INFO.url}/rss`}
+              href={`${siteInfo.url}/rss`}
               target="_blank"
               rel="noopener noreferrer"
             >

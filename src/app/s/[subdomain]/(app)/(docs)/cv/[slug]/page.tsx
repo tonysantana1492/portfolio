@@ -12,11 +12,12 @@ import { MDX } from "@/components/shared/mdx";
 import { ShareMenu } from "@/components/shared/share-menu";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
-import { SITE_INFO } from "@/config/site.config";
-import { PROFILE } from "@/content/profile";
+import { getSiteInfo } from "@/config/site.config";
+import type { IProfile } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
 import { type Cv, getAllCVs, getCvBySlug } from "@/services/cv";
+import { profileService } from "@/services/profile";
 
 export async function generateStaticParams() {
   const cvs = getAllCVs();
@@ -71,7 +72,9 @@ export async function generateMetadata({
   };
 }
 
-function getPageJsonLd(cv: Cv): WithContext<PageSchema> {
+function getPageJsonLd(cv: Cv, profile: IProfile): WithContext<PageSchema> {
+  const siteInfo = getSiteInfo(profile);
+
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -80,14 +83,14 @@ function getPageJsonLd(cv: Cv): WithContext<PageSchema> {
     image:
       cv.metadata.image ||
       `/og/simple?title=${encodeURIComponent(cv.metadata.title)}`,
-    url: `${SITE_INFO.url}${getCvUrl(cv)}`,
+    url: `${siteInfo.url}${getCvUrl(cv)}`,
     datePublished: dayjs(cv.metadata.createdAt).toISOString(),
     dateModified: dayjs(cv.metadata.updatedAt).toISOString(),
     author: {
       "@type": "Person",
-      name: PROFILE.displayName,
-      identifier: PROFILE.username,
-      image: PROFILE.avatar,
+      name: profile.displayName,
+      identifier: profile.username,
+      image: profile.avatar,
     },
   };
 }
@@ -101,19 +104,23 @@ export default async function Page({
 }) {
   const slug = (await params).slug;
   const cv = getCvBySlug(slug);
+  const profile = await profileService.getProfile();
 
-  if (!cv) {
+  if (!cv || !profile) {
     notFound();
   }
 
-  const mdx = cvToMdx(PROFILE);
+  const mdx = cvToMdx(profile);
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd(cv)).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getPageJsonLd(cv, profile)).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
 

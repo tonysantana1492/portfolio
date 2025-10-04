@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import type { IProfile } from "@/content/profile";
-import { PROFILE } from "@/content/profile"; // Fallback
 
 interface UseProfileReturn {
   profile: IProfile | null;
@@ -31,8 +30,6 @@ export function useProfile(): UseProfileReturn {
       } catch (err) {
         console.error("Error fetching profile:", err);
         setError(err instanceof Error ? err.message : "Unknown error");
-        // Fallback to static PROFILE if there's an error
-        setProfile(PROFILE);
       } finally {
         setLoading(false);
       }

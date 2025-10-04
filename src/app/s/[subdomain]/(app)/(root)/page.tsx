@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+
 import dayjs from "dayjs";
 import type { ProfilePage, WithContext } from "schema-dts";
 
@@ -14,31 +16,45 @@ import { ProfileHeader } from "@/app/s/[subdomain]/(app)/(root)/_components/prof
 import { Projects } from "@/app/s/[subdomain]/(app)/(root)/_components/projects";
 import { SocialLinks } from "@/app/s/[subdomain]/(app)/(root)/_components/social-links";
 import { TeckStack } from "@/app/s/[subdomain]/(app)/(root)/_components/teck-stack";
-import { PROFILE } from "@/content/profile";
+import type { IProfile } from "@/content/profile";
+import { getProfileBySubdomain } from "@/lib/profile";
 
-function getPageJsonLd(): WithContext<ProfilePage> {
+function getPageJsonLd(profile: IProfile): WithContext<ProfilePage> {
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    dateCreated: dayjs(PROFILE.dateCreated).toISOString(),
+    dateCreated: dayjs(profile.dateCreated).toISOString(),
     dateModified: dayjs().toISOString(),
     mainEntity: {
       "@type": "Person",
-      name: PROFILE.displayName,
-      identifier: PROFILE.username,
-      image: PROFILE.avatar,
+      name: profile.displayName,
+      identifier: profile.username,
+      image: profile.avatar,
     },
   };
 }
 
-export default function Page() {
-  const profile = PROFILE;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ subdomain: string }>;
+}) {
+  const { subdomain } = await params;
+  const profile = await getProfileBySubdomain(subdomain);
+
+  if (!profile) {
+    notFound();
+  }
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd()).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(getPageJsonLd(profile)).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
       <div className="mx-auto md:max-w-3xl">
@@ -61,7 +77,7 @@ export default function Page() {
           </>
         )}
 
-        <GitHubContributions />
+        <GitHubContributions profile={profile} />
         <HeroSeparator />
 
         {profile.sections.techStack && (

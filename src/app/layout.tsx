@@ -4,76 +4,86 @@ import "@/styles/globals.css";
 import { cookies } from "next/headers";
 
 import { PWAPrompts } from "@/components/shared/pwa-prompts";
-import { PWA_CONFIG, SITE_INFO } from "@/config/site.config";
-import { PROFILE } from "@/content/profile";
+import { getSiteInfo } from "@/config/site.config";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
+import { profileService } from "@/services/profile";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: PWA_CONFIG.themeColor,
+  themeColor: "#000000",
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_INFO.url),
-  alternates: {
-    canonical: "/",
-  },
-  title: {
-    template: `%s – ${SITE_INFO.name}`,
-    default: `${PROFILE.displayName} – ${PROFILE.jobTitle}`,
-  },
-  description: SITE_INFO.description,
-  keywords: SITE_INFO.keywords,
-  authors: [
-    {
-      name: PROFILE.displayName,
-      url: SITE_INFO.url,
+export const generateMetadata = async (): Promise<Metadata> => {
+  const profile = await profileService.getProfile();
+
+  if (!profile) {
+    return {};
+  }
+
+  const siteInfo = getSiteInfo(profile);
+
+  return {
+    metadataBase: new URL(siteInfo.url),
+    alternates: {
+      canonical: "/",
     },
-  ],
-  creator: PROFILE.displayName,
-  manifest: "/manifest.webmanifest",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: SITE_INFO.name,
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  openGraph: {
-    siteName: SITE_INFO.name,
-    url: "/",
-    type: "profile",
-    firstName: PROFILE.firstName,
-    lastName: PROFILE.lastName,
-    username: PROFILE.username,
-    gender: PROFILE.gender,
-    images: [
+    title: {
+      template: `%s – ${siteInfo.name}`,
+      default: `${profile.displayName} – ${profile.jobTitle}`,
+    },
+    description: siteInfo.description,
+    keywords: siteInfo.keywords,
+    authors: [
       {
-        url: SITE_INFO.ogImage,
-        width: 1200,
-        height: 630,
-        alt: SITE_INFO.name,
+        name: profile.displayName,
+        url: siteInfo.url,
       },
     ],
-    locale: "en_US",
-    title: SITE_INFO.name,
-    description: SITE_INFO.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    creator: PROFILE.twitterUsername, // Twitter username
-    images: [SITE_INFO.ogImage],
-    title: SITE_INFO.name,
-    description: SITE_INFO.description,
-    siteId: "",
-    creatorId: "",
-  },
-  icons: SITE_INFO.metadataIcons,
+    creator: profile.displayName,
+    manifest: "/manifest.webmanifest",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: siteInfo.name,
+    },
+    formatDetection: {
+      telephone: false,
+    },
+    openGraph: {
+      siteName: siteInfo.name,
+      url: "/",
+      type: "profile",
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      username: profile.username,
+      gender: profile.gender,
+      images: [
+        {
+          url: siteInfo.ogImage,
+          width: 1200,
+          height: 630,
+          alt: siteInfo.name,
+        },
+      ],
+      locale: "en_US",
+      title: siteInfo.name,
+      description: siteInfo.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      creator: profile.twitterUsername, // Twitter username
+      images: [siteInfo.ogImage],
+      title: siteInfo.name,
+      description: siteInfo.description,
+      siteId: "",
+      creatorId: "",
+    },
+    icons: siteInfo.metadataIcons,
+  };
 };
 
 export default async function RootLayout({
@@ -83,10 +93,17 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const activeThemeValue = cookieStore.get(THEME_COOKIE_NAME)?.value;
+  const profile = await profileService.getProfile();
+
+  if (!profile) {
+    return <div>Profile not found</div>;
+  }
+
+  const siteInfo = getSiteInfo(profile);
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <meta name="apple-mobile-web-app-title" content={SITE_INFO.name} />
+      <meta name="apple-mobile-web-app-title" content={siteInfo.name} />
       <link rel="manifest" href="/manifest.webmanifest" />
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}

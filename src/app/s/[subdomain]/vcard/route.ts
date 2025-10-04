@@ -3,28 +3,40 @@ import { NextResponse } from "next/server";
 import sharp from "sharp";
 import VCard from "vcard-creator";
 
-import { PROFILE } from "@/content/profile";
+import { getProfileBySubdomain } from "@/lib/profile";
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
 import { getLastCompany } from "@/services/experience";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
-export async function GET() {
+interface RouteParams {
+  params: {
+    subdomain: string;
+  };
+}
+
+export async function GET(_request: Request, { params }: RouteParams) {
+  const profile = await getProfileBySubdomain(params.subdomain);
+
+  if (!profile) {
+    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+  }
+
   const card = new VCard();
 
   card
-    .addName(PROFILE.lastName, PROFILE.firstName)
-    .addPhoneNumber(decodePhoneNumber(PROFILE.phoneNumber))
-    .addAddress(PROFILE.address)
-    .addEmail(decodeEmail(PROFILE.email))
-    .addURL(PROFILE.website);
+    .addName(profile.lastName, profile.firstName)
+    .addPhoneNumber(decodePhoneNumber(profile.phoneNumber))
+    .addAddress(profile.address)
+    .addEmail(decodeEmail(profile.email))
+    .addURL(profile.website);
 
-  const photo = await getVCardPhoto(PROFILE.avatar);
+  const photo = await getVCardPhoto(profile.avatar);
   if (photo) {
     card.addPhoto(photo.image, photo.mine);
   }
 
-  const lastCompany = getLastCompany(PROFILE.sections.experiences?.items ?? []);
+  const lastCompany = getLastCompany(profile.sections.experiences?.items ?? []);
 
   if (lastCompany) {
     card

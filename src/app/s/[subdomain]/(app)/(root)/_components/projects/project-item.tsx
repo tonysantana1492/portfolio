@@ -17,7 +17,7 @@ import {
 import { Tag } from "@/components/ui/tag";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { Prose } from "@/components/ui/typography";
-import { UTM_PARAMS } from "@/config/site.config";
+import { getUTMParams } from "@/config/site.config";
 import type { Project } from "@/content/profile";
 import { addQueryParams } from "@/lib/url";
 
@@ -30,6 +30,7 @@ export function ProjectItem({
 }) {
   const { start, end } = project.period;
   const isOngoing = !end;
+  const utmParams = getUTMParams();
 
   return (
     <Collapsible defaultOpen={project.isExpanded} asChild>
@@ -85,7 +86,7 @@ export function ProjectItem({
               <SimpleTooltip content="Open Project Link">
                 <a
                   className="after:-inset-2 relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute hover:text-foreground"
-                  href={addQueryParams(project.link, UTM_PARAMS)}
+                  href={addQueryParams(project.link, utmParams)}
                   target="_blank"
                   rel="noopener"
                 >

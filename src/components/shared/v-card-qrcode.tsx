@@ -5,30 +5,33 @@ import { useMemo, useRef } from "react";
 import { useTheme } from "next-themes";
 import { QRCode } from "react-qrcode-logo";
 
-import { SITE_INFO } from "@/config/site.config";
-import { PROFILE } from "@/content/profile";
+import { getSiteInfo } from "@/config/site.config";
+import type { IProfile } from "@/content/profile";
 import { generateVCard } from "@/lib/v-card";
 
 export type VCardQRProps = {
+  profile: IProfile;
   size?: number;
   className?: string;
   showDownloadButtons?: boolean;
 };
 
 export function VCardQR({
+  profile,
   size = 220,
   className,
   showDownloadButtons = true,
 }: VCardQRProps) {
   const { resolvedTheme } = useTheme();
 
-  const vcardString = generateVCard();
-  const firstName = PROFILE.firstName;
-  const lastName = PROFILE.lastName;
+  const siteInfo = getSiteInfo(profile);
+  const vcardString = generateVCard(profile);
+  const firstName = profile.firstName;
+  const lastName = profile.lastName;
 
   const vcfDataHref = useMemo(
     () => `data:text/vcard;charset=utf-8,${encodeURIComponent(vcardString)}`,
-    [vcardString],
+    [vcardString]
   );
 
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -64,7 +67,7 @@ export function VCardQR({
   return (
     <div className={className}>
       <QRCode
-        value={`${SITE_INFO.url}/vcard`}
+        value={`${siteInfo.url}/vcard`}
         size={size}
         fgColor={resolvedTheme === "dark" ? "white" : "black"}
         bgColor="transparent"

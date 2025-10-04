@@ -1,19 +1,27 @@
 import type { MetadataRoute } from "next";
 
-import { SITE_INFO } from "@/config/site.config";
+import { getSiteInfo } from "@/config/site.config";
+import { profileService } from "@/services/profile";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  const profile = await profileService.getProfile();
+  if (!profile) {
+    return {};
+  }
+
+  const siteInfo = getSiteInfo(profile);
+
   return {
-    short_name: SITE_INFO.name,
-    name: SITE_INFO.name,
-    description: SITE_INFO.description,
-    icons: SITE_INFO.icons,
+    short_name: siteInfo.name,
+    name: siteInfo.name,
+    description: siteInfo.description,
+    icons: siteInfo.icons,
     id: "/?utm_source=pwa",
     start_url: "/?utm_source=pwa",
     display: "standalone",
     orientation: "portrait",
     scope: "/",
-    screenshots: SITE_INFO.screenshots,
+    screenshots: siteInfo.screenshots,
     theme_color: "#000000",
     background_color: "#000000",
   };

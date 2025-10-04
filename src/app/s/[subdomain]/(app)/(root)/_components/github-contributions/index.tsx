@@ -3,9 +3,14 @@ import { Suspense } from "react";
 import { Panel } from "../panel";
 import { GitHubContributionFallback, GitHubContributionGraph } from "./graph";
 import { getGitHubContributions } from "@/content/github-contributions";
+import type { IProfile } from "@/content/profile";
 
-export function GitHubContributions() {
-  const contributions = getGitHubContributions();
+interface GitHubContributionsProps {
+  profile: IProfile;
+}
+
+export function GitHubContributions({ profile }: GitHubContributionsProps) {
+  const contributions = getGitHubContributions(profile.githubUserName);
 
   return (
     <Panel>

@@ -19,12 +19,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PROFILE } from "@/content/profile";
 
 export function GitHubContributionGraph({
   contributions,
+  githubUserName,
 }: {
   contributions: Promise<Activity[]>;
+  githubUserName: string;
 }) {
   const data = use(contributions);
 
@@ -73,7 +74,7 @@ export function GitHubContributionGraph({
               {totalCount.toLocaleString("en")} contributions in {year} on{" "}
               <a
                 className="font-medium underline underline-offset-4"
-                href={`https://github.com/${PROFILE.githubUserName}`}
+                href={`https://github.com/${githubUserName}`}
                 target="_blank"
                 rel="noopener"
               >

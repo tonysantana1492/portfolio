@@ -43,7 +43,7 @@ export function SiteHeader({ profile }: { profile: IProfile }) {
         <DesktopNav items={navItems} />
 
         <div className="flex items-center gap-2">
-          <CommandMenu posts={posts} />
+          <CommandMenu posts={posts} profile={profile} />
           <NavItemGitHub profile={profile} />
           <ToggleTheme />
           <MobileNav className="sm:hidden" items={navItems} />
