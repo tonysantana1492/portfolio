@@ -4,7 +4,9 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 import type { IProfile } from "@/content/profile";
+import type { User } from "@/generated/prisma";
 import prisma from "@/lib/prisma";
+import { createSubdomainWithProfile } from "@/services/profile-subdomain";
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,6 +31,7 @@ export async function POST(request: NextRequest) {
       avatar = "",
       ogImage = "",
       keywords = [],
+      userId, // Optional user ID from authentication
     } = body;
 
     // Validate required fields
@@ -74,6 +77,45 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Username is already taken" },
         { status: 409 }
+      );
+    }
+
+    // Find or create a user
+    let user: User | null;
+    if (userId) {
+      // If userId provided, find the existing user
+      user = await prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        return NextResponse.json({ error: "User not found" }, { status: 404 });
+      }
+    } else {
+      // If no userId provided, create a temporary user or find by email
+      user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        // Create a new user with basic information
+        user = await prisma.user.create({
+          data: {
+            googleId: `temp_${Date.now()}`, // Temporary google ID
+            email,
+            name: `${firstName} ${lastName}`,
+            picture: avatar,
+            verified: false,
+          },
+        });
+      }
+    }
+
+    // Ensure we have a valid user
+    if (!user) {
+      return NextResponse.json(
+        { error: "Failed to create or find user" },
+        { status: 500 }
       );
     }
 
@@ -128,6 +170,7 @@ export async function POST(request: NextRequest) {
         dateCreated: now,
         dateUpdated: now,
         isActive: true,
+        userId: user.id,
         firstName,
         lastName,
         displayName: displayName || `${firstName} ${lastName}`,
@@ -160,13 +203,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create subdomain entry
-    await prisma.subdomain.create({
-      data: {
-        subdomain: username,
-        emoji: "✨",
-      },
-    });
+    // Create subdomain entry and associate it with the profile
+    await createSubdomainWithProfile(username, "✨", newProfile.id);
 
     // Return created profile
     const responseProfile: Partial<IProfile> = {

@@ -4,7 +4,6 @@ import { useActionState, useState } from "react";
 
 import { Smile } from "lucide-react";
 
-import { createSubdomainAction } from "@/app/actions";
 import {
   EmojiPicker,
   EmojiPickerContent,
@@ -21,6 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ROOT_DOMAIN } from "@/config/app.config";
+import { createSubdomainAction } from "@/services/actions";
 
 type CreateState = {
   error?: string;

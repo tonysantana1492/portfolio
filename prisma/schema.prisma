@@ -14,12 +14,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  googleId  String   @unique // Google Auth ID
+  email     String   @unique
+  name      String
+  picture   String?
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationship with profiles
+  profiles  Profile[]
+
+  @@map("users")
+}
+
 model Subdomain {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   subdomain String   @unique
   emoji     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  // Profile relationship
+  profileId String?  @db.ObjectId
+  profile   Profile? @relation(fields: [profileId], references: [id])
 
   @@map("subdomains")
 }
@@ -31,6 +51,13 @@ model Profile {
   dateUpdated   DateTime
   dateDeleted   DateTime?
   isActive      Boolean  @default(true)
+  
+  // User relationship
+  userId        String   @db.ObjectId
+  user          User     @relation(fields: [userId], references: [id])
+  
+  // Subdomain relationship
+  subdomains    Subdomain[]
   
   // BASICS
   firstName     String

@@ -7,7 +7,6 @@ import { getSiteInfo } from "@/config/site.config";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { getProfileBySubdomain } from "@/lib/profile";
 import { Providers } from "@/providers/providers";
-import { profileService } from "@/services/profile";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
 
 export const viewport: Viewport = {
@@ -98,17 +97,10 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const activeThemeValue = cookieStore.get(THEME_COOKIE_NAME)?.value;
-  const profile = await profileService.getProfile();
-
-  if (!profile) {
-    return <div>Profile not found</div>;
-  }
-
-  const siteInfo = getSiteInfo(profile);
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <meta name="apple-mobile-web-app-title" content={siteInfo.name} />
+      <meta name="apple-mobile-web-app-title" content={"Let's 0 portfolio"} />
       <link rel="manifest" href="/manifest.webmanifest" />
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { useQueryState } from "nuqs";
@@ -7,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { AuthPopup, type GoogleUserData } from "@/components/auth/auth-popup";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -34,6 +37,7 @@ import {
 } from "@/features/profile/social-network-selector";
 import { SocialUrlStatusIndicator } from "@/features/profile/social-url-status-indicator";
 import { UsernameStatusIndicator } from "@/features/profile/username-status-indicator";
+import { useAuth } from "@/hooks/use-auth";
 import { useSocialUrlValidation } from "@/hooks/use-social-url-validation";
 import { useUsernameAvailability } from "@/hooks/use-username-availability";
 
@@ -67,22 +71,28 @@ const formatUsername = (value: string): string => {
 };
 
 export function BuildProfileForm() {
-  const [username, setUsername] = useQueryState("username", {
-    defaultValue: "",
-    shallow: false,
+  const [socialNetwork, setSocialNetwork] = useQueryState("socialNetwork", {
+    defaultValue: SOCIAL_NETWORKS[0]?.baseUrl ?? "",
+    clearOnDefault: true,
   });
+
   const [socialUsername, setSocialUsername] = useQueryState("socialUsername", {
     defaultValue: "",
-    shallow: false,
+    clearOnDefault: true,
   });
-  const [socialNetwork, setSocialNetwork] = useQueryState("socialNetwork", {
-    defaultValue: "https://linkedin.com/in/",
-    shallow: false,
+
+  const [username, setUsername] = useQueryState("username", {
+    defaultValue: "",
+    clearOnDefault: true,
   });
+
+  const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const { authenticateWithGoogle, isAuthenticated } = useAuth();
 
   const form = useForm<FormData>({
     resolver: standardSchemaResolver(formSchema),
-    values: {
+    mode: "onChange", // Validate on every change to clear errors immediately
+    defaultValues: {
       username,
       socialNetwork,
       socialUsername,
@@ -91,11 +101,11 @@ export function BuildProfileForm() {
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
     setValue,
+    formState: { isSubmitting },
   } = form;
 
-  // Sync socialUsername to username automatically
+  // Auto-format and suggest username based on social username
   // useEffect(() => {
   //   if (socialUsername) {
   //     const formattedUsername = formatUsername(socialUsername);
@@ -114,8 +124,33 @@ export function BuildProfileForm() {
     profileExists,
   } = useSocialUrlValidation(socialNetwork, socialUsername);
 
-  const onSubmit = async (data: FormData) => {
+  const handleAuthSuccess = async (googleUserData: GoogleUserData) => {
+    const authenticatedUser = await authenticateWithGoogle(googleUserData);
+    if (authenticatedUser) {
+      proceedWithProfileCreation();
+    }
+  };
+
+  const proceedWithProfileCreation = async () => {
     try {
+      const data = form.getValues();
+
+      // const fullSocialUrl = data.socialNetwork + data.socialUsername;
+
+      window.location.href = `/profile/${data.username}`;
+    } catch (error) {
+      toast.error("Error creating the profile, try again.");
+      console.error("Error creating profile:", error);
+    }
+  };
+
+  const onSubmit = async (_data: FormData) => {
+    try {
+      if (!isAuthenticated) {
+        setShowAuthPopup(true);
+        return;
+      }
+
       // Check one more time before submission to ensure username is still available
       if (!isAvailable) {
         form.setError("username", {
@@ -134,20 +169,7 @@ export function BuildProfileForm() {
         return;
       }
 
-      // Construct the full social media URL
-      const fullSocialUrl = data.socialNetwork + data.socialUsername;
-
-      // Store data in localStorage for now
-      const userData = {
-        username: data.username,
-        socialUrl: fullSocialUrl,
-        socialUrlValid: isSocialValid,
-        socialProfileExists: profileExists,
-        createdAt: new Date().toISOString(),
-      };
-
-      // Redirect to processing page
-      window.location.href = `/profile/${data.username}`;
+      await proceedWithProfileCreation();
     } catch (error) {
       toast.error("Failed to create profile. Please try again.");
       console.error("Error submitting form:", error);
@@ -159,159 +181,182 @@ export function BuildProfileForm() {
   );
 
   return (
-    <Card className="border-border/50 shadow-2xl">
-      <CardHeader>
-        <CardTitle className="text-2xl">Get Started</CardTitle>
-        <CardDescription>
-          Create your account and generate your professional portfolio
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* social network selector */}
-            <SocialNetworkSelector
-              socialNetwork={socialNetwork}
-              onNetworkChange={(networkId) => {
-                setSocialNetwork(networkId);
-                setValue("socialNetwork", networkId);
-              }}
-            />
-            {/* social username input */}
-            {selectedNetwork && (
-              <FormField
-                control={form.control}
-                name="socialUsername"
-                render={({ fieldState }) => (
-                  <FormItem>
-                    <FormLabel>Social Network</FormLabel>
-                    <FormControl>
-                      <InputGroup className="w-full">
-                        <InputGroupInput
-                          placeholder={selectedNetwork.placeholder}
-                          value={socialUsername}
-                          onChange={(e) => {
-                            const newValue = e.target.value;
-                            setSocialUsername(newValue);
-                            setValue("socialUsername", newValue);
-                          }}
-                          onInput={(e) => {
-                            const target = e.target as HTMLInputElement;
-                            setSocialUsername(target.value);
-                            setValue("socialUsername", target.value);
-                          }}
-                          className="text-sm"
-                        />
-                        <InputGroupAddon align="inline-start">
-                          <div className="flex items-center gap-1.5">
-                            <selectedNetwork.icon className="h-3.5 w-3.5" />
-                            <InputGroupText className="text-muted-foreground text-xs">
-                              {selectedNetwork.baseUrl.replace("https://", "")}
-                            </InputGroupText>
-                          </div>
-                        </InputGroupAddon>
-
-                        {socialUsername && (
-                          <InputGroupAddon align="inline-end">
-                            <div className="flex items-center gap-1">
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                className="h-5 w-5 p-0"
-                                onClick={() =>
-                                  window.open(
-                                    selectedNetwork.baseUrl + socialUsername,
-                                    "_blank"
-                                  )
-                                }
-                                title="View Profile"
-                              >
-                                <ExternalLink className="h-3 w-3" />
-                              </Button>
+    <>
+      <Card className="border-border/50 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-2xl">Get Started</CardTitle>
+          <CardDescription>
+            Create your account and generate your professional portfolio
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              {/* social network selector */}
+              <SocialNetworkSelector
+                socialNetwork={socialNetwork}
+                onNetworkChange={(networkId) => {
+                  setSocialNetwork(networkId);
+                  setValue("socialNetwork", networkId);
+                }}
+              />
+              {/* social username input */}
+              {selectedNetwork && (
+                <FormField
+                  control={form.control}
+                  name="socialUsername"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormLabel>Social Network</FormLabel>
+                      <FormControl>
+                        <InputGroup className="w-full">
+                          <InputGroupInput
+                            placeholder={selectedNetwork.placeholder}
+                            value={field.value}
+                            onChange={(e) => {
+                              const newValue = e.target.value;
+                              setSocialUsername(newValue);
+                              field.onChange(newValue); // Use field.onChange instead of setValue
+                            }}
+                            onBlur={field.onBlur} // Add onBlur handler
+                            name={field.name} // Add name prop
+                            ref={field.ref} // Add ref prop
+                            className="text-sm"
+                          />
+                          <InputGroupAddon align="inline-start">
+                            <div className="flex items-center gap-1.5">
+                              <selectedNetwork.icon className="h-3.5 w-3.5" />
+                              <InputGroupText className="text-muted-foreground text-xs">
+                                {selectedNetwork.baseUrl.replace(
+                                  "https://",
+                                  ""
+                                )}
+                              </InputGroupText>
                             </div>
                           </InputGroupAddon>
-                        )}
+
+                          {socialUsername && (
+                            <InputGroupAddon align="inline-end">
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-5 w-5 p-0"
+                                  onClick={() =>
+                                    window.open(
+                                      selectedNetwork.baseUrl + socialUsername,
+                                      "_blank"
+                                    )
+                                  }
+                                  title="View Profile"
+                                >
+                                  <ExternalLink className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </InputGroupAddon>
+                          )}
+                        </InputGroup>
+                      </FormControl>
+                      <SocialUrlStatusIndicator
+                        isChecking={isSocialChecking}
+                        isValid={isSocialValid}
+                        error={socialError}
+                        profileExists={profileExists}
+                        socialUsername={socialUsername}
+                        formError={fieldState.error?.message}
+                      />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {/* username input */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <InputGroup>
+                        <InputGroupInput
+                          placeholder="Enter your username"
+                          value={field.value}
+                          onChange={(e) => {
+                            const formattedValue = formatUsername(
+                              e.target.value
+                            );
+                            setUsername(formattedValue);
+                            field.onChange(formattedValue); // Use field.onChange instead of setValue
+                          }}
+                          onBlur={field.onBlur} // Add onBlur handler
+                          name={field.name} // Add name prop
+                          ref={field.ref} // Add ref prop
+                          className="pr-32"
+                        />
+                        <InputGroupAddon align="inline-end">
+                          <div className="flex items-center gap-2">
+                            <InputGroupText>.lets0.com</InputGroupText>
+                          </div>
+                        </InputGroupAddon>
                       </InputGroup>
                     </FormControl>
-                    <SocialUrlStatusIndicator
-                      isChecking={isSocialChecking}
-                      isValid={isSocialValid}
-                      error={socialError}
-                      profileExists={profileExists}
-                      socialUsername={socialUsername}
+                    <UsernameStatusIndicator
+                      isChecking={isChecking}
+                      isAvailable={isAvailable}
+                      error={error}
+                      username={username}
                       formError={fieldState.error?.message}
                     />
                   </FormItem>
                 )}
               />
-            )}
 
-            {/* username input */}
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ fieldState }) => (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <InputGroup>
-                      <InputGroupInput
-                        placeholder="Enter your username"
-                        value={username}
-                        onChange={(e) => {
-                          const formattedValue = formatUsername(e.target.value);
-                          setUsername(formattedValue);
-                          setValue("username", formattedValue);
-                        }}
-                        className="pr-32"
-                      />
-                      <InputGroupAddon align="inline-end">
-                        <div className="flex items-center gap-2">
-                          <InputGroupText>.lets0.com</InputGroupText>
-                        </div>
-                      </InputGroupAddon>
-                    </InputGroup>
-                  </FormControl>
-                  <UsernameStatusIndicator
-                    isChecking={isChecking}
-                    isAvailable={isAvailable}
-                    error={error}
-                    username={username}
-                    formError={fieldState.error?.message}
-                  />
-                </FormItem>
-              )}
-            />
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={
+                  isSubmitting ||
+                  isChecking ||
+                  isSocialChecking ||
+                  (username.length >= 3 && isAvailable === false) ||
+                  (username.length >= 3 &&
+                    isAvailable === null &&
+                    !isChecking) ||
+                  (socialUsername.trim().length > 0 &&
+                    isSocialValid === false) ||
+                  (socialUsername.trim().length > 0 &&
+                    isSocialValid === null &&
+                    !isSocialChecking)
+                }
+              >
+                {isSubmitting ? (
+                  "Generating your profile..."
+                ) : isAuthenticated ? (
+                  <>
+                    Create my portfolio
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                ) : (
+                  <>
+                    Authenticate & Create Portfolio
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
 
-            <Button
-              type="submit"
-              className="w-full"
-              size="lg"
-              disabled={
-                isSubmitting ||
-                isChecking ||
-                isSocialChecking ||
-                (username.length >= 3 && isAvailable === false) ||
-                (username.length >= 3 && isAvailable === null && !isChecking) ||
-                (socialUsername.trim().length > 0 && isSocialValid === false) ||
-                (socialUsername.trim().length > 0 &&
-                  isSocialValid === null &&
-                  !isSocialChecking)
-              }
-            >
-              {isSubmitting ? (
-                "Generating your profile..."
-              ) : (
-                <>
-                  Create my portfolio
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </>
-              )}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+      {/* Auth Popup */}
+      <AuthPopup
+        open={showAuthPopup}
+        onOpenChange={setShowAuthPopup}
+        onAuthSuccess={handleAuthSuccess}
+      />
+    </>
   );
 }

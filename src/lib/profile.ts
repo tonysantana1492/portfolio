@@ -1,5 +1,6 @@
 import type { IProfile, Metadata } from "@/content/profile";
 import prisma from "@/lib/prisma";
+import { getProfileBySubdomainWithRelation } from "@/services/profile-subdomain";
 
 export async function getProfileByUsername(
   username: string
@@ -56,6 +57,15 @@ export async function getProfileBySubdomain(
   subdomain: string
 ): Promise<IProfile | null> {
   try {
+    // First try to get profile using the new relationship approach
+    const profileFromRelation = await getProfileBySubdomainWithRelation(
+      subdomain
+    );
+    if (profileFromRelation) {
+      return profileFromRelation;
+    }
+
+    // Fallback to the old approach for backward compatibility
     // Validate subdomain input
     if (
       !subdomain ||
@@ -76,8 +86,7 @@ export async function getProfileBySubdomain(
       return null;
     }
 
-    // For now, we'll get the first active profile
-    // Later you might want to associate profiles with subdomains
+    // For backward compatibility, get the first active profile if no relation exists
     const profile = await prisma.profile.findFirst({
       where: {
         isActive: true,

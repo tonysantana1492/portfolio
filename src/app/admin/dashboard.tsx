@@ -4,22 +4,28 @@ import { useActionState } from "react";
 
 import Link from "next/link";
 
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2, Trash2, User } from "lucide-react";
 
-import { deleteSubdomainAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PROTOCOL, ROOT_DOMAIN } from "@/config/app.config";
+import { deleteSubdomainAction } from "@/services/actions";
 
 type Tenant = {
   subdomain: string;
   emoji: string;
   createdAt: number;
+  profile?: {
+    username: string;
+    displayName: string;
+    firstName: string;
+    lastName: string;
+  } | null;
 };
 
 type DeleteState = {
   error?: string;
-  success?: string;
+  success?: string | boolean;
 };
 
 function DashboardHeader() {
@@ -89,21 +95,45 @@ function TenantGrid({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between">
-              <div className="text-4xl">{tenant.emoji}</div>
-              {/* <div className="text-gray-500 text-sm">
-                Created: {new Date(tenant.createdAt).toLocaleDateString()}
-              </div> */}
-            </div>
-            <div className="mt-4">
-              <a
-                href={`${PROTOCOL}://${tenant.subdomain}.${ROOT_DOMAIN}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 text-sm hover:underline"
-              >
-                Visit subdomain →
-              </a>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-4xl">{tenant.emoji}</div>
+                <div className="text-gray-500 text-sm">
+                  {new Date(tenant.createdAt).toLocaleDateString()}
+                </div>
+              </div>
+
+              {tenant.profile ? (
+                <div className="flex items-center gap-2 rounded-md bg-green-50 p-2">
+                  <User className="h-4 w-4 text-green-600" />
+                  <div className="text-sm">
+                    <div className="font-medium text-green-800">
+                      {tenant.profile.displayName}
+                    </div>
+                    <div className="text-green-600 text-xs">
+                      @{tenant.profile.username}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 rounded-md bg-yellow-50 p-2">
+                  <User className="h-4 w-4 text-yellow-600" />
+                  <div className="text-sm text-yellow-800">
+                    No profile associated
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <a
+                  href={`${PROTOCOL}://${tenant.subdomain}.${ROOT_DOMAIN}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 text-sm hover:underline"
+                >
+                  Visit subdomain →
+                </a>
+              </div>
             </div>
           </CardContent>
         </Card>

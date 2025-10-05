@@ -21,21 +21,7 @@ export function SocialUrlStatusIndicator({
   formError,
   className,
 }: SocialUrlStatusIndicatorProps) {
-  // Don't show anything if username is too short or empty
-  if (!socialUsername || socialUsername.trim().length === 0) {
-    return (
-      <div
-        className={cn(
-          "flex items-center gap-2 text-xs",
-          "text-muted-foreground"
-        )}
-      >
-        <span>Only lowercase letters, numbers and hyphens</span>
-      </div>
-    );
-  }
-
-  // Show form validation error if present
+  // Show form validation error has priority
   if (formError) {
     return (
       <div
@@ -46,6 +32,20 @@ export function SocialUrlStatusIndicator({
       >
         <XCircle className="h-4 w-4" />
         <span>{formError}</span>
+      </div>
+    );
+  }
+
+  // Don't show anything if username is too short or empty
+  if (!socialUsername || socialUsername.trim().length === 0) {
+    return (
+      <div
+        className={cn(
+          "flex items-center gap-2 text-xs",
+          "text-muted-foreground"
+        )}
+      >
+        <span>Only lowercase letters, numbers and hyphens</span>
       </div>
     );
   }
@@ -101,7 +101,7 @@ export function SocialUrlStatusIndicator({
       <div
         className={cn(
           "flex items-center gap-2 text-xs",
-          profileExists ? "text-green-600" : "text-orange-600",
+          profileExists ? "text-green-600" : "text-destructive",
           className
         )}
       >

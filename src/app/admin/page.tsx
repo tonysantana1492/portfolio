@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { AdminDashboard } from "./dashboard";
 import { ROOT_DOMAIN } from "@/config/app.config";
-import { getAllSubdomains } from "@/services/subdomains";
+import { getAllSubdomainsWithProfiles } from "@/services/profile-subdomain";
 
 export const metadata: Metadata = {
   title: `Admin Dashboard | ${ROOT_DOMAIN}`,
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function AdminPage() {
   // TODO: You can add authentication here with your preferred auth provider
-  const tenants = await getAllSubdomains();
+  const tenants = await getAllSubdomainsWithProfiles();
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">

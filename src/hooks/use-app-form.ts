@@ -20,6 +20,7 @@ export const useAppForm = <T extends FieldValues>({
 
   const form = useForm<T>({
     resolver: zodResolver(schema),
+    mode: "onChange", // Validate on every change to clear errors immediately
     defaultValues,
   });
 
