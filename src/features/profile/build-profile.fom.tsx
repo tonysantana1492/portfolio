@@ -1,13 +1,7 @@
 "use client";
 
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import {
-  ArrowRight,
-  CheckCircle,
-  ExternalLink,
-  Loader2,
-  XCircle,
-} from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,7 +20,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import {
   InputGroup,
@@ -38,7 +31,9 @@ import {
   SOCIAL_NETWORKS,
   SocialNetworkSelector,
 } from "@/features/profile/social-network-selector";
+import { SocialUrlStatusIndicator } from "@/features/profile/social-url-status-indicator";
 import { UsernameStatusIndicator } from "@/features/profile/username-status-indicator";
+import { useSocialUrlValidation } from "@/hooks/use-social-url-validation";
 import { useUsernameAvailability } from "@/hooks/use-username-availability";
 
 // Form validation schema
@@ -51,7 +46,11 @@ const formSchema = z.object({
   socialUsername: z
     .string()
     .min(1, "Please enter your social media username")
-    .max(20, "Username is too long"),
+    .max(100, "Username is too long")
+    .refine(
+      (value) => value.trim().length > 0,
+      "Social username cannot be empty"
+    ),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -106,6 +105,14 @@ export function BuildProfileForm() {
   // Watch the username field for real-time validation
   const { isChecking, isAvailable, error } = useUsernameAvailability(username);
 
+  // Watch the social URL for real-time validation
+  const {
+    isChecking: isSocialChecking,
+    isValid: isSocialValid,
+    error: socialError,
+    profileExists,
+  } = useSocialUrlValidation(socialNetwork, socialUsername);
+
   const onSubmit = async (data: FormData) => {
     try {
       // Check one more time before submission to ensure username is still available
@@ -117,6 +124,15 @@ export function BuildProfileForm() {
         return;
       }
 
+      // Check if social URL is valid
+      if (isSocialValid === false) {
+        form.setError("socialUsername", {
+          type: "manual",
+          message: socialError || "Invalid social profile",
+        });
+        return;
+      }
+
       // Construct the full social media URL
       const fullSocialUrl = data.socialNetwork + data.socialUsername;
 
@@ -124,6 +140,8 @@ export function BuildProfileForm() {
       const userData = {
         username: data.username,
         socialUrl: fullSocialUrl,
+        socialUrlValid: isSocialValid,
+        socialProfileExists: profileExists,
         createdAt: new Date().toISOString(),
       };
 
@@ -134,29 +152,6 @@ export function BuildProfileForm() {
     } catch (error) {
       console.error("Error submitting form:", error);
     }
-  };
-
-  // Function to get the icon and color based on availability status
-  const getUsernameStatusIcon = () => {
-    if (!username || username.length < 3) return null;
-
-    if (isChecking) {
-      return <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />;
-    }
-
-    if (error) {
-      return <XCircle className="h-4 w-4 text-destructive" />;
-    }
-
-    if (isAvailable === true) {
-      return <CheckCircle className="h-4 w-4 text-green-500" />;
-    }
-
-    if (isAvailable === false) {
-      return <XCircle className="h-4 w-4 text-destructive" />;
-    }
-
-    return null;
   };
 
   const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
@@ -187,7 +182,7 @@ export function BuildProfileForm() {
               <FormField
                 control={form.control}
                 name="socialUsername"
-                render={() => (
+                render={({ fieldState }) => (
                   <FormItem>
                     <FormLabel>Social Network</FormLabel>
                     <FormControl>
@@ -218,26 +213,35 @@ export function BuildProfileForm() {
 
                         {socialUsername && (
                           <InputGroupAddon align="inline-end">
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="h-5 w-5 p-0"
-                              onClick={() =>
-                                window.open(
-                                  selectedNetwork.baseUrl + socialUsername,
-                                  "_blank"
-                                )
-                              }
-                              title="Create Profile"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                            </Button>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="h-5 w-5 p-0"
+                                onClick={() =>
+                                  window.open(
+                                    selectedNetwork.baseUrl + socialUsername,
+                                    "_blank"
+                                  )
+                                }
+                                title="View Profile"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                              </Button>
+                            </div>
                           </InputGroupAddon>
                         )}
                       </InputGroup>
                     </FormControl>
-                    <FormMessage />
+                    <SocialUrlStatusIndicator
+                      isChecking={isSocialChecking}
+                      isValid={isSocialValid}
+                      error={socialError}
+                      profileExists={profileExists}
+                      socialUsername={socialUsername}
+                      formError={fieldState.error?.message}
+                    />
                   </FormItem>
                 )}
               />
@@ -264,7 +268,6 @@ export function BuildProfileForm() {
                       />
                       <InputGroupAddon align="inline-end">
                         <div className="flex items-center gap-2">
-                          {getUsernameStatusIcon()}
                           <InputGroupText>.lets0.com</InputGroupText>
                         </div>
                       </InputGroupAddon>
@@ -288,8 +291,13 @@ export function BuildProfileForm() {
               disabled={
                 isSubmitting ||
                 isChecking ||
+                isSocialChecking ||
                 (username.length >= 3 && isAvailable === false) ||
-                (username.length >= 3 && isAvailable === null && !isChecking)
+                (username.length >= 3 && isAvailable === null && !isChecking) ||
+                (socialUsername.trim().length > 0 && isSocialValid === false) ||
+                (socialUsername.trim().length > 0 &&
+                  isSocialValid === null &&
+                  !isSocialChecking)
               }
             >
               {isSubmitting ? (
