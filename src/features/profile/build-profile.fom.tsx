@@ -137,7 +137,7 @@ export function BuildProfileForm() {
 
       // const fullSocialUrl = data.socialNetwork + data.socialUsername;
 
-      window.location.href = `/profile/${data.username}`;
+      window.location.href = `/s/${data.username}`;
     } catch (error) {
       toast.error("Error creating the profile, try again.");
       console.error("Error creating profile:", error);
