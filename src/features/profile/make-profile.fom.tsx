@@ -8,6 +8,7 @@ import { useQueryState } from "nuqs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { SocialNetworkSelector } from "@/components/social-network-selector";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,26 +20,17 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { UsernameStatusIndicator } from "@/components/username-status-indicator";
 import { useUsernameAvailability } from "@/hooks/use-username-availability";
 
@@ -68,7 +60,6 @@ const formatUsername = (value: string): string => {
 };
 
 export function MakeProfileForm() {
-  // Use nuqs for URL state persistence
   const [username, setUsername] = useQueryState("username", {
     defaultValue: "",
     shallow: false,
@@ -160,34 +151,6 @@ export function MakeProfileForm() {
     return null;
   };
 
-  const SOCIAL_NETWORKS = [
-    {
-      label: "LinkedIn",
-      icon: "linkedin",
-      value: "https://linkedin.com/in/",
-    },
-    {
-      label: "GitHub",
-      icon: "github",
-      value: "https://github.com/",
-    },
-    {
-      label: "Twitter",
-      icon: "twitter",
-      value: "https://twitter.com/",
-    },
-    {
-      label: "Facebook",
-      icon: "facebook",
-      value: "https://facebook.com/",
-    },
-    {
-      label: "Instagram",
-      icon: "instagram",
-      value: "https://instagram.com/",
-    },
-  ];
-
   return (
     <Card className="border-border/50 shadow-2xl">
       <CardHeader>
@@ -199,6 +162,18 @@ export function MakeProfileForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <SocialNetworkSelector
+              value={socialNetwork}
+              socialUsername={socialUsername}
+              onNetworkChange={(networkId) => {
+                setSocialNetwork(networkId);
+                form.setValue("socialNetwork", networkId);
+              }}
+              onUsernameChange={(username) => {
+                setSocialUsername(username);
+                form.setValue("socialUsername", username);
+              }}
+            />
             <FormField
               control={form.control}
               name="username"
@@ -225,9 +200,6 @@ export function MakeProfileForm() {
                       </InputGroupAddon>
                     </InputGroup>
                   </FormControl>
-                  {/* <FormDescription>
-                    Only lowercase letters, numbers and hyphens
-                  </FormDescription> */}
                   <UsernameStatusIndicator
                     isChecking={isChecking}
                     isAvailable={isAvailable}
@@ -238,68 +210,6 @@ export function MakeProfileForm() {
                 </FormItem>
               )}
             />
-
-            <div className="space-y-4">
-              <FormField
-                control={form.control}
-                name="socialNetwork"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Your Social Media Username</FormLabel>
-                    <FormControl>
-                      <Select
-                        value={socialNetwork}
-                        onValueChange={(value) => {
-                          setSocialNetwork(value);
-                          field.onChange(value);
-                        }}
-                      >
-                        <SelectTrigger className="font-mono">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {SOCIAL_NETWORKS.map((network) => (
-                            <SelectItem
-                              key={network.value}
-                              value={network.value}
-                            >
-                              <span className="text-muted-foreground">
-                                {network.value}
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormDescription>
-                      We'll use your public profile to generate your portfolio
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="socialUsername"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="your-username"
-                        value={socialUsername}
-                        onChange={(e) => {
-                          setSocialUsername(e.target.value);
-                          field.onChange(e.target.value);
-                        }}
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
 
             <Button
               type="submit"
