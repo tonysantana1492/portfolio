@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
-import { ArrowRight, CheckCircle, Loader2, XCircle } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle,
+  ExternalLink,
+  Loader2,
+  XCircle,
+} from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { SocialNetworkSelector } from "@/components/social-network-selector";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,7 +34,11 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group";
-import { UsernameStatusIndicator } from "@/components/username-status-indicator";
+import {
+  SOCIAL_NETWORKS,
+  SocialNetworkSelector,
+} from "@/features/profile/social-network-selector";
+import { UsernameStatusIndicator } from "@/features/profile/username-status-indicator";
 import { useUsernameAvailability } from "@/hooks/use-username-availability";
 
 // Form validation schema
@@ -59,7 +66,7 @@ const formatUsername = (value: string): string => {
     .replace(/[^a-z0-9\-_.]/g, ""); // Allow letters, numbers, hyphens, underscores, and dots
 };
 
-export function MakeProfileForm() {
+export function BuildProfileForm() {
   const [username, setUsername] = useQueryState("username", {
     defaultValue: "",
     shallow: false,
@@ -85,15 +92,16 @@ export function MakeProfileForm() {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    setValue,
   } = form;
 
   // Sync socialUsername to username automatically
-  useEffect(() => {
-    if (socialUsername) {
-      const formattedUsername = formatUsername(socialUsername);
-      setUsername(formattedUsername);
-    }
-  }, [socialUsername, setUsername]);
+  // useEffect(() => {
+  //   if (socialUsername) {
+  //     const formattedUsername = formatUsername(socialUsername);
+  //     setUsername(formattedUsername);
+  //   }
+  // }, [socialUsername, setUsername]);
 
   // Watch the username field for real-time validation
   const { isChecking, isAvailable, error } = useUsernameAvailability(username);
@@ -151,6 +159,10 @@ export function MakeProfileForm() {
     return null;
   };
 
+  const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
+    socialNetwork?.includes(network.baseUrl)
+  );
+
   return (
     <Card className="border-border/50 shadow-2xl">
       <CardHeader>
@@ -162,22 +174,80 @@ export function MakeProfileForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* social network selector */}
             <SocialNetworkSelector
-              value={socialNetwork}
-              socialUsername={socialUsername}
+              socialNetwork={socialNetwork}
               onNetworkChange={(networkId) => {
                 setSocialNetwork(networkId);
-                form.setValue("socialNetwork", networkId);
-              }}
-              onUsernameChange={(username) => {
-                setSocialUsername(username);
-                form.setValue("socialUsername", username);
+                setValue("socialNetwork", networkId);
               }}
             />
+            {/* social username input */}
+            {selectedNetwork && (
+              <FormField
+                control={form.control}
+                name="socialUsername"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Social Network</FormLabel>
+                    <FormControl>
+                      <InputGroup className="w-full">
+                        <InputGroupInput
+                          placeholder={selectedNetwork.placeholder}
+                          value={socialUsername}
+                          onChange={(e) => {
+                            const newValue = e.target.value;
+                            setSocialUsername(newValue);
+                            setValue("socialUsername", newValue);
+                          }}
+                          onInput={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            setSocialUsername(target.value);
+                            setValue("socialUsername", target.value);
+                          }}
+                          className="text-sm"
+                        />
+                        <InputGroupAddon align="inline-start">
+                          <div className="flex items-center gap-1.5">
+                            <selectedNetwork.icon className="h-3.5 w-3.5" />
+                            <InputGroupText className="text-muted-foreground text-xs">
+                              {selectedNetwork.baseUrl.replace("https://", "")}
+                            </InputGroupText>
+                          </div>
+                        </InputGroupAddon>
+
+                        {socialUsername && (
+                          <InputGroupAddon align="inline-end">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-5 w-5 p-0"
+                              onClick={() =>
+                                window.open(
+                                  selectedNetwork.baseUrl + socialUsername,
+                                  "_blank"
+                                )
+                              }
+                              title="Create Profile"
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                            </Button>
+                          </InputGroupAddon>
+                        )}
+                      </InputGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {/* username input */}
             <FormField
               control={form.control}
               name="username"
-              render={({ field }) => (
+              render={({ fieldState }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
@@ -188,7 +258,7 @@ export function MakeProfileForm() {
                         onChange={(e) => {
                           const formattedValue = formatUsername(e.target.value);
                           setUsername(formattedValue);
-                          field.onChange(formattedValue);
+                          setValue("username", formattedValue);
                         }}
                         className="pr-32"
                       />
@@ -205,8 +275,8 @@ export function MakeProfileForm() {
                     isAvailable={isAvailable}
                     error={error}
                     username={username}
+                    formError={fieldState.error?.message}
                   />
-                  <FormMessage />
                 </FormItem>
               )}
             />

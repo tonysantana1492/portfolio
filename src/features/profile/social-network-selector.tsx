@@ -1,16 +1,7 @@
 "use client";
 
-import { ExternalLink } from "lucide-react";
-
 import { Icons } from "@/components/shared/icons";
-import { Button } from "@/components/ui/button";
 import { FormItem, FormMessage } from "@/components/ui/form";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-  InputGroupText,
-} from "@/components/ui/input-group";
 import { cn } from "@/lib/utils";
 
 // Instagram icon (since it's missing from icons.tsx)
@@ -50,7 +41,7 @@ export const SOCIAL_NETWORKS: SocialNetwork[] = [
     name: "LinkedIn",
     icon: Icons.linkedin,
     baseUrl: "https://linkedin.com/in/",
-    placeholder: "tu-usuario",
+    placeholder: "your-username",
     color:
       "hover:bg-blue-50 hover:border-blue-200 data-[selected=true]:bg-blue-50 data-[selected=true]:border-blue-500",
     usernameRegex:
@@ -62,7 +53,7 @@ export const SOCIAL_NETWORKS: SocialNetwork[] = [
     name: "Twitter",
     icon: Icons.x,
     baseUrl: "https://twitter.com/",
-    placeholder: "tu-usuario",
+    placeholder: "your-username",
     color:
       "hover:bg-gray-50 hover:border-gray-200 data-[selected=true]:bg-gray-50 data-[selected=true]:border-gray-500",
     usernameRegex:
@@ -74,7 +65,7 @@ export const SOCIAL_NETWORKS: SocialNetwork[] = [
     name: "Instagram",
     icon: InstagramIcon,
     baseUrl: "https://instagram.com/",
-    placeholder: "tu-usuario",
+    placeholder: "your-username",
     color:
       "hover:bg-pink-50 hover:border-pink-200 data-[selected=true]:bg-pink-50 data-[selected=true]:border-pink-500",
     usernameRegex: /(?:instagram\.com|www\.instagram\.com)\/([a-zA-Z0-9_.]+)/i,
@@ -85,7 +76,7 @@ export const SOCIAL_NETWORKS: SocialNetwork[] = [
     name: "GitHub",
     icon: Icons.github,
     baseUrl: "https://github.com/",
-    placeholder: "tu-usuario",
+    placeholder: "your-username",
     color:
       "hover:bg-purple-50 hover:border-purple-200 data-[selected=true]:bg-purple-50 data-[selected=true]:border-purple-500",
     usernameRegex: /(?:github\.com|www\.github\.com)\/([a-zA-Z0-9\-_.]+)/i,
@@ -96,7 +87,7 @@ export const SOCIAL_NETWORKS: SocialNetwork[] = [
     name: "Facebook",
     icon: FacebookIcon,
     baseUrl: "https://facebook.com/",
-    placeholder: "tu-usuario",
+    placeholder: "your-username",
     color:
       "hover:bg-blue-50 hover:border-blue-200 data-[selected=true]:bg-blue-50 data-[selected=true]:border-blue-500",
     usernameRegex: /(?:facebook\.com|www\.facebook\.com)\/([a-zA-Z0-9.]+)/i,
@@ -105,32 +96,22 @@ export const SOCIAL_NETWORKS: SocialNetwork[] = [
 ];
 
 interface SocialNetworkSelectorProps {
-  value?: string;
-  socialUsername?: string;
+  socialNetwork?: string;
   onNetworkChange: (networkId: string) => void;
-  onUsernameChange: (username: string) => void;
   className?: string;
 }
 
 export function SocialNetworkSelector({
-  value,
-  socialUsername = "",
+  socialNetwork,
   onNetworkChange,
-  onUsernameChange,
   className,
 }: SocialNetworkSelectorProps) {
-  const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
-    value?.includes(network.baseUrl)
-  );
-
   return (
     <div className={cn("space-y-3", className)}>
       <FormItem>
-        {/* <FormLabel className="font-medium text-sm">Red Social</FormLabel> */}
-
         <div className="flex flex-wrap gap-2">
           {SOCIAL_NETWORKS.map((network) => {
-            const isSelected = value?.includes(network.baseUrl);
+            const isSelected = socialNetwork?.includes(network.baseUrl);
             const IconComponent = network.icon;
 
             return (
@@ -147,59 +128,12 @@ export function SocialNetworkSelector({
                 title={`Select ${network.name}`}
               >
                 <IconComponent className="h-4 w-4 shrink-0" />
-                {/* <span className="hidden sm:inline">{network.name}</span> */}
               </button>
             );
           })}
         </div>
         <FormMessage />
       </FormItem>
-
-      {selectedNetwork && (
-        <InputGroup className="w-full">
-          <InputGroupInput
-            placeholder={selectedNetwork.placeholder}
-            value={socialUsername}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              onUsernameChange(newValue);
-            }}
-            onInput={(e) => {
-              const target = e.target as HTMLInputElement;
-              onUsernameChange(target.value);
-            }}
-            className="text-sm"
-          />
-          <InputGroupAddon align="inline-start">
-            <div className="flex items-center gap-1.5">
-              <selectedNetwork.icon className="h-3.5 w-3.5" />
-              <InputGroupText className="text-muted-foreground text-xs">
-                {selectedNetwork.baseUrl.replace("https://", "")}
-              </InputGroupText>
-            </div>
-          </InputGroupAddon>
-
-          {socialUsername && (
-            <InputGroupAddon align="inline-end">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="h-5 w-5 p-0"
-                onClick={() =>
-                  window.open(
-                    selectedNetwork.baseUrl + socialUsername,
-                    "_blank"
-                  )
-                }
-                title="Create Profile"
-              >
-                <ExternalLink className="h-3 w-3" />
-              </Button>
-            </InputGroupAddon>
-          )}
-        </InputGroup>
-      )}
     </div>
   );
 }

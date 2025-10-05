@@ -1,7 +1,7 @@
 import { Globe, Sparkles, Zap } from "lucide-react";
 
-import { MakeProfileForm } from "@/features/profile/make-profile.fom";
 import { Button } from "@/components/ui/button";
+import { BuildProfileForm } from "@/features/profile/build-profile.fom";
 
 export default function HomePage() {
   return (
@@ -71,7 +71,7 @@ export default function HomePage() {
 
           {/* Right Column - Form */}
           <div className="p-4 lg:pl-8">
-            <MakeProfileForm />
+            <BuildProfileForm />
           </div>
         </div>
       </section>
