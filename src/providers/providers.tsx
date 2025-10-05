@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LazyMotion, domMax as loadFeatures } from "motion/react";
 import { ThemeProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { PWAPrompts } from "@/components/shared/pwa-prompts";
 import { Toaster } from "@/components/ui/sonner";
@@ -26,17 +27,19 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
       enableColorScheme
     >
       <ThemeColorProvider initialTheme={activeThemeValue}>
-        <AppProgressProvider
-          color="var(--foreground)"
-          height="2px"
-          delay={200}
-          options={{ showSpinner: false }}
-        >
-          <LazyMotion features={loadFeatures} strict>
-            {children}
-            <PWAPrompts />
-          </LazyMotion>
-        </AppProgressProvider>
+        <NuqsAdapter>
+          <AppProgressProvider
+            color="var(--foreground)"
+            height="2px"
+            delay={200}
+            options={{ showSpinner: false }}
+          >
+            <LazyMotion features={loadFeatures} strict>
+              {children}
+              <PWAPrompts />
+            </LazyMotion>
+          </AppProgressProvider>
+        </NuqsAdapter>
       </ThemeColorProvider>
       <Toaster
         richColors
