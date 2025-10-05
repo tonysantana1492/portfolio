@@ -1,4 +1,5 @@
-const CACHE_VERSION = Date.now();
+// const CACHE_VERSION = Date.now();
+const CACHE_VERSION = 1;
 const CACHE_NAME = `portfolio-v${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `portfolio-static-v${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `portfolio-dynamic-v${CACHE_VERSION}`;
