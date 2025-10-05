@@ -12,14 +12,14 @@ import { formatPhoneNumber } from "@/lib/string";
 const esc = (s?: string) =>
   (s ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-const b64 = (s?: string) => {
-  if (!s) return "";
-  try {
-    return Buffer.from(s, "base64").toString("utf8");
-  } catch {
-    return s;
-  }
-};
+// const b64 = (s?: string) => {
+//   if (!s) return "";
+//   try {
+//     return Buffer.from(s, "base64").toString("utf8");
+//   } catch {
+//     return s;
+//   }
+// };
 
 const toBullets = (text?: string) => {
   if (!text) return [];
@@ -59,11 +59,11 @@ function groupTechByCategory(items: TechStack[]) {
   return map;
 }
 
-function inlineLinks(techs: TechStack[]) {
-  return techs
-    .map((t) => (t.href ? `[${esc(t.title)}](${t.href})` : esc(t.title)))
-    .join(", ");
-}
+// function inlineLinks(techs: TechStack[]) {
+//   return techs
+//     .map((t) => (t.href ? `[${esc(t.title)}](${t.href})` : esc(t.title)))
+//     .join(", ");
+// }
 
 const mdxLink = (title: string, href?: string) =>
   href ? `[${esc(title)}](${href})` : esc(title);
@@ -79,8 +79,8 @@ export function cvToMdx(profile: IProfile) {
     )}`
   );
 
-  const emailPlain = b64(profile.email);
-  const phonePlain = b64(profile.phoneNumber);
+  const emailPlain = profile.email;
+  const phonePlain = profile.phoneNumber;
   if (profile.jobTitle) lines.push(esc(profile.jobTitle));
   if (profile.address) lines.push(esc(profile.address));
 

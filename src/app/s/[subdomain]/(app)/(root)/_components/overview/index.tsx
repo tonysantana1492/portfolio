@@ -22,12 +22,14 @@ export function Overview({
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="space-y-2">
-        <JobItem
-          key={lastCompany.companyName}
-          title={lastCompany.positions[0].title}
-          company={lastCompany.companyName}
-          website={lastCompany.website ?? ""}
-        />
+        {lastCompany && (
+          <JobItem
+            key={lastCompany.companyName}
+            title={lastCompany.positions[0].title}
+            company={lastCompany.companyName}
+            website={lastCompany.website ?? ""}
+          />
+        )}
 
         <IntroItem icon={MapPinIcon} content={profile.address} />
 

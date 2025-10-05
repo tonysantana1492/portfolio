@@ -17,7 +17,10 @@ export function GitHubContributions({ profile }: GitHubContributionsProps) {
       <h2 className="sr-only">GitHub Contributions</h2>
 
       <Suspense fallback={<GitHubContributionFallback />}>
-        <GitHubContributionGraph contributions={contributions} />
+        <GitHubContributionGraph
+          contributions={contributions}
+          githubUserName={profile.githubUserName}
+        />
       </Suspense>
     </Panel>
   );

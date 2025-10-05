@@ -31,6 +31,7 @@ import {
   InputGroupInput,
   InputGroupText,
 } from "@/components/ui/input-group";
+import { PROFILE } from "@/content/profile";
 import {
   SOCIAL_NETWORKS,
   SocialNetworkSelector,
@@ -87,7 +88,7 @@ export function BuildProfileForm() {
   });
 
   const [showAuthPopup, setShowAuthPopup] = useState(false);
-  const { authenticateWithGoogle, isAuthenticated } = useAuth();
+  const { authenticateWithGoogle, isAuthenticated, user } = useAuth();
 
   const form = useForm<FormData>({
     resolver: standardSchemaResolver(formSchema),
@@ -104,6 +105,8 @@ export function BuildProfileForm() {
     setValue,
     formState: { isSubmitting },
   } = form;
+
+  const [isCreatingProfile, setIsCreatingProfile] = useState(false);
 
   // Auto-format and suggest username based on social username
   // useEffect(() => {
@@ -132,15 +135,98 @@ export function BuildProfileForm() {
   };
 
   const proceedWithProfileCreation = async () => {
+    setIsCreatingProfile(true);
+
     try {
       const data = form.getValues();
 
-      // const fullSocialUrl = data.socialNetwork + data.socialUsername;
+      const fullName = user?.name || data.username;
+      const nameParts = fullName.split(" ");
+      const firstName = nameParts[0] || data.username;
+      const lastName = nameParts.slice(1).join(" ") || "";
 
-      window.location.href = `/s/${data.username}`;
+      const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
+        data.socialNetwork?.includes(network.baseUrl)
+      );
+
+      const profileData = {
+        ...PROFILE,
+        username: data.username,
+        firstName,
+        lastName,
+        email: user?.email || `${data.username}@example.com`, // Fallback temporal
+        displayName: fullName,
+        bio: `¡Hola! Soy ${firstName} y acabo de unirme a lets0. Start from zero, shine like one! ✨`,
+        gender: "",
+        pronouns: "",
+        flipSentences: [
+          `¡Hola, soy ${firstName}!`,
+          "Nuevo miembro de lets0",
+          "Listo para brillar ✨",
+        ],
+        twitterUsername:
+          selectedNetwork?.name === "X (Twitter)" ? data.socialUsername : "",
+        githubUserName:
+          selectedNetwork?.name === "GitHub" ? data.socialUsername : "",
+        address: "",
+        phoneNumber: "",
+        website:
+          selectedNetwork?.name === "Website"
+            ? `${data.socialNetwork}${data.socialUsername}`
+            : "",
+        otherWebsites:
+          selectedNetwork &&
+          !["X (Twitter)", "GitHub", "Website"].includes(selectedNetwork.name)
+            ? [`${data.socialNetwork}${data.socialUsername}`]
+            : [],
+        jobTitle: "",
+        avatar: user?.picture || "",
+        ogImage: "",
+        keywords: ["lets0", "portfolio", data.username],
+        userId: user?.id,
+      };
+
+      console.log("profileData", profileData);
+
+      const response = await fetch("/api/profile/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ API Error:", errorData);
+        throw new Error(errorData.error || "Error al crear el perfil");
+      }
+
+      const result = await response.json();
+      console.log("✅ API Success result:", result);
+
+      if (result.success) {
+        toast.success(`¡Perfil y subdominio creados exitosamente! 🎉`);
+        toast.success(
+          `Tu portfolio estará disponible en: lets0.com/s/${data.username}`
+        );
+
+        // Pequeña demora para que el usuario vea el mensaje de éxito
+        setTimeout(() => {
+          window.location.href = `/s/${data.username}`;
+        }, 2000);
+      } else {
+        throw new Error(result.message || "Error al crear el perfil");
+      }
     } catch (error) {
-      toast.error("Error creating the profile, try again.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Error creating the profile, try again."
+      );
       console.error("Error creating profile:", error);
+    } finally {
+      setIsCreatingProfile(false);
     }
   };
 
@@ -319,6 +405,7 @@ export function BuildProfileForm() {
                 size="lg"
                 disabled={
                   isSubmitting ||
+                  isCreatingProfile ||
                   isChecking ||
                   isSocialChecking ||
                   (username.length >= 3 && isAvailable === false) ||
@@ -332,11 +419,11 @@ export function BuildProfileForm() {
                     !isSocialChecking)
                 }
               >
-                {isSubmitting ? (
-                  "Generating your profile..."
+                {isSubmitting || isCreatingProfile ? (
+                  "Creating your profile & subdomain..."
                 ) : isAuthenticated ? (
                   <>
-                    Create my portfolio
+                    Create my portfolio & subdomain
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </>
                 ) : (

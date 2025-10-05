@@ -130,9 +130,10 @@ export async function createSubdomainWithProfile(
         profileId: profileId,
       },
     });
+
     return true;
   } catch (error) {
-    console.error("Error creating subdomain with profile:", error);
+    console.error("❌ Error creating subdomain with profile:", error);
     return false;
   }
 }

@@ -83,8 +83,12 @@ export default async function Page({
           </>
         )}
 
-        <GitHubContributions profile={profile} />
-        <HeroSeparator />
+        {profile.githubUserName && (
+          <>
+            <GitHubContributions profile={profile} />
+            <HeroSeparator />
+          </>
+        )}
 
         {profile.sections.techStack && (
           <>

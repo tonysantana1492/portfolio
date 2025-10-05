@@ -13,30 +13,6 @@ export function SiteFooter({
   return (
     <footer className={cn(className, "max-w-screen overflow-x-hidden px-2")}>
       <div className="screen-line-before mx-auto border-edge border-x pt-4 md:max-w-3xl">
-        <p className="mb-1 text-balance px-4 text-center font-mono text-muted-foreground text-sm"></p>
-
-        <p className="mb-4 text-balance px-4 text-center font-mono text-muted-foreground text-sm">
-          Built by{" "}
-          <a
-            className="link"
-            href={profile.sections.socialLinks?.items[1].href}
-            target="_blank"
-            rel="noopener"
-          >
-            {profile.sections.socialLinks?.items[1].description}
-          </a>
-          . The source code is available on{" "}
-          <a
-            className="link"
-            href={`https://github.com/${profile.githubUserName}`}
-            target="_blank"
-            rel="noopener"
-          >
-            GitHub
-          </a>
-          .
-        </p>
-
         <div
           className={cn(
             "screen-line-before screen-line-after flex w-full before:z-1 after:z-1",

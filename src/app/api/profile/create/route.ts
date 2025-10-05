@@ -11,6 +11,8 @@ import { createSubdomainWithProfile } from "@/services/profile-subdomain";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    console.log("111111111:", body);
     const {
       username,
       firstName,
@@ -35,7 +37,7 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!username || !firstName || !lastName || !email) {
+    if (!username || !firstName || !email) {
       return NextResponse.json(
         {
           error:
@@ -203,8 +205,26 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Create subdomain entry and associate it with the profile
-    await createSubdomainWithProfile(username, "✨", newProfile.id);
+    const subdomainCreated = await createSubdomainWithProfile(
+      username,
+      "✨",
+      newProfile.id
+    );
+
+    if (!subdomainCreated) {
+      console.error(
+        "❌ Failed to create subdomain, rolling back profile creation"
+      );
+      // If subdomain creation fails, we should delete the profile to maintain consistency
+      await prisma.profile.delete({
+        where: { id: newProfile.id },
+      });
+
+      return NextResponse.json(
+        { error: "Failed to create subdomain. Please try again." },
+        { status: 500 }
+      );
+    }
 
     // Return created profile
     const responseProfile: Partial<IProfile> = {
@@ -221,7 +241,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       profile: responseProfile,
-      message: "Profile created successfully!",
+      subdomain: username,
+      message: "Profile and subdomain created successfully!",
     });
   } catch (error) {
     console.error("Error creating profile:", error);
