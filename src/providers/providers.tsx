@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LazyMotion, domMax as loadFeatures } from "motion/react";
 import { ThemeProvider } from "next-themes";
 
+import { PWAPrompts } from "@/components/shared/pwa-prompts";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeColorProvider } from "@/theme/theme-color.provider";
 
@@ -33,6 +34,7 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
         >
           <LazyMotion features={loadFeatures} strict>
             {children}
+            <PWAPrompts />
           </LazyMotion>
         </AppProgressProvider>
       </ThemeColorProvider>

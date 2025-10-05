@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 
 import { cookies } from "next/headers";
 
-import { PWAPrompts } from "@/components/shared/pwa-prompts";
 import { getSiteInfo } from "@/config/site.config";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { getProfileBySubdomain } from "@/lib/profile";
@@ -115,10 +114,7 @@ export default async function RootLayout({
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Providers activeThemeValue={activeThemeValue}>
-          {children}
-          <PWAPrompts />
-        </Providers>
+        <Providers activeThemeValue={activeThemeValue}>{children}</Providers>
       </body>
     </html>
   );
