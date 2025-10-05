@@ -33,7 +33,7 @@ export function PWAPrompts() {
       )}
 
       {/* Install App Prompt */}
-      {isInstallable && !dismissedInstall && (
+      {/* {isInstallable && !dismissedInstall && (
         <div className="fixed right-4 bottom-4 z-50 max-w-sm rounded-lg border bg-background p-4 shadow-lg">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -70,7 +70,7 @@ export function PWAPrompts() {
             </Button>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Update Available Prompt */}
       {isUpdateAvailable && !dismissedUpdate && (
