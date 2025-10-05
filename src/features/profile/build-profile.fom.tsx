@@ -4,6 +4,7 @@ import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -145,11 +146,10 @@ export function BuildProfileForm() {
         createdAt: new Date().toISOString(),
       };
 
-      localStorage.setItem("userData", JSON.stringify(userData));
-
       // Redirect to processing page
       window.location.href = `/profile/${data.username}`;
     } catch (error) {
+      toast.error("Failed to create profile. Please try again.");
       console.error("Error submitting form:", error);
     }
   };

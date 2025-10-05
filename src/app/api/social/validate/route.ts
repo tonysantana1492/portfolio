@@ -192,7 +192,7 @@ async function checkProfileExists(
     // For now, we'll do a basic HEAD request to check if the URL is accessible
     // This is just a basic implementation - you might want to enhance this
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 6000); // 6 second timeout
 
     const response = await fetch(fullUrl, {
       method: "HEAD",
