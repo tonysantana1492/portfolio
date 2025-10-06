@@ -23,7 +23,7 @@ import {
   getPostBySlug,
   type Post,
 } from "@/services/blog";
-import { profileService } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -111,7 +111,7 @@ export default async function Page({
     notFound();
   }
 
-  const profile = await profileService.getProfile();
+  const profile = await getProfileBySubdomain(slug);
 
   if (!profile) {
     notFound();

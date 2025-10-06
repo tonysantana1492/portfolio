@@ -98,9 +98,6 @@ function TenantGrid({
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="text-4xl">{tenant.emoji}</div>
-                <div className="text-gray-500 text-sm">
-                  {new Date(tenant.createdAt).toLocaleDateString()}
-                </div>
               </div>
 
               {tenant.profile ? (

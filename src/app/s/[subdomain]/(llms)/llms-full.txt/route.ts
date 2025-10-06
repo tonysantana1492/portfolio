@@ -1,16 +1,27 @@
+import { type NextRequest, NextResponse } from "next/server";
+
 import dayjs from "dayjs";
-import { NextResponse } from "next/server";
 
 import { getSiteInfo } from "@/config/site.config";
 import { getLLMText } from "@/lib/get-llm-text";
 import { getAllPosts } from "@/services/blog";
-import { profileService } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const profile = await profileService.getProfile();
+    const { searchParams } = request.nextUrl;
+    const subdomain = searchParams.get("subdomain");
+
+    if (!subdomain) {
+      return NextResponse.json(
+        { error: "Subdomain is required" },
+        { status: 400 }
+      );
+    }
+
+    const profile = await getProfileBySubdomain(subdomain);
 
     if (!profile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });

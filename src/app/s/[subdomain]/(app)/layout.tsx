@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/footer/site-footer";
 import { SiteHeader } from "@/components/header/site-header";
 import { ScrollTop } from "@/components/shared/scroll-top";
 import { generateDynamicMetadata } from "@/lib/metadata";
-import { getProfileBySubdomain } from "@/lib/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
 interface AppLayoutProps {
   children: React.ReactNode;

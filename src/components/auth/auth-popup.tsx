@@ -51,8 +51,6 @@ export function AuthPopup({
         verified_email: true,
       };
 
-      toast.success("Authentication successful!");
-
       // Call the callback with user data
       onAuthSuccess(mockGoogleUserData);
 

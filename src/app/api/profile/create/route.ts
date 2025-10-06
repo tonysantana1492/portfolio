@@ -48,16 +48,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate username format
-    const usernameRegex = /^[a-z0-9_]{3,30}$/;
-    if (!usernameRegex.test(username)) {
-      return NextResponse.json(
-        {
-          error:
-            "Invalid username format. Use only lowercase letters, numbers, and underscores (3-30 characters)",
-        },
-        { status: 400 }
-      );
-    }
+    // const usernameRegex = /^[a-z0-9_]{3,30}$/;
+    // if (!usernameRegex.test(username)) {
+    //   return NextResponse.json(
+    //     {
+    //       error:
+    //         "Invalid username format. Use only lowercase letters, numbers, and underscores (3-30 characters)",
+    //     },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Check if username is already taken
     const existingProfile = await prisma.profile.findUnique({

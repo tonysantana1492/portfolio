@@ -1,12 +1,25 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { profileService } from "@/services/profile";
+import {
+  createProfile,
+  getProfileBySubdomain,
+  updateProfile,
+} from "@/services/profile";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const subdomain = searchParams.get("subdomain");
+
+  if (!subdomain) {
+    return NextResponse.json(
+      { error: "Subdomain is required" },
+      { status: 400 }
+    );
+  }
+
   try {
-    // Try to get profile from database
-    const profile = await profileService.getProfile();
+    const profile = await getProfileBySubdomain(subdomain);
 
     return NextResponse.json(profile);
   } catch (error) {
@@ -18,7 +31,7 @@ export async function POST(request: NextRequest) {
   try {
     const profileData = await request.json();
 
-    const updatedProfile = await profileService.createProfile(profileData);
+    const updatedProfile = await createProfile(profileData);
 
     return NextResponse.json(updatedProfile);
   } catch (error) {
@@ -34,7 +47,7 @@ export async function PUT(request: NextRequest) {
   try {
     const profileData = await request.json();
 
-    const updatedProfile = await profileService.updateProfile(profileData);
+    const updatedProfile = await updateProfile(profileData);
 
     return NextResponse.json(updatedProfile);
   } catch (error) {

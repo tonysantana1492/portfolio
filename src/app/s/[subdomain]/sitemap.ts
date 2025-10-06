@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 import dayjs from "dayjs";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getProfileBySubdomain } from "@/lib/profile";
 import { getAllPosts } from "@/services/blog";
+import { getProfileBySubdomain } from "@/services/profile";
 
 const ALL_ROUTES = ["", "/blog"];
 

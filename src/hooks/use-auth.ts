@@ -42,14 +42,13 @@ export function useAuth() {
 
       if (data.success && data.user) {
         setUser(data.user);
-        toast.success("¡Usuario autenticado y creado exitosamente!");
         return data.user;
       } else {
         throw new Error("Invalid response from server");
       }
     } catch (error) {
       console.error("Authentication error:", error);
-      toast.error("Error en la autenticación. Inténtalo de nuevo.");
+      toast.error("Authentication failed. Please try again.");
       return null;
     } finally {
       setIsLoading(false);
@@ -58,7 +57,7 @@ export function useAuth() {
 
   const logout = () => {
     setUser(null);
-    toast.success("Sesión cerrada exitosamente");
+    toast.success("Session closed successfully");
   };
 
   return {

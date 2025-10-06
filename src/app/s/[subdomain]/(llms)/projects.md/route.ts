@@ -1,12 +1,21 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-import { profileService } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
 export const dynamic = "force-dynamic"; // Changed to dynamic since we're fetching from database
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const subdomain = searchParams.get("subdomain");
+
+  if (!subdomain) {
+    return NextResponse.json(
+      { error: "Subdomain is required" },
+      { status: 400 }
+    );
+  }
   try {
-    const profile = await profileService.getProfile();
+    const profile = await getProfileBySubdomain(subdomain);
 
     if (!profile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });

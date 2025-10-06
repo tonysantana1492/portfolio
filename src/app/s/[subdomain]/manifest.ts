@@ -1,10 +1,28 @@
 import type { MetadataRoute } from "next";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getProfile } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
-export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const profile = await getProfile();
+interface ManifestProps {
+  params: {
+    subdomain: string;
+  };
+}
+
+export default async function manifest({
+  params,
+}: ManifestProps): Promise<MetadataRoute.Manifest> {
+  // Validate subdomain parameter
+  if (
+    !params.subdomain ||
+    typeof params.subdomain !== "string" ||
+    params.subdomain.trim() === ""
+  ) {
+    return {};
+  }
+
+  const profile = await getProfileBySubdomain(params.subdomain);
+
   if (!profile) {
     return {};
   }

@@ -1,12 +1,21 @@
+import type { NextRequest } from "next/server";
+
 import { getSiteInfo } from "@/config/site.config";
 import { getAllPosts } from "@/services/blog";
-import { profileService } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
 export const dynamic = "force-static";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const subdomain = searchParams.get("subdomain");
+
+  if (!subdomain) {
+    return new Response("Subdomain is required", { status: 400 });
+  }
+
   const allPosts = getAllPosts();
-  const profile = await profileService.getProfile();
+  const profile = await getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return new Response("Not Found", { status: 404 });

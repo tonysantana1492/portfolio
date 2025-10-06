@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 import sharp from "sharp";
 import VCard from "vcard-creator";
 
-import { getProfileBySubdomain } from "@/lib/profile";
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
 import { getLastCompany } from "@/services/experience";
+import { getProfileBySubdomain } from "@/services/profile";
 
 export const dynamic = "force-dynamic";
 

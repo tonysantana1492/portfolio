@@ -38,8 +38,8 @@ model Subdomain {
   updatedAt DateTime @updatedAt
   
   // Profile relationship
-  profileId String?  @db.ObjectId
-  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String  @db.ObjectId
+  profile   Profile @relation(fields: [profileId], references: [id])
 
   @@map("subdomains")
 }

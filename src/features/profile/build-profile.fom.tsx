@@ -32,15 +32,14 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import { PROFILE } from "@/content/profile";
-import {
-  SOCIAL_NETWORKS,
-  SocialNetworkSelector,
-} from "@/features/profile/social-network-selector";
+import { SOCIAL_NETWORKS } from "@/content/social-networks";
+import { SocialNetworkSelector } from "@/features/profile/social-network-selector";
 import { SocialUrlStatusIndicator } from "@/features/profile/social-url-status-indicator";
 import { UsernameStatusIndicator } from "@/features/profile/username-status-indicator";
 import { useAuth } from "@/hooks/use-auth";
 import { useSocialUrlValidation } from "@/hooks/use-social-url-validation";
 import { useUsernameAvailability } from "@/hooks/use-username-availability";
+import { navigateToSubdomain } from "@/lib/navigateToSubdomain";
 
 // Form validation schema
 const formSchema = z.object({
@@ -156,13 +155,13 @@ export function BuildProfileForm() {
         lastName,
         email: user?.email || `${data.username}@example.com`, // Fallback temporal
         displayName: fullName,
-        bio: `¡Hola! Soy ${firstName} y acabo de unirme a lets0. Start from zero, shine like one! ✨`,
+        bio: `Hello! I'm ${firstName} and I just joined lets0. Start from zero, shine like one! ✨`,
         gender: "",
         pronouns: "",
         flipSentences: [
-          `¡Hola, soy ${firstName}!`,
-          "Nuevo miembro de lets0",
-          "Listo para brillar ✨",
+          `Hello, I'm ${firstName}!`,
+          "New lets0 member",
+          "Ready to shine ✨",
         ],
         twitterUsername:
           selectedNetwork?.name === "X (Twitter)" ? data.socialUsername : "",
@@ -186,8 +185,6 @@ export function BuildProfileForm() {
         userId: user?.id,
       };
 
-      console.log("profileData", profileData);
-
       const response = await fetch("/api/profile/create", {
         method: "POST",
         headers: {
@@ -199,24 +196,19 @@ export function BuildProfileForm() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("❌ API Error:", errorData);
-        throw new Error(errorData.error || "Error al crear el perfil");
+        throw new Error(errorData.error || "Error creating profile");
       }
 
       const result = await response.json();
-      console.log("✅ API Success result:", result);
 
       if (result.success) {
-        toast.success(`¡Perfil y subdominio creados exitosamente! 🎉`);
         toast.success(
-          `Tu portfolio estará disponible en: lets0.com/s/${data.username}`
+          `Your portfolio will be available at: ${data.username}.${window.location.hostname}`
         );
 
-        // Pequeña demora para que el usuario vea el mensaje de éxito
-        setTimeout(() => {
-          window.location.href = `/s/${data.username}`;
-        }, 2000);
+        navigateToSubdomain(data.username);
       } else {
-        throw new Error(result.message || "Error al crear el perfil");
+        throw new Error(result.message || "Error creating profile");
       }
     } catch (error) {
       toast.error(

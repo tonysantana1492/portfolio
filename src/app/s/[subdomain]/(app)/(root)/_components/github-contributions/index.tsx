@@ -2,8 +2,8 @@ import { Suspense } from "react";
 
 import { Panel } from "../panel";
 import { GitHubContributionFallback, GitHubContributionGraph } from "./graph";
-import { getGitHubContributions } from "@/content/github-contributions";
 import type { IProfile } from "@/content/profile";
+import { getGitHubContributions } from "@/services/github-contributions";
 
 interface GitHubContributionsProps {
   profile: IProfile;

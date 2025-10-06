@@ -4,10 +4,6 @@ export async function POST(request: NextRequest) {
   try {
     const { linkedinUrl } = await request.json();
 
-    // Note: Real LinkedIn scraping requires authentication and may violate ToS
-    // This is a mock implementation for demonstration purposes
-    // In production, you would use LinkedIn's official API or a third-party service
-
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -62,7 +58,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(mockProfile);
   } catch {
     return NextResponse.json(
-      { error: "Error al procesar el perfil de LinkedIn" },
+      { error: "Error processing LinkedIn profile" },
       { status: 500 }
     );
   }

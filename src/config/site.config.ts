@@ -9,6 +9,7 @@ import {
 
 import { Logo } from "@/components/header/logo";
 import { getIcon } from "@/components/shared/icons";
+import { APP_CONFIG } from "@/config/app.config";
 import type { IProfile } from "@/content/profile";
 
 interface ISiteInfo {
@@ -25,13 +26,14 @@ interface ISiteInfo {
   };
 }
 
-export function getSiteInfo(profile: IProfile): ISiteInfo {
+export function getSiteInfo(profile?: IProfile): ISiteInfo {
   return {
-    name: profile.displayName,
-    url: process.env.APP_URL || "https://tonysantana.dev",
-    ogImage: profile.ogImage,
-    description: profile.bio,
-    keywords: profile.keywords.join(", "),
+    name: profile?.displayName ?? "Let's 0",
+    url: APP_CONFIG.URL,
+    ogImage: profile?.ogImage ?? `${APP_CONFIG.URL}/images/og-image.png`,
+    description: profile?.bio ?? "Start from 0 shine like one.",
+    keywords:
+      profile?.keywords.join(", ") ?? "portfolio, developer, software engineer",
     icons: [
       {
         src: "/images/icon-512x512.png",
@@ -91,11 +93,6 @@ export function getSiteInfo(profile: IProfile): ISiteInfo {
     },
   };
 }
-
-export const META_THEME_COLORS = {
-  light: "#ffffff",
-  dark: "#09090b",
-};
 
 export function getPWAConfig(profile: IProfile) {
   const siteInfo = getSiteInfo(profile);

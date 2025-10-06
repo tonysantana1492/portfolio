@@ -17,7 +17,7 @@ import type { IProfile } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
 import { type Cv, getAllCVs, getCvBySlug } from "@/services/cv";
-import { profileService } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile";
 
 export async function generateStaticParams() {
   const cvs = getAllCVs();
@@ -104,7 +104,7 @@ export default async function Page({
 }) {
   const slug = (await params).slug;
   const cv = getCvBySlug(slug);
-  const profile = await profileService.getProfile();
+  const profile = await getProfileBySubdomain(slug);
 
   if (!cv || !profile) {
     notFound();
