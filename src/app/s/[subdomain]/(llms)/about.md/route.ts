@@ -4,9 +4,14 @@ import { getProfileBySubdomain } from "@/services/profile";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = request.nextUrl;
-  const subdomain = searchParams.get("subdomain");
+interface RouteParams {
+  params: Promise<{
+    subdomain: string;
+  }>;
+}
+
+export async function GET(_request: NextRequest, { params }: RouteParams) {
+  const { subdomain } = await params;
 
   if (!subdomain) {
     return NextResponse.json(

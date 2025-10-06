@@ -7,6 +7,7 @@ export enum NODE_ENV_ENUM {
 export const APP_CONFIG = {
   NODE_ENV: process.env.NODE_ENV ?? NODE_ENV_ENUM.DEVELOPMENT,
   URL: process.env.APP_URL || "https://tonysantana.dev",
+  ADS_TXT: process.env.ADS_TXT || "",
 };
 
 export const PROTOCOL =

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import sharp from "sharp";
 import VCard from "vcard-creator";
@@ -10,22 +10,19 @@ import { getProfileBySubdomain } from "@/services/profile";
 export const dynamic = "force-dynamic";
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     subdomain: string;
-  };
+  }>;
 }
 
-export async function GET(_request: Request, { params }: RouteParams) {
+export async function GET(_request: NextRequest, { params }: RouteParams) {
+  const { subdomain } = await params;
   // Validate subdomain parameter
-  if (
-    !params.subdomain ||
-    typeof params.subdomain !== "string" ||
-    params.subdomain.trim() === ""
-  ) {
+  if (!subdomain || typeof subdomain !== "string" || subdomain.trim() === "") {
     return NextResponse.json({ error: "Invalid subdomain" }, { status: 400 });
   }
 
-  const profile = await getProfileBySubdomain(params.subdomain);
+  const profile = await getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return NextResponse.json({ error: "Profile not found" }, { status: 404 });
