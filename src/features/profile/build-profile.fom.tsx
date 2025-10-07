@@ -40,6 +40,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useSocialUrlValidation } from "@/hooks/use-social-url-validation";
 import { useUsernameAvailability } from "@/hooks/use-username-availability";
 import { navigateToSubdomain } from "@/lib/navigateToSubdomain";
+import { profileService } from "@/services/profile.service";
 
 // Form validation schema
 const formSchema = z.object({
@@ -144,6 +145,7 @@ export function BuildProfileForm() {
       const firstName = nameParts[0] || data.username;
       const lastName = nameParts.slice(1).join(" ") || "";
 
+      const now = new Date();
       const profileData = {
         ...PROFILE,
         username: data.username,
@@ -151,24 +153,13 @@ export function BuildProfileForm() {
         lastName,
         email: user?.email || `${data.username}@example.com`, // Fallback temporal
         displayName: fullName,
-        userId: user?.id,
+        userId: user?.id ?? "",
+        createdAt: now,
+        updatedAt: now,
+        profileId: user?.id ?? "",
       };
 
-      const response = await fetch("/api/profile/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(profileData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("❌ API Error:", errorData);
-        throw new Error(errorData.error || "Error creating profile");
-      }
-
-      const result = await response.json();
+      const result = await profileService.createProfile(profileData);
 
       if (result.success) {
         toast.success(

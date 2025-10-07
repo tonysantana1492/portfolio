@@ -49,9 +49,6 @@ export const ProfileBaseSchema = z
   .object({
     id: ObjectIdSchema,
     profileId: z.string().min(1),
-    dateCreated: IsoDateSchema,
-    dateUpdated: IsoDateSchema,
-    dateDeleted: IsoDateSchema.nullable().optional(),
     isActive: z.boolean().default(true),
 
     userId: ObjectIdSchema,
@@ -62,20 +59,16 @@ export const ProfileBaseSchema = z
     ...BasicsSchema.shape,
 
     // JSON
-    metadata: JsonSchema,
     sections: JsonSchema,
 
-    createdAt: IsoDateSchema,
-    updatedAt: IsoDateSchema,
+    createdAt: IsoDateSchema.default(() => new Date()),
+    updatedAt: IsoDateSchema.default(() => new Date()),
   })
   .strict();
 
 export const ProfileCreateSchema = z
   .object({
     profileId: z.string().min(1),
-    dateCreated: IsoDateSchema,
-    dateUpdated: IsoDateSchema,
-    dateDeleted: IsoDateSchema.nullable().optional(),
     isActive: z.boolean().optional(),
 
     userId: ObjectIdSchema,
@@ -85,14 +78,15 @@ export const ProfileCreateSchema = z
     // BASICS
     ...BasicsSchema.shape,
 
-    metadata: JsonSchema,
     sections: JsonSchema,
+    createdAt: IsoDateSchema.default(() => new Date()),
+    updatedAt: IsoDateSchema.default(() => new Date()),
   })
   .strict();
 
 export const ProfileUpdateSchema = ProfileCreateSchema.partial().strict();
 
-export type ProfileBase = z.infer<typeof ProfileBaseSchema>;
+export type Profile = z.infer<typeof ProfileBaseSchema>;
 export type ProfileCreate = z.infer<typeof ProfileCreateSchema>;
 export type ProfileUpdate = z.infer<typeof ProfileUpdateSchema>;
 

@@ -11,8 +11,8 @@ export const SubdomainBaseSchema = z
       .regex(/^[a-z0-9-]+$/i, "Only letters, numbers and hyphens"),
     emoji: z.string().min(1),
     profileId: ObjectIdSchema,
-    createdAt: IsoDateSchema,
-    updatedAt: IsoDateSchema,
+    createdAt: IsoDateSchema.default(() => new Date()),
+    updatedAt: IsoDateSchema.default(() => new Date()),
   })
   .strict();
 
@@ -29,6 +29,6 @@ export const SubdomainCreateSchema = z
 
 export const SubdomainUpdateSchema = SubdomainCreateSchema.partial().strict();
 
-export type SubdomainBase = z.infer<typeof SubdomainBaseSchema>;
+export type Subdomain = z.infer<typeof SubdomainBaseSchema>;
 export type SubdomainCreate = z.infer<typeof SubdomainCreateSchema>;
 export type SubdomainUpdate = z.infer<typeof SubdomainUpdateSchema>;

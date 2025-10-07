@@ -82,9 +82,6 @@ model Profile {
   ogImage       String
   keywords      String[]
   
-  // METADATA (stored as JSON)
-  metadata      Json
-  
   // SECTIONS (stored as JSON)
   sections      Json
   

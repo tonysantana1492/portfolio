@@ -27,6 +27,7 @@ export type Cv = {
 };
 
 import type { Experience } from "@/content/profile";
+import type { Profile, ProfileCreate } from "@/dtos/profile.dto";
 
 class ProfileService {
   async exportToPdf(options: ExportOptions): Promise<Blob> {
@@ -89,6 +90,26 @@ class ProfileService {
     return this.getPosts().filter(
       (post) => post.metadata?.category === category
     );
+  }
+
+  async createProfile(profileData: ProfileCreate) {
+    const response = await fetch("/api/profile/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profileData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("❌ API Error:", errorData);
+      throw new Error(errorData.error || "Error creating profile");
+    }
+
+    const result = await response.json();
+
+    return result;
   }
 }
 

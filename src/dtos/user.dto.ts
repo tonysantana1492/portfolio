@@ -13,10 +13,10 @@ export const UserBaseSchema = z
     googleId: z.string().min(1),
     email: EmailSchema,
     name: z.string().min(1),
-    picture: z.string().url().optional(),
+    picture: z.url().optional(),
     verified: z.boolean().default(false),
-    createdAt: IsoDateSchema,
-    updatedAt: IsoDateSchema,
+    createdAt: IsoDateSchema.default(() => new Date()),
+    updatedAt: IsoDateSchema.default(() => new Date()),
   })
   .strict();
 

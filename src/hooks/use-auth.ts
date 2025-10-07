@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import type { GoogleUserData } from "@/components/auth/auth-popup";
 import type { User } from "@/dtos/user.dto";
+import { userService } from "@/services/user.service";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
@@ -17,20 +18,7 @@ export function useAuth() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ googleUserData }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Authentication failed");
-      }
-
-      const data = await response.json();
+      const data = await userService.authenticateWithGoogle(googleUserData);
 
       if (data.success && data.user) {
         setUser(data.user);

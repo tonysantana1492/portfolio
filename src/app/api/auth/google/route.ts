@@ -24,14 +24,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        picture: user.picture,
-        verified: user.verified,
-        createdAt: user.createdAt,
-      },
+      user,
     });
   } catch (error) {
     console.error("Error in auth/google route:", error);
