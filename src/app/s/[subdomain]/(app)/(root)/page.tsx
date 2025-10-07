@@ -17,7 +17,7 @@ import { Projects } from "@/app/s/[subdomain]/(app)/(root)/_components/projects"
 import { SocialLinks } from "@/app/s/[subdomain]/(app)/(root)/_components/social-links";
 import { TeckStack } from "@/app/s/[subdomain]/(app)/(root)/_components/teck-stack";
 import type { IProfile } from "@/content/profile";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 function getPageJsonLd(profile: IProfile): WithContext<ProfilePage> {
   return {

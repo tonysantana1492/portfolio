@@ -1,6 +1,26 @@
 import type { IProfile, Metadata } from "@/content/profile";
 import prisma from "@/lib/prisma";
-import { getProfileBySubdomainWithRelation } from "@/services/subdomains";
+import { getProfileBySubdomainWithRelation } from "@/services/subdomains.service";
+
+export async function getProfileById(id: string) {
+  const existingProfile = await prisma.profile.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return existingProfile;
+}
+
+export async function getProfileByUserName(username: string) {
+  const existingProfile = await prisma.profile.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  return existingProfile;
+}
 
 export async function getProfile(): Promise<IProfile | null> {
   try {
@@ -63,6 +83,7 @@ export async function getProfileBySubdomain(
     const profileFromRelation = await getProfileBySubdomainWithRelation(
       subdomain
     );
+
     if (profileFromRelation) {
       return profileFromRelation;
     }
@@ -220,11 +241,11 @@ export async function updateProfile(profile: IProfile): Promise<IProfile> {
   }
 }
 
-export async function deleteProfile(profileId: string): Promise<void> {
+export async function deleteProfileById(id: string): Promise<void> {
   try {
     await prisma.profile.updateMany({
       where: {
-        profileId: profileId,
+        id,
       },
       data: {
         isActive: false,

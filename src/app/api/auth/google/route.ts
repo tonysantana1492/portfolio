@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import type { GoogleUserData } from "@/components/auth/auth-popup";
-import { createOrGetUser } from "@/services/user";
+import { createOrGetUser } from "@/services/user.service";
 
 export async function POST(request: NextRequest) {
   try {

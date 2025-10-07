@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 
 import { getSiteInfo } from "@/config/site.config";
 import { getLLMText } from "@/lib/get-llm-text";
-import { getAllPosts } from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getPosts } from "@/services/blog";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +31,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
     }
 
-    const allPosts = getAllPosts();
+    const allPosts = getPosts();
     const siteInfo = getSiteInfo(profile);
 
     const aboutText = `## About

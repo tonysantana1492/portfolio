@@ -1,15 +1,9 @@
 import type { MetadataRoute } from "next";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getProfile } from "@/services/profile";
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const profile = await getProfile();
-  if (!profile) {
-    return {};
-  }
-
-  const siteInfo = getSiteInfo(profile);
+  const siteInfo = getSiteInfo();
 
   return {
     short_name: siteInfo.name,

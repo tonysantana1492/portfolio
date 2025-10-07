@@ -3,15 +3,23 @@ import type { Metadata } from "next";
 import dayjs from "dayjs";
 
 import { PostItem } from "@/app/s/[subdomain]/(app)/(root)/_components/post-item";
-import { getAllPosts } from "@/services/blog";
+import { getPosts } from "@/services/blog";
+
+interface RouteParams {
+  params: Promise<{
+    slug: string;
+    subdomain: string;
+  }>;
+}
 
 export const metadata: Metadata = {
   title: "Blog",
   description: "A collection of articles on development, design, and ideas.",
 };
 
-export default function Page() {
-  const allPosts = getAllPosts();
+export default async function Page({ params }: RouteParams) {
+  const { subdomain } = await params;
+  const allPosts = getPosts();
 
   return (
     <>

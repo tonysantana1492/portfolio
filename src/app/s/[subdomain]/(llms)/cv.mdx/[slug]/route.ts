@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getLLMText } from "@/lib/get-llm-text";
-import { getAllCVs } from "@/services/cv";
+import { getCVs } from "@/services/cv";
 
 interface RouteParams {
   params: Promise<{
@@ -10,7 +10,7 @@ interface RouteParams {
 }
 
 export async function generateStaticParams() {
-  const cvs = getAllCVs();
+  const cvs = getCVs();
 
   return cvs.map((cv) => ({
     slug: cv.slug,
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 export async function GET(_request: Request, { params }: RouteParams) {
   const { slug } = await params;
 
-  const allCVs = getAllCVs();
+  const allCVs = getCVs();
   const cv = allCVs.find((cv) => cv.slug === slug);
 
   if (!cv) {

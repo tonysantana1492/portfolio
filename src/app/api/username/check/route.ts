@@ -1,7 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import prisma from "@/lib/prisma";
+import { getProfileByUserName } from "@/services/profile.service";
+import { getSubdomain } from "@/services/subdomains.service";
 
 export async function GET(request: NextRequest) {
   try {
@@ -25,18 +26,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if username exists in Profile table
-    const existingProfile = await prisma.profile.findUnique({
-      where: {
-        username: username,
-      },
-    });
+    const existingProfile = await getProfileByUserName(username);
 
     // Check if username exists in Subdomain table
-    const existingSubdomain = await prisma.subdomain.findUnique({
-      where: {
-        subdomain: username,
-      },
-    });
+    const existingSubdomain = await getSubdomain(username);
 
     const available = !existingProfile && !existingSubdomain;
 

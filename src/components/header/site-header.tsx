@@ -10,11 +10,11 @@ import { SiteHeaderWrapper } from "@/components/header/site-header-wrapper";
 import { MAIN_NAV } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
-import { getAllPosts } from "@/services/blog";
+import { getPosts } from "@/services/blog";
 import { ToggleTheme } from "@/theme/toggle-theme";
 
 export function SiteHeader({ profile }: { profile: IProfile }) {
-  const posts = getAllPosts();
+  const posts = getPosts();
 
   // Create serializable nav items for client components (exclude icon property)
   const navItems = MAIN_NAV.map(({ title, href }) => ({ title, href }));

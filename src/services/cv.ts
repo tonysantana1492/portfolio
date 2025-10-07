@@ -17,14 +17,14 @@ export type Cv = {
   content: string;
 };
 
-export function getAllCVs() {
+export function getCVs() {
   return getMDXData(path.join(process.cwd(), "src/content/cv")).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime(),
+      new Date(a.metadata.createdAt).getTime()
   );
 }
 
 export function getCvBySlug(slug: string) {
-  return getAllCVs().find((cv) => cv.slug === slug);
+  return getCVs().find((cv) => cv.slug === slug);
 }

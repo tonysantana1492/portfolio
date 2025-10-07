@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { getSiteInfo } from "@/config/site.config";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
 
 export const viewport: Viewport = {

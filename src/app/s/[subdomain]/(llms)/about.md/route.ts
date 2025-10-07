@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 export const dynamic = "force-dynamic";
 

@@ -1,8 +1,11 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import prisma from "@/lib/prisma";
-import { associateSubdomainWithProfile } from "@/services/profile-subdomain";
+import { getProfileById } from "@/services/profile.service";
+import {
+  associateSubdomainWithProfile,
+  getSubdomain,
+} from "@/services/subdomains.service";
 
 // Extended type to handle the new profileId field
 interface SubdomainWithProfileId {
@@ -27,11 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify subdomain exists
-    const existingSubdomain = await prisma.subdomain.findUnique({
-      where: {
-        subdomain: subdomain,
-      },
-    });
+    const existingSubdomain = await getSubdomain(subdomain);
 
     if (!existingSubdomain) {
       return NextResponse.json(
@@ -41,11 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify profile exists
-    const existingProfile = await prisma.profile.findUnique({
-      where: {
-        id: profileId,
-      },
-    });
+    const existingProfile = await getProfileById(profileId);
 
     if (!existingProfile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
@@ -87,11 +82,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get subdomain with profile information
-    const subdomainRecord = await prisma.subdomain.findUnique({
-      where: {
-        subdomain: subdomain,
-      },
-    });
+    const subdomainRecord = await getSubdomain(subdomain);
 
     if (!subdomainRecord) {
       return NextResponse.json(
@@ -104,19 +95,7 @@ export async function GET(request: NextRequest) {
     let profileInfo = null;
 
     if (subdomainWithProfileId.profileId) {
-      const profile = await prisma.profile.findUnique({
-        where: {
-          id: subdomainWithProfileId.profileId,
-        },
-        select: {
-          id: true,
-          username: true,
-          displayName: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-        },
-      });
+      const profile = await getProfileById(subdomainWithProfileId.profileId);
       profileInfo = profile;
     }
 

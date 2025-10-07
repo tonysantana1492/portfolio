@@ -2,7 +2,7 @@ import "./print.css";
 
 import { MDX } from "@/components/shared/mdx";
 import { cvToMdx } from "@/lib/cv-to-mdx";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 export const dynamic = "force-dynamic";
 

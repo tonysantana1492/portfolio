@@ -53,20 +53,20 @@ export function getMDXData(dir: string) {
   });
 }
 
-export function getAllPosts() {
+export function getPosts() {
   return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime(),
+      new Date(a.metadata.createdAt).getTime()
   );
 }
 
 export function getPostBySlug(slug: string) {
-  return getAllPosts().find((post) => post.slug === slug);
+  return getPosts().find((post) => post.slug === slug);
 }
 
 export function getPostsByCategory(category: string) {
-  return getAllPosts().filter((post) => post.metadata?.category === category);
+  return getPosts().filter((post) => post.metadata?.category === category);
 }
 
 export function findNeighbour(posts: Post[], slug: string) {

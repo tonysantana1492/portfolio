@@ -5,7 +5,7 @@ import {
   createProfile,
   getProfileBySubdomain,
   updateProfile,
-} from "@/services/profile";
+} from "@/services/profile.service";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;

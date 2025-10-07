@@ -5,10 +5,10 @@ import { ArrowRightIcon } from "lucide-react";
 import { Panel, PanelHeader, PanelTitle } from "./panel";
 import { PostItem } from "@/app/s/[subdomain]/(app)/(root)/_components/post-item";
 import { Button } from "@/components/ui/button";
-import { getAllPosts } from "@/services/blog";
+import { getPosts } from "@/services/blog";
 
 export function Blog({ className }: React.ComponentProps<typeof Panel>) {
-  const allPosts = getAllPosts();
+  const allPosts = getPosts();
 
   return (
     <Panel className={className} id="blog">

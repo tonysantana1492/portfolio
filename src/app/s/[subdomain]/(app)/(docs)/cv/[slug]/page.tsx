@@ -16,11 +16,11 @@ import { getSiteInfo } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
-import { type Cv, getAllCVs, getCvBySlug } from "@/services/cv";
-import { getProfileBySubdomain } from "@/services/profile";
+import { type Cv, getCVs, getCvBySlug } from "@/services/cv";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 export async function generateStaticParams() {
-  const cvs = getAllCVs();
+  const cvs = getCVs();
   return cvs.map((cv) => ({
     slug: cv.slug,
   }));
@@ -30,11 +30,16 @@ function getCvUrl(cv: Cv) {
   return `/cv/${cv.slug}`;
 }
 
+interface RouteParams {
+  params: Promise<{
+    slug: string;
+    subdomain: string;
+  }>;
+}
+
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+}: RouteParams): Promise<Metadata> {
   const slug = (await params).slug;
   const cv = getCvBySlug(slug);
 
@@ -95,16 +100,11 @@ function getPageJsonLd(cv: Cv, profile: IProfile): WithContext<PageSchema> {
   };
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{
-    slug: string;
-  }>;
-}) {
-  const slug = (await params).slug;
+export default async function Page({ params }: RouteParams) {
+  const { slug, subdomain } = await params;
+
   const cv = getCvBySlug(slug);
-  const profile = await getProfileBySubdomain(slug);
+  const profile = await getProfileBySubdomain(subdomain);
 
   if (!cv || !profile) {
     notFound();

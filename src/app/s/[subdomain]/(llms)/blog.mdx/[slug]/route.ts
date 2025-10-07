@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 
 import { getLLMText } from "@/lib/get-llm-text";
-import { getAllPosts } from "@/services/blog";
+import { getPosts } from "@/services/blog";
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = getPosts();
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -17,7 +17,7 @@ export async function GET(
 ) {
   const { slug } = await params;
 
-  const allPosts = getAllPosts();
+  const allPosts = getPosts();
   const post = allPosts.find((post) => post.slug === slug);
 
   if (!post) {

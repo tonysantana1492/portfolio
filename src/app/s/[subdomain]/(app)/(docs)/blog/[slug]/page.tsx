@@ -19,14 +19,21 @@ import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";
 import {
   findNeighbour,
-  getAllPosts,
   getPostBySlug,
+  getPosts,
   type Post,
 } from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
+
+interface RouteParams {
+  params: Promise<{
+    slug: string;
+    subdomain: string;
+  }>;
+}
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = getPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -34,9 +41,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+}: RouteParams): Promise<Metadata> {
   const slug = (await params).slug;
   const post = getPostBySlug(slug);
 
@@ -119,7 +124,7 @@ export default async function Page({
 
   const toc = getTableOfContents(post.content);
 
-  const allPosts = getAllPosts();
+  const allPosts = getPosts();
   const { previous, next } = findNeighbour(allPosts, slug);
 
   return (

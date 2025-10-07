@@ -5,36 +5,24 @@ import { v4 as uuidv4 } from "uuid";
 
 import type { IProfile } from "@/content/profile";
 import type { User } from "@/generated/prisma";
-import prisma from "@/lib/prisma";
-import { createSubdomainWithProfile } from "@/services/profile-subdomain";
+import {
+  createSubdomainWithProfile,
+  getSubdomain,
+} from "@/services/subdomains.service";
+import {
+  createUser,
+  getUserByEmail,
+  getUserById,
+} from "@/services/user.service";
+import {
+  createProfile,
+  deleteProfileById,
+  getProfileByUserName,
+} from "@/services/profile.service";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
-    console.log("111111111:", body);
-    const {
-      username,
-      firstName,
-      lastName,
-      email,
-      displayName,
-      bio,
-      gender = "",
-      pronouns = "",
-      flipSentences = [],
-      twitterUsername = "",
-      githubUserName = "",
-      address = "",
-      phoneNumber = "",
-      website = "",
-      otherWebsites = [],
-      jobTitle = "",
-      avatar = "",
-      ogImage = "",
-      keywords = [],
-      userId, // Optional user ID from authentication
-    } = body;
 
     // Validate required fields
     if (!username || !firstName || !email) {
@@ -47,22 +35,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate username format
-    // const usernameRegex = /^[a-z0-9_]{3,30}$/;
-    // if (!usernameRegex.test(username)) {
-    //   return NextResponse.json(
-    //     {
-    //       error:
-    //         "Invalid username format. Use only lowercase letters, numbers, and underscores (3-30 characters)",
-    //     },
-    //     { status: 400 }
-    //   );
-    // }
-
     // Check if username is already taken
-    const existingProfile = await prisma.profile.findUnique({
-      where: { username },
-    });
+    const existingProfile = await getProfileByUserName(username);
 
     if (existingProfile) {
       return NextResponse.json(
@@ -71,9 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingSubdomain = await prisma.subdomain.findUnique({
-      where: { subdomain: username },
-    });
+    const existingSubdomain = await getSubdomain(username);
 
     if (existingSubdomain) {
       return NextResponse.json(
@@ -86,29 +58,22 @@ export async function POST(request: NextRequest) {
     let user: User | null;
     if (userId) {
       // If userId provided, find the existing user
-      user = await prisma.user.findUnique({
-        where: { id: userId },
-      });
-
+      user = await getUserById(userId);
       if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
     } else {
       // If no userId provided, create a temporary user or find by email
-      user = await prisma.user.findUnique({
-        where: { email },
-      });
+      user = await getUserByEmail(email);
 
       if (!user) {
         // Create a new user with basic information
-        user = await prisma.user.create({
-          data: {
-            googleId: `temp_${Date.now()}`, // Temporary google ID
-            email,
-            name: `${firstName} ${lastName}`,
-            picture: avatar,
-            verified: false,
-          },
+        user = await createUser({
+          googleId: `temp_${Date.now()}`, // Temporary google ID
+          email,
+          name: `${firstName} ${lastName}`,
+          picture: avatar,
+          verified: false,
         });
       }
     }
@@ -123,87 +88,9 @@ export async function POST(request: NextRequest) {
 
     // Create profile data
     const profileId = uuidv4();
-    const now = new Date();
-
-    // Default metadata and sections for new profiles
-    const defaultMetadata = {
-      title: `${displayName} | lets0`,
-      description: bio || `${displayName} - Start from zero, shine like one!`,
-      keywords: ["lets0", "portfolio", "profile", ...keywords],
-    };
-
-    const defaultSections = {
-      about: {
-        name: "Sobre mí",
-        items: [],
-        url: "#about",
-        visible: true,
-      },
-      socialLinks: {
-        name: "Enlaces sociales",
-        items: [],
-        url: "#social",
-        visible: true,
-      },
-      projects: {
-        name: "Proyectos",
-        items: [],
-        url: "#projects",
-        visible: true,
-      },
-      experiences: {
-        name: "Experiencia",
-        items: [],
-        url: "#experience",
-        visible: true,
-      },
-      educations: {
-        name: "Educación",
-        items: [],
-        url: "#education",
-        visible: true,
-      },
-    };
 
     // Create profile in database
-    const newProfile = await prisma.profile.create({
-      data: {
-        profileId,
-        dateCreated: now,
-        dateUpdated: now,
-        isActive: true,
-        userId: user.id,
-        firstName,
-        lastName,
-        displayName: displayName || `${firstName} ${lastName}`,
-        username,
-        gender,
-        pronouns,
-        bio:
-          bio || `Nuevo miembro de lets0 - Start from zero, shine like one! ✨`,
-        flipSentences:
-          flipSentences.length > 0
-            ? flipSentences
-            : [
-                `Hola, soy ${firstName}!`,
-                "Nuevo en lets0",
-                "Listo para brillar ✨",
-              ],
-        twitterUsername,
-        githubUserName,
-        address,
-        phoneNumber,
-        email,
-        website,
-        otherWebsites,
-        jobTitle,
-        avatar: avatar || "",
-        ogImage: ogImage || "",
-        keywords,
-        metadata: defaultMetadata,
-        sections: defaultSections,
-      },
-    });
+    const newProfile = await createProfile(body);
 
     const subdomainCreated = await createSubdomainWithProfile(
       username,
@@ -216,9 +103,7 @@ export async function POST(request: NextRequest) {
         "❌ Failed to create subdomain, rolling back profile creation"
       );
       // If subdomain creation fails, we should delete the profile to maintain consistency
-      await prisma.profile.delete({
-        where: { id: newProfile.id },
-      });
+      await deleteProfileById(newProfile.id);
 
       return NextResponse.json(
         { error: "Failed to create subdomain. Please try again." },
@@ -228,7 +113,7 @@ export async function POST(request: NextRequest) {
 
     // Return created profile
     const responseProfile: Partial<IProfile> = {
-      id: newProfile.profileId,
+      id: newProfile.id,
       username: newProfile.username,
       firstName: newProfile.firstName,
       lastName: newProfile.lastName,
@@ -245,7 +130,6 @@ export async function POST(request: NextRequest) {
       message: "Profile and subdomain created successfully!",
     });
   } catch (error) {
-    console.error("Error creating profile:", error);
     return NextResponse.json(
       { error: "Failed to create profile. Please try again." },
       { status: 500 }

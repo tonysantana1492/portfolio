@@ -5,7 +5,7 @@ import VCard from "vcard-creator";
 
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
 import { getLastCompany } from "@/services/experience";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 export const dynamic = "force-dynamic";
 

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getProfileBySubdomain } from "@/services/profile";
+import { getProfileBySubdomain } from "@/services/profile.service";
 
 interface ManifestProps {
   params: {
