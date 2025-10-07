@@ -4,23 +4,8 @@ import matter from "gray-matter";
 
 import fs from "node:fs";
 import path from "node:path";
+import type { Post, PostMetadata } from "@/dtos/blog.dto";
 import type { Experience } from "@/dtos/profile.dto";
-
-export type PostMetadata = {
-  title: string;
-  description: string;
-  image?: string;
-  category?: string;
-  new?: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type Post = {
-  metadata: PostMetadata;
-  slug: string;
-  content: string;
-};
 
 function parseFrontmatter(fileContent: string) {
   const file = matter(fileContent);

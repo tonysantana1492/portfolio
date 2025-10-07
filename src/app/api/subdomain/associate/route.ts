@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     if (!subdomain || !profileId) {
       return NextResponse.json(
         { error: "Subdomain and profileId are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     if (!existingSubdomain) {
       return NextResponse.json(
         { error: "Subdomain not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -45,13 +45,13 @@ export async function POST(request: NextRequest) {
     // Associate subdomain with profile
     const success = await subdomainRepository.associateSubdomainWithProfile(
       subdomain,
-      profileId
+      profileId,
     );
 
     if (!success) {
       return NextResponse.json(
         { error: "Failed to associate subdomain with profile" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     console.error("Error associating subdomain with profile:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
     if (!subdomain) {
       return NextResponse.json(
         { error: "Subdomain parameter is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
     if (!subdomainRecord) {
       return NextResponse.json(
         { error: "Subdomain not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
 
     if (subdomainWithProfileId.profileId) {
       const profile = await profileRepository.getProfileById(
-        subdomainWithProfileId.profileId
+        subdomainWithProfileId.profileId,
       );
       profileInfo = profile;
     }
@@ -110,7 +110,7 @@ export async function GET(request: NextRequest) {
     console.error("Error getting subdomain profile association:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

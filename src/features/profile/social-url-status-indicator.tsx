@@ -27,7 +27,7 @@ export function SocialUrlStatusIndicator({
       <div
         className={cn(
           "flex items-center gap-2 text-destructive text-xs",
-          className
+          className,
         )}
       >
         <XCircle className="h-4 w-4" />
@@ -42,7 +42,7 @@ export function SocialUrlStatusIndicator({
       <div
         className={cn(
           "flex items-center gap-2 text-xs",
-          "text-muted-foreground"
+          "text-muted-foreground",
         )}
       >
         <span>Only lowercase letters, numbers and hyphens</span>
@@ -56,7 +56,7 @@ export function SocialUrlStatusIndicator({
       <div
         className={cn(
           "flex items-center gap-2 text-muted-foreground text-xs",
-          className
+          className,
         )}
       >
         <Loader2 className="h-4 w-4 animate-spin" />
@@ -71,7 +71,7 @@ export function SocialUrlStatusIndicator({
       <div
         className={cn(
           "flex items-center gap-2 text-destructive text-xs",
-          className
+          className,
         )}
       >
         <XCircle className="h-4 w-4" />
@@ -86,7 +86,7 @@ export function SocialUrlStatusIndicator({
       <div
         className={cn(
           "flex items-center gap-2 text-destructive text-xs",
-          className
+          className,
         )}
       >
         <XCircle className="h-4 w-4" />
@@ -102,7 +102,7 @@ export function SocialUrlStatusIndicator({
         className={cn(
           "flex items-center gap-2 text-xs",
           profileExists ? "text-green-600" : "text-destructive",
-          className
+          className,
         )}
       >
         {profileExists ? (

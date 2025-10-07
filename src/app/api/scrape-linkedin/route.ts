@@ -1,11 +1,9 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 import { PROFILE } from "@/content/profile";
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
-    const { linkedinUrl } = await request.json();
-
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -20,7 +18,7 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Error processing LinkedIn profile" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

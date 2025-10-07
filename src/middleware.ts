@@ -65,7 +65,7 @@ export async function middleware(request: NextRequest) {
       "subdomain:",
       subdomain,
       "host:",
-      request.headers.get("host")
+      request.headers.get("host"),
     );
   }
 

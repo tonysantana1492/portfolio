@@ -32,7 +32,7 @@ export function SocialNetworkSelector({
                   "relative flex items-center gap-2 rounded-md border px-3 py-2 font-medium text-xs transition-all hover:border-foreground/20",
                   isSelected
                     ? "border-primary bg-primary/5 text-primary"
-                    : "border-border/50 text-muted-foreground hover:text-foreground"
+                    : "border-border/50 text-muted-foreground hover:text-foreground",
                 )}
                 title={`Select ${network.name}`}
               >

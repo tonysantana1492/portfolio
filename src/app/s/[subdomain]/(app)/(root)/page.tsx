@@ -59,7 +59,7 @@ export default async function Page({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(getPageJsonLd(profile)).replace(
             /</g,
-            "\\u003c"
+            "\\u003c",
           ),
         }}
       />

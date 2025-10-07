@@ -16,7 +16,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     if (!subdomain) {
       return NextResponse.json(
         { error: "Subdomain is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -51,7 +51,7 @@ ${experienceItems
           position.employmentPeriod.end || "Present"
         }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
       })
-      .join("\n\n")
+      .join("\n\n"),
   )
   .join("\n\n")}
 `;
@@ -66,7 +66,7 @@ ${experienceItems
     console.error("Error generating experience markdown:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

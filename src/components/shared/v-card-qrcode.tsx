@@ -30,7 +30,7 @@ export function VCardQR({
 
   const vcfDataHref = useMemo(
     () => `data:text/vcard;charset=utf-8,${encodeURIComponent(vcardString)}`,
-    [vcardString]
+    [vcardString],
   );
 
   const svgRef = useRef<SVGSVGElement | null>(null);

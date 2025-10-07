@@ -21,7 +21,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     if (!subdomain) {
       return NextResponse.json(
         { error: "Subdomain is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -77,7 +77,7 @@ ${
             position.employmentPeriod.end || "Present"
           }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
         })
-        .join("\n\n")
+        .join("\n\n"),
     )
     ?.join("\n\n") ?? ""
 }
@@ -124,11 +124,11 @@ ${
             `---\ntitle: "${item.metadata.title}"\ndescription: "${
               item.metadata.description
             }"\nlast_updated: "${dayjs(item.metadata.updatedAt).format(
-              "MMMM D, YYYY"
+              "MMMM D, YYYY",
             )}"\nsource: "${siteInfo.url}/blog/${
               item.slug
-            }"\n---\n\n${await getLLMText(item)}`
-        )
+            }"\n---\n\n${await getLLMText(item)}`,
+        ),
       );
       return text.join("\n\n");
     }
@@ -163,7 +163,7 @@ ${await getBlogContent()}`;
     console.error("Error generating full LLM content:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

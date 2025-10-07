@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     if (!username) {
       return NextResponse.json(
         { error: "Username is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -21,14 +21,13 @@ export async function GET(request: NextRequest) {
     if (!usernameRegex.test(username)) {
       return NextResponse.json(
         { available: false, error: "Invalid username format" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Check if username exists in Profile table
-    const existingProfile = await profileRepository.getProfileByUserName(
-      username
-    );
+    const existingProfile =
+      await profileRepository.getProfileByUserName(username);
 
     // Check if username exists in Subdomain table
     const existingSubdomain = await subdomainRepository.getSubdomain(username);
@@ -42,7 +41,7 @@ export async function GET(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

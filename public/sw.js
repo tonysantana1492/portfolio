@@ -15,7 +15,7 @@ self.addEventListener("activate", (event) => {
     caches
       .delete(CACHE_NAME)
       .then(() => caches.delete(STATIC_CACHE_NAME))
-      .then(() => caches.delete(DYNAMIC_CACHE_NAME))
+      .then(() => caches.delete(DYNAMIC_CACHE_NAME)),
   );
   return self.clients.claim();
 });
@@ -53,7 +53,7 @@ self.addEventListener("push", (event) => {
   };
 
   event.waitUntil(
-    self.registration.showNotification("Portfolio Update", options)
+    self.registration.showNotification("Portfolio Update", options),
   );
 });
 

@@ -9,22 +9,6 @@ interface ExportOptions {
   format: "A4";
 }
 
-export type CvMetadata = {
-  title: string;
-  description: string;
-  image?: string;
-  category?: string;
-  new?: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type Cv = {
-  metadata: CvMetadata;
-  slug: string;
-  content: string;
-};
-
 class ProfileService {
   async exportToPdf(options: ExportOptions): Promise<Blob> {
     const response = await fetch("/api/export/pdf", {

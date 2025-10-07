@@ -51,7 +51,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 ${allPosts
   .map(
     (item) =>
-      `- [${item.metadata.title}](${siteInfo.url}/blog/${item.slug}.mdx): ${item.metadata.description}`
+      `- [${item.metadata.title}](${siteInfo.url}/blog/${item.slug}.mdx): ${item.metadata.description}`,
   )
   .join("\n")}
 `;

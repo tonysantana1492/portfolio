@@ -54,11 +54,12 @@ export const GlimpseImage = ({
   alt,
   ...props
 }: GlimpseImageProps) => (
+  // biome-ignore lint/performance/noImgElement: <explanation >
   <img
     alt={alt ?? ""}
     className={cn(
       "mb-4 aspect-[120/63] w-full rounded-md border object-cover",
-      className
+      className,
     )}
     {...props}
   />

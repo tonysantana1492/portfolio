@@ -43,7 +43,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
   }
 
   const lastCompany = profileService.getLastCompany(
-    profile.sections.experiences?.items ?? []
+    profile.sections.experiences?.items ?? [],
   );
 
   if (lastCompany) {

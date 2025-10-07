@@ -126,7 +126,7 @@ export function usePWA(): PWAState & PWAActions {
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
-        handleBeforeInstallPrompt
+        handleBeforeInstallPrompt,
       );
       window.removeEventListener("appinstalled", handleAppInstalled);
       window.removeEventListener("online", handleOnline);
@@ -168,7 +168,7 @@ export function usePWA(): PWAState & PWAActions {
         if ("caches" in window) {
           const cacheNames = await caches.keys();
           const dynamicCaches = cacheNames.filter((name) =>
-            name.includes("dynamic")
+            name.includes("dynamic"),
           );
           await Promise.all(dynamicCaches.map((name) => caches.delete(name)));
         }

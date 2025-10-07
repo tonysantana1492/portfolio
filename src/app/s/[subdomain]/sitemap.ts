@@ -27,7 +27,7 @@ export default async function sitemap({
   }
 
   const profile = await profileRepository.getProfileBySubdomain(
-    params.subdomain
+    params.subdomain,
   );
 
   if (!profile) {

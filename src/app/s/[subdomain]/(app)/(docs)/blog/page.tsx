@@ -5,20 +5,19 @@ import dayjs from "dayjs";
 import { PostItem } from "@/app/s/[subdomain]/(app)/(root)/_components/post-item";
 import { getPosts } from "@/services/blog";
 
-interface RouteParams {
-  params: Promise<{
-    slug: string;
-    subdomain: string;
-  }>;
-}
+// interface RouteParams {
+//   params: Promise<{
+//     slug: string;
+//     subdomain: string;
+//   }>;
+// }
 
 export const metadata: Metadata = {
   title: "Blog",
   description: "A collection of articles on development, design, and ideas.",
 };
 
-export default async function Page({ params }: RouteParams) {
-  const { subdomain } = await params;
+export default async function Page() {
   const allPosts = getPosts();
 
   return (
@@ -43,7 +42,7 @@ export default async function Page({ params }: RouteParams) {
           {allPosts
             .slice()
             .sort((a, b) =>
-              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt))
+              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt)),
             )
             .map((post, index) => (
               <PostItem

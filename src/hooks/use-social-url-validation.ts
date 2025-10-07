@@ -10,7 +10,7 @@ interface SocialUrlValidationResult {
 export function useSocialUrlValidation(
   socialNetwork: string,
   socialUsername: string,
-  delay = 800
+  delay = 800,
 ) {
   const [state, setState] = useState<SocialUrlValidationResult>({
     isChecking: false,
@@ -51,11 +51,11 @@ export function useSocialUrlValidation(
       try {
         const response = await fetch(
           `/api/social/validate?network=${encodeURIComponent(
-            network
+            network,
           )}&username=${encodeURIComponent(username)}`,
           {
             signal: abortControllerRef.current.signal,
-          }
+          },
         );
 
         if (!response.ok) {
@@ -85,7 +85,7 @@ export function useSocialUrlValidation(
         });
       }
     },
-    []
+    [],
   );
 
   const debouncedValidateSocialUrl = useCallback(
@@ -98,7 +98,7 @@ export function useSocialUrlValidation(
         validateSocialUrl(network, username);
       }, delay);
     },
-    [validateSocialUrl, delay]
+    [validateSocialUrl, delay],
   );
 
   useEffect(() => {

@@ -20,7 +20,7 @@ function EmojiPicker({
     <EmojiPickerPrimitive.Root
       className={cn(
         "isolate flex h-full w-fit flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
-        className
+        className,
       )}
       data-slot="emoji-picker"
       {...props}
@@ -65,7 +65,7 @@ function EmojiPickerEmoji({
       {...props}
       className={cn(
         "flex size-7 items-center justify-center rounded-sm text-base data-[active]:bg-accent",
-        className
+        className,
       )}
       data-slot="emoji-picker-emoji"
     >
@@ -132,7 +132,7 @@ function EmojiPickerFooter({
     <div
       className={cn(
         "flex w-full min-w-0 max-w-(--frimousse-viewport-width) items-center gap-1 border-t p-2",
-        className
+        className,
       )}
       data-slot="emoji-picker-footer"
       {...props}

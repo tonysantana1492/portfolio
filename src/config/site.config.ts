@@ -159,7 +159,7 @@ export type CommandLinkItem = {
 
 export function getPortfolioLinks(profile: Profile): CommandLinkItem[] {
   const sections = Object.entries(profile?.sections).map(
-    ([_key, section]) => section
+    ([_key, section]) => section,
   );
 
   const portfolioLinksFromSections: CommandLinkItem[] = sections.map(
@@ -167,7 +167,7 @@ export function getPortfolioLinks(profile: Profile): CommandLinkItem[] {
       title: section.name,
       href: `/#${section.id}`,
       icon: getIcon(section.icon),
-    })
+    }),
   );
 
   return [

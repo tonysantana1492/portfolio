@@ -28,7 +28,7 @@ export function isValidIcon(str: string) {
     // fall back to a simpler validation
     console.warn(
       "Emoji regex validation failed, using fallback validation",
-      error
+      error,
     );
   }
 
@@ -46,7 +46,7 @@ class SubdomainRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to get subdomain" + error);
+      throw new Error(`Failed to get subdomain: ${error}`);
     }
   }
 
@@ -63,16 +63,16 @@ class SubdomainRepository {
           subdomain: item.subdomain,
           emoji: item.emoji || "❓",
           createdAt: item.createdAt.getTime(),
-        })
+        }),
       );
     } catch (error) {
-      throw new Error("Failed to fetch all subdomains" + error);
+      throw new Error(`Failed to fetch all subdomains: ${error}`);
     }
   }
 
   async associateSubdomainWithProfile(
     subdomain: string,
-    profileId: string
+    profileId: string,
   ): Promise<boolean> {
     try {
       await prisma.subdomain.update({
@@ -85,12 +85,12 @@ class SubdomainRepository {
       });
       return true;
     } catch (error) {
-      throw new Error("Failed to associate subdomain with profile" + error);
+      throw new Error(`Failed to associate subdomain with profile: ${error}`);
     }
   }
 
   async getProfileBySubdomainWithRelation(
-    subdomain: string
+    subdomain: string,
   ): Promise<Profile | null> {
     try {
       // Validate subdomain input
@@ -131,7 +131,7 @@ class SubdomainRepository {
 
       return profile;
     } catch (error) {
-      throw new Error("Failed to get profile by subdomain" + error);
+      throw new Error(`Failed to get profile by subdomain: ${error}`);
     }
   }
 
@@ -155,7 +155,7 @@ class SubdomainRepository {
 
       return true;
     } catch (error) {
-      throw new Error("Failed to create subdomain with profile" + error);
+      throw new Error(`Failed to create subdomain with profile: ${error}`);
     }
   }
 
@@ -190,12 +190,12 @@ class SubdomainRepository {
             createdAt: subdomain.createdAt.getTime(),
             profile: profileInfo,
           };
-        })
+        }),
       );
 
       return subdomainsWithProfiles;
     } catch (error) {
-      throw new Error("Failed to get all subdomains with profiles" + error);
+      throw new Error(`Failed to get all subdomains with profiles: ${error}`);
     }
   }
 
@@ -210,7 +210,7 @@ class SubdomainRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to delete user" + error);
+      throw new Error(`Failed to delete subdomain: ${error}`);
     }
   }
 }

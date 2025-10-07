@@ -73,7 +73,7 @@ export function CommandMenu({
           setOpen((open) => !open);
         }
       },
-      { signal }
+      { signal },
     );
 
     return () => abortController.abort();
@@ -89,7 +89,7 @@ export function CommandMenu({
         router.push(href);
       }
     },
-    [router]
+    [router],
   );
 
   const handleThemeChange = useCallback(
@@ -97,7 +97,7 @@ export function CommandMenu({
       setOpen(false);
       setTheme(theme);
     },
-    [setTheme]
+    [setTheme],
   );
 
   const { blogLinks } = useMemo(
@@ -106,7 +106,7 @@ export function CommandMenu({
         .filter((post) => post.metadata?.category !== "components")
         .map(postToCommandLinkItem),
     }),
-    [posts]
+    [posts],
   );
 
   return (
@@ -115,7 +115,7 @@ export function CommandMenu({
         variant="secondary"
         className={cn(
           "h-8 select-none gap-1.5 rounded-full bg-zinc-50 px-2.5 text-muted-foreground hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-900",
-          "not-dark:border dark:inset-shadow-[1px_1px_1px,0px_0px_2px] dark:inset-shadow-white/15"
+          "not-dark:border dark:inset-shadow-[1px_1px_1px,0px_0px_2px] dark:inset-shadow-white/15",
         )}
         onClick={() => setOpen(true)}
       >
@@ -306,7 +306,7 @@ const ENTER_ACTION_LABELS: Record<CommandKind, string> = {
 
 function CommandMenuFooter() {
   const selectedCommandKind = useCommandState(
-    (state) => COMMAND_META_MAP.get(state.value)?.commandKind ?? "page"
+    (state) => COMMAND_META_MAP.get(state.value)?.commandKind ?? "page",
   );
 
   return (
@@ -338,7 +338,7 @@ function CommandMenuKbd({ className, ...props }: React.ComponentProps<"kbd">) {
     <kbd
       className={cn(
         "pointer-events-none flex h-5 min-w-6 select-none items-center justify-center gap-1 rounded-sm bg-black/5 px-1 font-normal font-sans text-[13px] text-muted-foreground shadow-[inset_0_-1px_2px] shadow-black/10 dark:bg-white/10 dark:text-shadow-xs dark:shadow-white/10 [&_svg:not([class*='size-'])]:size-3",
-        className
+        className,
       )}
       {...props}
     />

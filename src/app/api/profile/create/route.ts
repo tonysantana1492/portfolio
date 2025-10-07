@@ -16,30 +16,30 @@ export async function POST(request: NextRequest) {
     if (!success) {
       return NextResponse.json(
         { error: "Invalid profile data", details: error },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Check if username is already taken
     const existingProfile = await profileRepository.getProfileByUserName(
-      data.username
+      data.username,
     );
 
     if (existingProfile) {
       return NextResponse.json(
         { error: "Username is already taken" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
     const existingSubdomain = await subdomainRepository.getSubdomain(
-      data.username
+      data.username,
     );
 
     if (existingSubdomain) {
       return NextResponse.json(
         { error: "Username is already taken" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json(
         { error: "Failed to create or find user" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         { error: "Failed to create subdomain. Please try again." },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -104,8 +104,8 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to create profile. Please try again." + error },
-      { status: 500 }
+      { error: `Failed to create profile. Please try again: ${error}` },
+      { status: 500 },
     );
   }
 }

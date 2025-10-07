@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   if (!subdomain) {
     return NextResponse.json(
       { error: "Subdomain is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating profile:", error);
     return NextResponse.json(
       { error: "Failed to create profile" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to update profile" + error },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

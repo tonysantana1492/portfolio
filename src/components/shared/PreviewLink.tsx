@@ -11,12 +11,6 @@ import {
 import { glimpse } from "@/components/shared/glimpse/server";
 import { cn } from "@/lib/utils";
 
-interface IData {
-  title: string | null;
-  description: string | null;
-  image: string | null;
-}
-
 interface IProps {
   href: string | undefined;
   children: React.ReactNode;

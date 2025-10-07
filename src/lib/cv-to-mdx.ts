@@ -75,8 +75,8 @@ export function cvToMdx(profile: Profile) {
   lines.push("<Center>");
   lines.push(
     `# ${esc(
-      profile.displayName || `${profile.firstName} ${profile.lastName}`
-    )}`
+      profile.displayName || `${profile.firstName} ${profile.lastName}`,
+    )}`,
   );
 
   const emailPlain = profile.email;
@@ -90,16 +90,16 @@ export function cvToMdx(profile: Profile) {
     metaParts.push(
       `[${profile.githubUserName.replace(
         /^https?:\/\//,
-        ""
-      )}](https://github.com/${profile.githubUserName})`
+        "",
+      )}](https://github.com/${profile.githubUserName})`,
     );
   if (phonePlain)
     metaParts.push(
       `[${formatPhoneNumber(phonePlain)}](tel:${formatPhone(
         phonePlain,
         undefined,
-        "e164"
-      )})`
+        "e164",
+      )})`,
     );
   if (metaParts.length) lines.push(metaParts.join(" • "));
   lines.push("</Center>");
@@ -126,7 +126,7 @@ export function cvToMdx(profile: Profile) {
     for (const cat of cats) {
       const techs = grouped.get(cat) ?? [];
       catParts.push(
-        `${esc(cat)}: ${techs.map((tech) => `**${tech.title}**`).join(", ")}`
+        `${esc(cat)}: ${techs.map((tech) => `**${tech.title}**`).join(", ")}`,
       );
     }
 
@@ -148,7 +148,7 @@ export function cvToMdx(profile: Profile) {
       for (const pos of company.positions ?? []) {
         const when = fmtRange(
           pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end
+          pos.employmentPeriod?.end,
         );
         const rightBits = [when, pos.employmentType]
           .filter(Boolean)
@@ -205,7 +205,7 @@ export function cvToMdx(profile: Profile) {
       for (const pos of ed.positions ?? []) {
         const when = fmtRange(
           pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end
+          pos.employmentPeriod?.end,
         );
         lines.push(`### ${esc(pos.title || ed.companyName)}`);
         if (when) lines.push(`<Right>${esc(when)}</Right>`);
@@ -279,7 +279,7 @@ export function cvToMdx(profile: Profile) {
       lines.push(
         (socialSec.items as SocialLink[])
           .map((s) => mdxLink(s.title, s.href))
-          .join(" • ")
+          .join(" • "),
       );
     }
     lines.push("");

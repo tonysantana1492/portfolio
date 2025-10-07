@@ -6,7 +6,7 @@ export function Loading({ className }: { className?: string }) {
     <div
       className={cn(
         "flex h-[calc(100svh-5.5rem)] flex-col items-center justify-center",
-        className
+        className,
       )}
     >
       <Logo className="h-32 w-32" />

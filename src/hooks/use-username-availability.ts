@@ -45,7 +45,7 @@ export function useUsernameAvailability(username: string, delay = 500) {
         `/api/username/check?username=${encodeURIComponent(usernameToCheck)}`,
         {
           signal: abortControllerRef.current.signal,
-        }
+        },
       );
 
       if (!response.ok) {
@@ -84,7 +84,7 @@ export function useUsernameAvailability(username: string, delay = 500) {
         checkUsername(usernameToCheck);
       }, delay);
     },
-    [checkUsername, delay]
+    [checkUsername, delay],
   );
 
   useEffect(() => {

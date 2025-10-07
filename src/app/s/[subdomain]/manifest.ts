@@ -22,7 +22,7 @@ export default async function manifest({
   }
 
   const profile = await profileRepository.getProfileBySubdomain(
-    params.subdomain
+    params.subdomain,
   );
 
   if (!profile) {

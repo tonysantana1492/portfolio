@@ -126,7 +126,7 @@ export class ProfileRepository {
 
       return newProfile;
     } catch (error) {
-      throw new Error("Failed to create profile" + error);
+      throw new Error(`Failed to create profile: ${error}`);
     }
   }
 

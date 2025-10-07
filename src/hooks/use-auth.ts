@@ -13,7 +13,7 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(false);
 
   const authenticateWithGoogle = async (
-    googleUserData: GoogleUserData
+    googleUserData: GoogleUserData,
   ): Promise<User | null> => {
     setIsLoading(true);
 

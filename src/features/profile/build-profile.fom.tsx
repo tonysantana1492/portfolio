@@ -55,7 +55,7 @@ const formSchema = z.object({
     .max(100, "Username is too long")
     .refine(
       (value) => value.trim().length > 0,
-      "Social username cannot be empty"
+      "Social username cannot be empty",
     ),
 });
 
@@ -163,7 +163,7 @@ export function BuildProfileForm() {
 
       if (result.success) {
         toast.success(
-          `Your portfolio will be available at: ${data.username}.${window.location.hostname}`
+          `Your portfolio will be available at: ${data.username}.${window.location.hostname}`,
         );
 
         navigateToSubdomain(data.username);
@@ -174,7 +174,7 @@ export function BuildProfileForm() {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Error creating the profile, try again."
+          : "Error creating the profile, try again.",
       );
       console.error("Error creating profile:", error);
     } finally {
@@ -215,7 +215,7 @@ export function BuildProfileForm() {
   };
 
   const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
-    socialNetwork?.includes(network.baseUrl)
+    socialNetwork?.includes(network.baseUrl),
   );
 
   return (
@@ -267,7 +267,7 @@ export function BuildProfileForm() {
                               <InputGroupText className="text-muted-foreground text-xs">
                                 {selectedNetwork.baseUrl.replace(
                                   "https://",
-                                  ""
+                                  "",
                                 )}
                               </InputGroupText>
                             </div>
@@ -284,7 +284,7 @@ export function BuildProfileForm() {
                                   onClick={() =>
                                     window.open(
                                       selectedNetwork.baseUrl + socialUsername,
-                                      "_blank"
+                                      "_blank",
                                     )
                                   }
                                   title="View Profile"
@@ -323,7 +323,7 @@ export function BuildProfileForm() {
                           value={field.value}
                           onChange={(e) => {
                             const formattedValue = formatUsername(
-                              e.target.value
+                              e.target.value,
                             );
                             setUsername(formattedValue);
                             field.onChange(formattedValue); // Use field.onChange instead of setValue

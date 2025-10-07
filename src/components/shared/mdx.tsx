@@ -137,7 +137,7 @@ export const components: React.ComponentProps<
     <div
       className={cn(
         "prose-h3:text-wrap md:ml-3.5 md:border-l md:pl-7.5",
-        className
+        className,
       )}
       {...props}
     />

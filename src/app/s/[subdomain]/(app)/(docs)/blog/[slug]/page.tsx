@@ -24,7 +24,6 @@ import {
   getPosts,
   type Post,
 } from "@/services/blog";
-import { profileService } from "@/services/profile.service";
 
 interface RouteParams {
   params: Promise<{
@@ -135,7 +134,7 @@ export default async function Page({
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(getPageJsonLd(post, profile)).replace(
             /</g,
-            "\\u003c"
+            "\\u003c",
           ),
         }}
       />
@@ -186,7 +185,7 @@ export default async function Page({
           className={cn(
             "h-8",
             "before:-left-[100vw] before:-z-1 before:absolute before:h-full before:w-[200vw]",
-            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56"
+            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56",
           )}
         />
       </div>

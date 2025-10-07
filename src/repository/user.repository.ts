@@ -54,7 +54,7 @@ class UserRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to create user" + error);
+      throw new Error(`Failed to create user: ${error}`);
     }
   }
 
@@ -66,7 +66,7 @@ class UserRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to get user by Google ID" + error);
+      throw new Error(`Failed to get user by Google ID: ${error}`);
     }
   }
 
@@ -81,7 +81,7 @@ class UserRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to get user" + error);
+      throw new Error(`Failed to get user: ${error}`);
     }
   }
 
@@ -96,7 +96,7 @@ class UserRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to get user" + error);
+      throw new Error(`Failed to get user: ${error}`);
     }
   }
 
@@ -112,7 +112,7 @@ class UserRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to update user" + error);
+      throw new Error(`Failed to update user: ${error}`);
     }
   }
 
@@ -127,7 +127,7 @@ class UserRepository {
         },
       });
     } catch (error) {
-      throw new Error("Failed to delete user" + error);
+      throw new Error(`Failed to delete user: ${error}`);
     }
   }
 }

@@ -16,7 +16,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     if (!subdomain) {
       return NextResponse.json(
         { error: "Subdomain is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,7 +54,7 @@ ${certificationsItems
     console.error("Error generating certifications markdown:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

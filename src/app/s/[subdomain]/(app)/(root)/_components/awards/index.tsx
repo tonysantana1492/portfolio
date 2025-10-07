@@ -12,7 +12,7 @@ export function Awards({
   const SORTED_AWARDS = [...(profile.sections.awards?.items ?? [])].sort(
     (a, b) => {
       return dayjs(b.date).diff(dayjs(a.date));
-    }
+    },
   );
 
   return (
