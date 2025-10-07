@@ -8,12 +8,12 @@ import { NavItemGitHub } from "@/components/header/nav-item-github";
 import { SiteHeaderMark } from "@/components/header/site-header-mark";
 import { SiteHeaderWrapper } from "@/components/header/site-header-wrapper";
 import { MAIN_NAV } from "@/config/site.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { cn } from "@/lib/utils";
 import { getPosts } from "@/services/blog";
 import { ToggleTheme } from "@/theme/toggle-theme";
 
-export function SiteHeader({ profile }: { profile: IProfile }) {
+export function SiteHeader({ profile }: { profile: Profile }) {
   const posts = getPosts();
 
   // Create serializable nav items for client components (exclude icon property)

@@ -1,12 +1,12 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ProjectItem } from "./project-item";
 import { CollapsibleList } from "@/components/shared/collapsible-list";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 export function Projects({
   className,
   profile,
-}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+}: React.ComponentProps<typeof Panel> & { profile: Profile }) {
   return (
     <Panel className={className} id={profile.sections.projects?.id}>
       <PanelHeader>

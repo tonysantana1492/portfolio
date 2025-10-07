@@ -1,4 +1,4 @@
-import type { IProfile, Metadata } from "@/content/profile";
+import type { Profile, ProfileCreate } from "@/dtos/profile.dto";
 import prisma from "@/lib/prisma";
 import { subdomainRepository } from "@/repository/subdomains.repository";
 
@@ -23,51 +23,21 @@ export class ProfileRepository {
     return existingProfile;
   }
 
-  async getProfile(): Promise<IProfile | null> {
+  async getProfile(): Promise<Profile | null> {
     try {
       // Get the first active profile (assuming single profile for now)
-      const profileData = await prisma.profile.findFirst({
+      const profile = (await prisma.profile.findFirst({
         where: {
           isActive: true,
         },
         orderBy: {
           updatedAt: "desc",
         },
-      });
+      })) as Profile | null;
 
-      if (!profileData) {
+      if (!profile) {
         return null;
       }
-
-      // Convert database model to IProfile interface
-      const profile: IProfile = {
-        id: profileData.profileId,
-        dateCreated: profileData.dateCreated.toISOString().split("T")[0],
-        dateUpdated: profileData.dateUpdated.toISOString().split("T")[0],
-        dateDeleted: profileData.dateDeleted?.toISOString().split("T")[0] || "",
-        isActive: profileData.isActive,
-        firstName: profileData.firstName,
-        lastName: profileData.lastName,
-        displayName: profileData.displayName,
-        username: profileData.username,
-        gender: profileData.gender,
-        pronouns: profileData.pronouns,
-        bio: profileData.bio,
-        flipSentences: profileData.flipSentences,
-        twitterUsername: profileData.twitterUsername,
-        githubUserName: profileData.githubUserName,
-        address: profileData.address,
-        phoneNumber: profileData.phoneNumber,
-        email: profileData.email,
-        website: profileData.website,
-        otherWebsites: profileData.otherWebsites,
-        jobTitle: profileData.jobTitle,
-        avatar: profileData.avatar,
-        ogImage: profileData.ogImage,
-        keywords: profileData.keywords,
-        metadata: profileData.metadata as unknown as Metadata,
-        sections: profileData.sections as unknown as IProfile["sections"],
-      };
 
       return profile;
     } catch (error) {
@@ -76,7 +46,7 @@ export class ProfileRepository {
     }
   }
 
-  async getProfileBySubdomain(subdomain: string): Promise<IProfile | null> {
+  async getProfileBySubdomain(subdomain: string): Promise<Profile | null> {
     try {
       // First try to get profile using the new relationship approach
       const profileFromRelation =
@@ -108,67 +78,28 @@ export class ProfileRepository {
       }
 
       // For backward compatibility, get the first active profile if no relation exists
-      const profile = await prisma.profile.findFirst({
+      const profile = (await prisma.profile.findFirst({
         where: {
-          profileId: subdomainRecord.profileId,
+          id: subdomainRecord.profileId,
           isActive: true,
         },
-      });
+      })) as Profile | null;
 
       if (!profile) {
         return null;
       }
 
-      // Transform the database profile to match the IProfile interface
-      const transformedProfile: IProfile = {
-        id: profile.id,
-        dateCreated: profile.dateCreated.toISOString().split("T")[0],
-        dateUpdated: profile.dateUpdated.toISOString().split("T")[0],
-        dateDeleted: profile.dateDeleted?.toISOString().split("T")[0] || "",
-        isActive: profile.isActive,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        displayName: profile.displayName,
-        username: profile.username,
-        gender: profile.gender,
-        pronouns: profile.pronouns,
-        bio: profile.bio,
-        flipSentences: profile.flipSentences,
-        twitterUsername: profile.twitterUsername,
-        githubUserName: profile.githubUserName,
-        address: profile.address,
-        phoneNumber: profile.phoneNumber,
-        email: profile.email,
-        website: profile.website,
-        otherWebsites: profile.otherWebsites,
-        jobTitle: profile.jobTitle,
-        avatar: profile.avatar,
-        ogImage: profile.ogImage,
-        keywords: profile.keywords,
-        metadata: profile.metadata as unknown as Metadata,
-        sections: profile.sections as unknown as IProfile["sections"],
-      };
-
-      return transformedProfile;
+      return profile;
     } catch {
       return null;
     }
   }
 
-  async createProfile(
-    profile: IProfile & { userId: string }
-  ): Promise<IProfile> {
+  async createProfile(profile: ProfileCreate): Promise<Profile> {
     try {
-      await prisma.profile.create({
+      const newProfile = (await prisma.profile.create({
         data: {
           userId: profile.userId,
-          profileId: profile.id,
-          dateCreated: new Date(profile.dateCreated),
-          dateUpdated: new Date(profile.dateUpdated),
-          dateDeleted: profile.dateDeleted
-            ? new Date(profile.dateDeleted)
-            : null,
-          isActive: profile.isActive,
           firstName: profile.firstName,
           lastName: profile.lastName,
           displayName: profile.displayName,
@@ -188,29 +119,24 @@ export class ProfileRepository {
           avatar: profile.avatar,
           ogImage: profile.ogImage,
           keywords: profile.keywords,
-          metadata: JSON.parse(JSON.stringify(profile.metadata)),
-          sections: JSON.parse(JSON.stringify(profile.sections)),
+          metadata: profile.metadata,
+          sections: profile.sections,
         },
-      });
+      })) as Profile;
 
-      return profile;
+      return newProfile;
     } catch (error) {
-      console.error("Error creating profile:", error);
-      throw new Error("Failed to create profile");
+      throw new Error("Failed to create profile" + error);
     }
   }
 
-  async updateProfile(profile: IProfile): Promise<IProfile> {
+  async updateProfile(profile: Profile): Promise<Profile> {
     try {
       await prisma.profile.updateMany({
         where: {
-          profileId: profile.id,
+          id: profile.id,
         },
         data: {
-          dateUpdated: new Date(profile.dateUpdated),
-          dateDeleted: profile.dateDeleted
-            ? new Date(profile.dateDeleted)
-            : null,
           isActive: profile.isActive,
           firstName: profile.firstName,
           lastName: profile.lastName,
@@ -251,7 +177,7 @@ export class ProfileRepository {
         },
         data: {
           isActive: false,
-          dateDeleted: new Date(),
+          deletedAt: new Date(),
         },
       });
     } catch (error) {

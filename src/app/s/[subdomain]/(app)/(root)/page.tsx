@@ -16,14 +16,14 @@ import { ProfileHeader } from "@/app/s/[subdomain]/(app)/(root)/_components/prof
 import { Projects } from "@/app/s/[subdomain]/(app)/(root)/_components/projects";
 import { SocialLinks } from "@/app/s/[subdomain]/(app)/(root)/_components/social-links";
 import { TeckStack } from "@/app/s/[subdomain]/(app)/(root)/_components/teck-stack";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { profileRepository } from "@/repository/profile.repository";
 
-function getPageJsonLd(profile: IProfile): WithContext<ProfilePage> {
+function getPageJsonLd(profile: Profile): WithContext<ProfilePage> {
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    dateCreated: dayjs(profile.dateCreated).toISOString(),
+    dateCreated: dayjs(profile.createdAt).toISOString(),
     dateModified: dayjs().toISOString(),
     mainEntity: {
       "@type": "Person",

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 import { getSiteInfo } from "@/config/site.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
-export function generateDynamicMetadata(profile: IProfile): Metadata {
+export function generateDynamicMetadata(profile: Profile): Metadata {
   const siteInfo = getSiteInfo(profile);
 
   return {

@@ -1,14 +1,15 @@
-import type { IProfile, Metadata } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
+import type { Subdomain } from "@/generated/prisma";
 import prisma from "@/lib/prisma";
 
-interface SubdomainWithProfileId {
-  id: string;
-  subdomain: string;
-  emoji: string;
-  createdAt: Date;
-  updatedAt: Date;
-  profileId?: string | null;
-}
+// interface SubdomainWithProfileId {
+//   id: string;
+//   subdomain: string;
+//   emoji: string;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   profileId?: string | null;
+// }
 
 export function isValidIcon(str: string) {
   if (str.length > 10) {
@@ -90,7 +91,7 @@ class SubdomainRepository {
 
   async getProfileBySubdomainWithRelation(
     subdomain: string
-  ): Promise<IProfile | null> {
+  ): Promise<Profile | null> {
     try {
       // Validate subdomain input
       if (
@@ -106,7 +107,7 @@ class SubdomainRepository {
         where: {
           subdomain: subdomain.trim(),
         },
-      })) as SubdomainWithProfileId | null;
+      })) as Subdomain | null;
 
       if (!subdomainRecord) {
         return null;
@@ -118,47 +119,17 @@ class SubdomainRepository {
       }
 
       // Get the associated profile
-      const profile = await prisma.profile.findUnique({
+      const profile = (await prisma.profile.findUnique({
         where: {
           id: subdomainRecord.profileId,
         },
-      });
+      })) as Profile | null;
 
       if (!profile) {
         return null;
       }
 
-      // Transform the database profile to match the IProfile interface
-      const transformedProfile: IProfile = {
-        id: profile.id,
-        dateCreated: profile.dateCreated.toISOString().split("T")[0],
-        dateUpdated: profile.dateUpdated.toISOString().split("T")[0],
-        dateDeleted: profile.dateDeleted?.toISOString().split("T")[0] || "",
-        isActive: profile.isActive,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        displayName: profile.displayName,
-        username: profile.username,
-        gender: profile.gender,
-        pronouns: profile.pronouns,
-        bio: profile.bio,
-        flipSentences: profile.flipSentences,
-        twitterUsername: profile.twitterUsername,
-        githubUserName: profile.githubUserName,
-        address: profile.address,
-        phoneNumber: profile.phoneNumber,
-        email: profile.email,
-        website: profile.website,
-        otherWebsites: profile.otherWebsites,
-        jobTitle: profile.jobTitle,
-        avatar: profile.avatar,
-        ogImage: profile.ogImage,
-        keywords: profile.keywords,
-        metadata: profile.metadata as unknown as Metadata,
-        sections: profile.sections as unknown as IProfile["sections"],
-      };
-
-      return transformedProfile;
+      return profile;
     } catch (error) {
       throw new Error("Failed to get profile by subdomain" + error);
     }
@@ -194,7 +165,7 @@ class SubdomainRepository {
         orderBy: {
           createdAt: "desc",
         },
-      })) as SubdomainWithProfileId[];
+      })) as Subdomain[];
 
       const subdomainsWithProfiles = await Promise.all(
         subdomains.map(async (subdomain) => {

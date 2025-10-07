@@ -1,3 +1,5 @@
+import type { ProfileCreate } from "@/dtos/profile.dto";
+
 interface ExportError {
   error: string;
 }
@@ -6,9 +8,6 @@ interface ExportOptions {
   slug: string;
   format: "A4";
 }
-
-import path from "node:path";
-import { getMDXData } from "@/services/blog";
 
 export type CvMetadata = {
   title: string;
@@ -25,9 +24,6 @@ export type Cv = {
   slug: string;
   content: string;
 };
-
-import type { Experience } from "@/content/profile";
-import type { ProfileCreate } from "@/dtos/profile.dto";
 
 class ProfileService {
   async exportToPdf(options: ExportOptions): Promise<Blob> {

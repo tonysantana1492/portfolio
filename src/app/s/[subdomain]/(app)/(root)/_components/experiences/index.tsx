@@ -1,11 +1,11 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { ExperienceItem } from "./experience-item";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 export function Experiences({
   className,
   profile,
-}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+}: React.ComponentProps<typeof Panel> & { profile: Profile }) {
   return (
     <Panel className={className} id={profile.sections.experiences?.id}>
       <PanelHeader>

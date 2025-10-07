@@ -1,8 +1,8 @@
 import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
-export function NavItemGitHub({ profile }: { profile: IProfile }) {
+export function NavItemGitHub({ profile }: { profile: Profile }) {
   return (
     <Button variant="outline" size="icon">
       <a

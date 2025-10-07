@@ -1,13 +1,13 @@
 import { RssIcon } from "lucide-react";
 
 import { getSiteInfo } from "@/config/site.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { cn } from "@/lib/utils";
 
 export function SiteFooter({
   profile,
   className,
-}: React.ComponentProps<"footer"> & { profile: IProfile }) {
+}: React.ComponentProps<"footer"> & { profile: Profile }) {
   const siteInfo = getSiteInfo(profile);
 
   return (

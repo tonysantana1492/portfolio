@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 interface UseProfileReturn {
-  profile: IProfile | null;
+  profile: Profile | null;
   loading: boolean;
   error: string | null;
 }
 
 export function useProfile(): UseProfileReturn {
-  const [profile, setProfile] = useState<IProfile | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

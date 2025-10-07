@@ -1,11 +1,11 @@
 import { Panel } from "../panel";
 import { SocialLinkItem } from "./social-link-item";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 export function SocialLinks({
   profile,
   className,
-}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+}: React.ComponentProps<typeof Panel> & { profile: Profile }) {
   return (
     <Panel className={className} id={profile.sections.socialLinks?.id}>
       <h2 className="sr-only">{profile.sections.socialLinks?.name}</h2>

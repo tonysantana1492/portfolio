@@ -1,12 +1,12 @@
 import { FlipSentences } from "@/app/s/[subdomain]/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { cn } from "@/lib/utils";
 
 export function ProfileHeader({
   profile,
   className,
-}: React.ComponentProps<"div"> & { profile: IProfile }) {
+}: React.ComponentProps<"div"> & { profile: Profile }) {
   return (
     <div
       className={cn("screen-line-after flex border-edge border-x", className)}

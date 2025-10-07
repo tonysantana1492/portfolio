@@ -2,10 +2,10 @@ import type {
   Award,
   Certification,
   Experience,
-  IProfile,
+  Profile,
   SocialLink,
   TechStack,
-} from "@/content/profile";
+} from "@/dtos/profile.dto";
 import { formatPhone } from "@/lib/libphonenumber";
 import { formatPhoneNumber } from "@/lib/string";
 
@@ -68,7 +68,7 @@ function groupTechByCategory(items: TechStack[]) {
 const mdxLink = (title: string, href?: string) =>
   href ? `[${esc(title)}](${href})` : esc(title);
 
-export function cvToMdx(profile: IProfile) {
+export function cvToMdx(profile: Profile) {
   const lines: string[] = [];
 
   // ===== Header =====

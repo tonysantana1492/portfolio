@@ -1,12 +1,10 @@
-// import sharp from "sharp";
-
 import sharp from "sharp";
 import VCard from "vcard-creator";
 
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { decodePhoneNumber } from "@/lib/string";
 
-export const generateVCard = (profile: IProfile) => {
+export const generateVCard = (profile: Profile) => {
   const card = new VCard();
 
   card

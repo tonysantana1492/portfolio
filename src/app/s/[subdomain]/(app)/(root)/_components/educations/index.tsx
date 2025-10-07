@@ -1,11 +1,11 @@
 import { Panel, PanelHeader, PanelTitle } from "../panel";
 import { EducationItem } from "@/app/s/[subdomain]/(app)/(root)/_components/educations/education-item";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 export function Educations({
   className,
   profile,
-}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+}: React.ComponentProps<typeof Panel> & { profile: Profile }) {
   return (
     <Panel className={className} id={profile.sections.educations?.id}>
       <PanelHeader>

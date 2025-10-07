@@ -13,14 +13,15 @@ import { ShareMenu } from "@/components/shared/share-menu";
 import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { getSiteInfo } from "@/config/site.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
 import { profileRepository } from "@/repository/profile.repository";
-import { type Cv, profileService } from "@/services/profile.service";
+import { getCVs, getCvBySlug } from "@/services/blog";
+import type { Cv } from "@/services/profile.service";
 
 export async function generateStaticParams() {
-  const cvs = profileService.getCVs();
+  const cvs = getCVs();
   return cvs.map((cv) => ({
     slug: cv.slug,
   }));
@@ -41,7 +42,7 @@ export async function generateMetadata({
   params,
 }: RouteParams): Promise<Metadata> {
   const slug = (await params).slug;
-  const cv = profileService.getCvBySlug(slug);
+  const cv = getCvBySlug(slug);
 
   if (!cv) {
     return notFound();
@@ -77,7 +78,7 @@ export async function generateMetadata({
   };
 }
 
-function getPageJsonLd(cv: Cv, profile: IProfile): WithContext<PageSchema> {
+function getPageJsonLd(cv: Cv, profile: Profile): WithContext<PageSchema> {
   const siteInfo = getSiteInfo(profile);
 
   return {
@@ -103,7 +104,7 @@ function getPageJsonLd(cv: Cv, profile: IProfile): WithContext<PageSchema> {
 export default async function Page({ params }: RouteParams) {
   const { slug, subdomain } = await params;
 
-  const cv = profileService.getCvBySlug(slug);
+  const cv = getCvBySlug(slug);
   const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!cv || !profile) {

@@ -10,7 +10,7 @@ import {
 import { Logo } from "@/components/header/logo";
 import { getIcon } from "@/components/shared/icons";
 import { APP_CONFIG } from "@/config/app.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 interface ISiteInfo {
   name: string;
@@ -26,7 +26,7 @@ interface ISiteInfo {
   };
 }
 
-export function getSiteInfo(profile?: IProfile): ISiteInfo {
+export function getSiteInfo(profile?: Profile): ISiteInfo {
   return {
     name: profile?.displayName ?? "Let's 0",
     url: APP_CONFIG.URL,
@@ -94,7 +94,7 @@ export function getSiteInfo(profile?: IProfile): ISiteInfo {
   };
 }
 
-export function getPWAConfig(profile: IProfile) {
+export function getPWAConfig(profile: Profile) {
   const siteInfo = getSiteInfo(profile);
   return {
     name: siteInfo.name,
@@ -157,7 +157,7 @@ export type CommandLinkItem = {
   openInNewTab?: boolean;
 };
 
-export function getPortfolioLinks(profile: IProfile): CommandLinkItem[] {
+export function getPortfolioLinks(profile: Profile): CommandLinkItem[] {
   const sections = Object.entries(profile?.sections).map(
     ([_key, section]) => section
   );
@@ -180,7 +180,7 @@ export function getPortfolioLinks(profile: IProfile): CommandLinkItem[] {
   ];
 }
 
-export function getSocialLinkItems(profile: IProfile): CommandLinkItem[] {
+export function getSocialLinkItems(profile: Profile): CommandLinkItem[] {
   return (
     profile.sections.socialLinks?.items.map((item) => ({
       title: item.title,

@@ -1,12 +1,12 @@
 import { Panel, PanelContent, PanelHeader, PanelTitle } from "./panel";
 import { Markdown } from "@/components/shared/markdown";
 import { Prose } from "@/components/ui/typography";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 
 export function About({
   profile,
   className,
-}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+}: React.ComponentProps<typeof Panel> & { profile: Profile }) {
   return (
     <Panel className={className} id={profile.sections.about?.id}>
       <PanelHeader>

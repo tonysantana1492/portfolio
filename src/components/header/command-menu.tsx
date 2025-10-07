@@ -33,7 +33,7 @@ import {
   getPortfolioLinks,
   MAIN_NAV,
 } from "@/config/site.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { cn } from "@/lib/utils";
 import type { Post } from "@/services/blog";
 
@@ -42,7 +42,7 @@ export function CommandMenu({
   profile,
 }: {
   posts: Post[];
-  profile: IProfile;
+  profile: Profile;
 }) {
   const router = useRouter();
 

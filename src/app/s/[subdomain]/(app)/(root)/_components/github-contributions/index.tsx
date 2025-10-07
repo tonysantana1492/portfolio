@@ -2,14 +2,16 @@ import { Suspense } from "react";
 
 import { Panel } from "../panel";
 import { GitHubContributionFallback, GitHubContributionGraph } from "./graph";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { getGitHubContributions } from "@/services/github-contributions.service";
 
 interface GitHubContributionsProps {
-  profile: IProfile;
+  profile: Profile;
 }
 
-export function GitHubContributions({ profile }: GitHubContributionsProps) {
+export function GitHubContributions({
+  profile,
+}: React.ComponentProps<typeof Panel> & GitHubContributionsProps) {
   const contributions = getGitHubContributions(profile.githubUserName);
 
   return (

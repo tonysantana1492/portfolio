@@ -6,13 +6,12 @@ import { useTheme } from "next-themes";
 import { QRCode } from "react-qrcode-logo";
 
 import { getSiteInfo } from "@/config/site.config";
-import type { IProfile } from "@/content/profile";
+import type { Profile } from "@/dtos/profile.dto";
 import { generateVCard } from "@/lib/v-card";
 
 export type VCardQRProps = {
-  profile: IProfile;
+  profile: Profile;
   size?: number;
-  className?: string;
   showDownloadButtons?: boolean;
 };
 
@@ -21,7 +20,7 @@ export function VCardQR({
   size = 220,
   className,
   showDownloadButtons = true,
-}: VCardQRProps) {
+}: React.ComponentProps<"div"> & VCardQRProps) {
   const { resolvedTheme } = useTheme();
 
   const siteInfo = getSiteInfo(profile);

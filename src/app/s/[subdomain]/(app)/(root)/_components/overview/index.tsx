@@ -8,13 +8,13 @@ import {
   Panel,
   PanelContent,
 } from "@/app/s/[subdomain]/(app)/(root)/_components/panel";
-import type { IProfile } from "@/content/profile";
-import { getLastCompany } from "@/services/experience.service";
+import type { Profile } from "@/dtos/profile.dto";
+import { getLastCompany } from "@/services/blog";
 
 export function Overview({
   profile,
   className,
-}: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
+}: React.ComponentProps<typeof Panel> & { profile: Profile }) {
   const lastCompany = getLastCompany(profile.sections.experiences?.items ?? []);
 
   return (

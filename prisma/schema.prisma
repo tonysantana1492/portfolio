@@ -24,6 +24,7 @@ model User {
   verified  Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime? 
   
   // Relationship with profiles
   profiles  Profile[]
@@ -38,6 +39,7 @@ model Subdomain {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
   
   // Profile relationship
   profileId String  @db.ObjectId
@@ -48,10 +50,6 @@ model Subdomain {
 
 model Profile {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  profileId     String   @unique // External profile ID
-  dateCreated   DateTime
-  dateUpdated   DateTime
-  dateDeleted   DateTime?
   isActive      Boolean  @default(true)
   
   // User relationship
@@ -81,12 +79,14 @@ model Profile {
   avatar        String
   ogImage       String
   keywords      String[]
-  
+  // METADATA (stored as JSON)
+  metadata      Json
   // SECTIONS (stored as JSON)
   sections      Json
   
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  deletedAt     DateTime? 
 
   @@map("profiles")
 }
