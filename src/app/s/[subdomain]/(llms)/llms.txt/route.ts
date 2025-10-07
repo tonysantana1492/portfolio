@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getPosts } from "@/lib/blog";
 import { profileRepository } from "@/repository/profile.repository";
+import { profileService } from "@/services/profile.service";
 
 export const dynamic = "force-static";
 
@@ -19,7 +19,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     return new Response("Subdomain is required", { status: 400 });
   }
 
-  const allPosts = getPosts();
+  const allPosts = profileService.getPosts();
   const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {

@@ -3,9 +3,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getPosts } from "@/lib/blog";
 import { getLLMText } from "@/lib/get-llm-text";
 import { profileRepository } from "@/repository/profile.repository";
+import { profileService } from "@/services/profile.service";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +31,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
     }
 
-    const allPosts = getPosts();
+    const allPosts = profileService.getPosts();
     const siteInfo = getSiteInfo(profile);
 
     const aboutText = `## About

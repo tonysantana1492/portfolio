@@ -17,10 +17,10 @@ import type { IProfile } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
 import { profileRepository } from "@/repository/profile.repository";
-import { type Cv, getCVs, getCvBySlug } from "@/services/cv.service";
+import { type Cv, profileService } from "@/services/profile.service";
 
 export async function generateStaticParams() {
-  const cvs = getCVs();
+  const cvs = profileService.getCVs();
   return cvs.map((cv) => ({
     slug: cv.slug,
   }));
@@ -41,7 +41,7 @@ export async function generateMetadata({
   params,
 }: RouteParams): Promise<Metadata> {
   const slug = (await params).slug;
-  const cv = getCvBySlug(slug);
+  const cv = profileService.getCvBySlug(slug);
 
   if (!cv) {
     return notFound();
@@ -103,7 +103,7 @@ function getPageJsonLd(cv: Cv, profile: IProfile): WithContext<PageSchema> {
 export default async function Page({ params }: RouteParams) {
   const { slug, subdomain } = await params;
 
-  const cv = getCvBySlug(slug);
+  const cv = profileService.getCvBySlug(slug);
   const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!cv || !profile) {

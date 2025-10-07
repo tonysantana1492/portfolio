@@ -16,9 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { getSiteInfo } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
-import { findNeighbour, getPostBySlug, getPosts, type Post } from "@/lib/blog";
+import { findNeighbour, type Post } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 import { profileRepository } from "@/repository/profile.repository";
+import { profileService } from "@/services/profile.service";
 
 interface RouteParams {
   params: Promise<{
@@ -28,7 +29,7 @@ interface RouteParams {
 }
 
 export async function generateStaticParams() {
-  const posts = getPosts();
+  const posts = profileService.getPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -38,7 +39,7 @@ export async function generateMetadata({
   params,
 }: RouteParams): Promise<Metadata> {
   const slug = (await params).slug;
-  const post = getPostBySlug(slug);
+  const post = profileService.getPostBySlug(slug);
 
   if (!post) {
     return notFound();
@@ -105,7 +106,7 @@ export default async function Page({
   }>;
 }) {
   const slug = (await params).slug;
-  const post = getPostBySlug(slug);
+  const post = profileService.getPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -119,7 +120,7 @@ export default async function Page({
 
   const toc = getTableOfContents(post.content);
 
-  const allPosts = getPosts();
+  const allPosts = profileService.getPosts();
   const { previous, next } = findNeighbour(allPosts, slug);
 
   return (
