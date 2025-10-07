@@ -1,42 +1,29 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { v4 as uuidv4 } from "uuid";
-
-import type { IProfile } from "@/content/profile";
+import { ProfileCreateSchema } from "@/dtos/profile.dto";
 import type { User } from "@/generated/prisma";
-import {
-  createSubdomainWithProfile,
-  getSubdomain,
-} from "@/services/subdomains.service";
-import {
-  createUser,
-  getUserByEmail,
-  getUserById,
-} from "@/services/user.service";
-import {
-  createProfile,
-  deleteProfileById,
-  getProfileByUserName,
-} from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { subdomainRepository } from "@/repository/subdomains.repository";
+import { userRepository } from "@/repository/user.repository";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Validate required fields
-    if (!username || !firstName || !email) {
+    const { success, error, data } = ProfileCreateSchema.safeParse(body);
+
+    if (!success) {
       return NextResponse.json(
-        {
-          error:
-            "Missing required fields: username, firstName, lastName, email",
-        },
+        { error: "Invalid profile data", details: error },
         { status: 400 }
       );
     }
 
     // Check if username is already taken
-    const existingProfile = await getProfileByUserName(username);
+    const existingProfile = await profileRepository.getProfileByUserName(
+      data.username
+    );
 
     if (existingProfile) {
       return NextResponse.json(
@@ -45,7 +32,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existingSubdomain = await getSubdomain(username);
+    const existingSubdomain = await subdomainRepository.getSubdomain(
+      data.username
+    );
 
     if (existingSubdomain) {
       return NextResponse.json(
@@ -56,23 +45,23 @@ export async function POST(request: NextRequest) {
 
     // Find or create a user
     let user: User | null;
-    if (userId) {
-      // If userId provided, find the existing user
-      user = await getUserById(userId);
+    if (data.userId) {
+      user = await userRepository.getUserById(data.userId);
+
       if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }
     } else {
       // If no userId provided, create a temporary user or find by email
-      user = await getUserByEmail(email);
+      user = await userRepository.getUserByEmail(data.email);
 
       if (!user) {
         // Create a new user with basic information
-        user = await createUser({
+        user = await userRepository.createUser({
           googleId: `temp_${Date.now()}`, // Temporary google ID
-          email,
-          name: `${firstName} ${lastName}`,
-          picture: avatar,
+          email: data.email,
+          name: `${data.firstName} ${data.lastName}`,
+          picture: data.avatar,
           verified: false,
         });
       }
@@ -86,24 +75,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create profile data
-    const profileId = uuidv4();
-
     // Create profile in database
-    const newProfile = await createProfile(body);
+    const newProfile = await profileRepository.createProfile(body);
 
-    const subdomainCreated = await createSubdomainWithProfile(
-      username,
-      "✨",
-      newProfile.id
-    );
+    const subdomainCreated =
+      await subdomainRepository.createSubdomainWithProfile({
+        subdomain: data.username,
+        emoji: "✨",
+        profileId: newProfile.id,
+      });
 
     if (!subdomainCreated) {
-      console.error(
-        "❌ Failed to create subdomain, rolling back profile creation"
-      );
       // If subdomain creation fails, we should delete the profile to maintain consistency
-      await deleteProfileById(newProfile.id);
+      await profileRepository.deleteProfileById(newProfile.id);
 
       return NextResponse.json(
         { error: "Failed to create subdomain. Please try again." },
@@ -112,26 +96,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Return created profile
-    const responseProfile: Partial<IProfile> = {
-      id: newProfile.id,
-      username: newProfile.username,
-      firstName: newProfile.firstName,
-      lastName: newProfile.lastName,
-      displayName: newProfile.displayName,
-      email: newProfile.email,
-      bio: newProfile.bio,
-      isActive: newProfile.isActive,
-    };
-
     return NextResponse.json({
       success: true,
-      profile: responseProfile,
-      subdomain: username,
+      profile: newProfile,
+      subdomain: data.username,
       message: "Profile and subdomain created successfully!",
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to create profile. Please try again." },
+      { error: "Failed to create profile. Please try again." + error },
       { status: 500 }
     );
   }

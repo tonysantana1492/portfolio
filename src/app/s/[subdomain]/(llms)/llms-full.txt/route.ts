@@ -3,9 +3,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import dayjs from "dayjs";
 
 import { getSiteInfo } from "@/config/site.config";
+import { getPosts } from "@/lib/blog";
 import { getLLMText } from "@/lib/get-llm-text";
-import { getPosts } from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +25,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const profile = await getProfileBySubdomain(subdomain);
+    const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
     if (!profile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });

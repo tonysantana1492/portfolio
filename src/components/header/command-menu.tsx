@@ -34,8 +34,8 @@ import {
   MAIN_NAV,
 } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
+import type { Post } from "@/lib/blog";
 import { cn } from "@/lib/utils";
-import type { Post } from "@/services/blog";
 
 export function CommandMenu({
   posts,

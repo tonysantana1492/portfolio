@@ -17,7 +17,7 @@ import { Projects } from "@/app/s/[subdomain]/(app)/(root)/_components/projects"
 import { SocialLinks } from "@/app/s/[subdomain]/(app)/(root)/_components/social-links";
 import { TeckStack } from "@/app/s/[subdomain]/(app)/(root)/_components/teck-stack";
 import type { IProfile } from "@/content/profile";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 function getPageJsonLd(profile: IProfile): WithContext<ProfilePage> {
   return {
@@ -46,7 +46,7 @@ export default async function Page({
     notFound();
   }
 
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     notFound();

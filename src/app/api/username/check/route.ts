@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getProfileByUserName } from "@/services/profile.service";
-import { getSubdomain } from "@/services/subdomains.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { subdomainRepository } from "@/repository/subdomains.repository";
 
 export async function GET(request: NextRequest) {
   try {
@@ -26,10 +26,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if username exists in Profile table
-    const existingProfile = await getProfileByUserName(username);
+    const existingProfile = await profileRepository.getProfileByUserName(
+      username
+    );
 
     // Check if username exists in Subdomain table
-    const existingSubdomain = await getSubdomain(username);
+    const existingSubdomain = await subdomainRepository.getSubdomain(username);
 
     const available = !existingProfile && !existingSubdomain;
 

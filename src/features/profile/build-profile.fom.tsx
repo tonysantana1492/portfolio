@@ -144,10 +144,6 @@ export function BuildProfileForm() {
       const firstName = nameParts[0] || data.username;
       const lastName = nameParts.slice(1).join(" ") || "";
 
-      const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
-        data.socialNetwork?.includes(network.baseUrl)
-      );
-
       const profileData = {
         ...PROFILE,
         username: data.username,
@@ -155,33 +151,6 @@ export function BuildProfileForm() {
         lastName,
         email: user?.email || `${data.username}@example.com`, // Fallback temporal
         displayName: fullName,
-        bio: `Hello! I'm ${firstName} and I just joined lets0. Start from zero, shine like one! ✨`,
-        gender: "",
-        pronouns: "",
-        flipSentences: [
-          `Hello, I'm ${firstName}!`,
-          "New lets0 member",
-          "Ready to shine ✨",
-        ],
-        twitterUsername:
-          selectedNetwork?.name === "X (Twitter)" ? data.socialUsername : "",
-        githubUserName:
-          selectedNetwork?.name === "GitHub" ? data.socialUsername : "",
-        address: "",
-        phoneNumber: "",
-        website:
-          selectedNetwork?.name === "Website"
-            ? `${data.socialNetwork}${data.socialUsername}`
-            : "",
-        otherWebsites:
-          selectedNetwork &&
-          !["X (Twitter)", "GitHub", "Website"].includes(selectedNetwork.name)
-            ? [`${data.socialNetwork}${data.socialUsername}`]
-            : [],
-        jobTitle: "",
-        avatar: user?.picture || "",
-        ogImage: "",
-        keywords: ["lets0", "portfolio", data.username],
         userId: user?.id,
       };
 

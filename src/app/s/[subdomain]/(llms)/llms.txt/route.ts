@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getPosts } from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { getPosts } from "@/lib/blog";
+import { profileRepository } from "@/repository/profile.repository";
 
 export const dynamic = "force-static";
 
@@ -20,7 +20,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
   }
 
   const allPosts = getPosts();
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return new Response("Not Found", { status: 404 });

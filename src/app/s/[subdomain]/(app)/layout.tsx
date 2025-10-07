@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/footer/site-footer";
 import { SiteHeader } from "@/components/header/site-header";
 import { ScrollTop } from "@/components/shared/scroll-top";
 import { generateDynamicMetadata } from "@/lib/metadata";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -24,7 +24,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return {};
@@ -41,7 +41,7 @@ export default async function AppLayout({ children, params }: AppLayoutProps) {
     notFound();
   }
 
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     notFound();

@@ -16,8 +16,8 @@ import { getSiteInfo } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
-import { type Cv, getCVs, getCvBySlug } from "@/services/cv";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { type Cv, getCVs, getCvBySlug } from "@/services/cv.service";
 
 export async function generateStaticParams() {
   const cvs = getCVs();
@@ -104,7 +104,7 @@ export default async function Page({ params }: RouteParams) {
   const { slug, subdomain } = await params;
 
   const cv = getCvBySlug(slug);
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!cv || !profile) {
     notFound();

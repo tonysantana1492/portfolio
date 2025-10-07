@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 interface ManifestProps {
   params: {
@@ -21,7 +21,9 @@ export default async function manifest({
     return {};
   }
 
-  const profile = await getProfileBySubdomain(params.subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(
+    params.subdomain
+  );
 
   if (!profile) {
     return {};

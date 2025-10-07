@@ -16,14 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { getSiteInfo } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
+import { findNeighbour, getPostBySlug, getPosts, type Post } from "@/lib/blog";
 import { cn } from "@/lib/utils";
-import {
-  findNeighbour,
-  getPostBySlug,
-  getPosts,
-  type Post,
-} from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 interface RouteParams {
   params: Promise<{
@@ -116,7 +111,7 @@ export default async function Page({
     notFound();
   }
 
-  const profile = await getProfileBySubdomain(slug);
+  const profile = await profileRepository.getProfileBySubdomain(slug);
 
   if (!profile) {
     notFound();

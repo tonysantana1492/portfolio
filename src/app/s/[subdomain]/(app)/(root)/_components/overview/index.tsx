@@ -9,7 +9,7 @@ import {
   PanelContent,
 } from "@/app/s/[subdomain]/(app)/(root)/_components/panel";
 import type { IProfile } from "@/content/profile";
-import { getLastCompany } from "@/services/experience";
+import { getLastCompany } from "@/services/experience.service";
 
 export function Overview({
   profile,

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getLLMText } from "@/lib/get-llm-text";
-import { getCVs } from "@/services/cv";
+import { getCVs } from "@/services/cv.service";
 
 interface RouteParams {
   params: Promise<{

@@ -3,8 +3,8 @@ import type { NextRequest } from "next/server";
 import dayjs from "dayjs";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getPosts } from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { profileService } from "@/services/profile.service";
 
 export const dynamic = "force-static";
 
@@ -21,8 +21,8 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     return new Response("Subdomain is required", { status: 400 });
   }
 
-  const allPosts = getPosts();
-  const profile = await getProfileBySubdomain(subdomain);
+  const allPosts = profileService.getPosts();
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return new Response("Not Found", { status: 404 });

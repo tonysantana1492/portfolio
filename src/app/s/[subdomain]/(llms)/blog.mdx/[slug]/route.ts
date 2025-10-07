@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
+import { getPosts } from "@/lib/blog";
 import { getLLMText } from "@/lib/get-llm-text";
-import { getPosts } from "@/services/blog";
 
 export async function generateStaticParams() {
   const posts = getPosts();

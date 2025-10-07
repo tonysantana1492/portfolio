@@ -4,8 +4,8 @@ import sharp from "sharp";
 import VCard from "vcard-creator";
 
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
-import { getLastCompany } from "@/services/experience";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { getLastCompany } from "@/services/experience.service";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: "Invalid subdomain" }, { status: 400 });
   }
 
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return NextResponse.json({ error: "Profile not found" }, { status: 404 });

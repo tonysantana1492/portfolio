@@ -7,7 +7,7 @@ import { DownloadCloudIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import { downloadBlob } from "@/lib/download-blob";
-import { exportToPdf } from "@/services/export-by-slug";
+import { profileService } from "@/services/profile.service";
 
 interface IDownloadProps {
   slug: string;
@@ -25,7 +25,7 @@ export function ExportButton({ slug, fileName }: IDownloadProps) {
     const toastId = toast.loading("Exporting PDF...");
 
     try {
-      const pdfBlob = await exportToPdf({ slug, format: "A4" });
+      const pdfBlob = await profileService.exportToPdf({ slug, format: "A4" });
       const url = downloadBlob(pdfBlob, `${fileName}.pdf`, false);
 
       toast.success(`${fileName}.pdf has been downloaded successfully`, {

@@ -5,15 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import type { GoogleUserData } from "@/components/auth/auth-popup";
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  picture?: string;
-  verified: boolean;
-  createdAt: string;
-}
+import type { User } from "@/dtos/user.dto";
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);

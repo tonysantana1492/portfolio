@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { getSiteInfo } from "@/config/site.config";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { Providers } from "@/providers/providers";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
 
 export const viewport: Viewport = {
@@ -22,7 +22,7 @@ export const generateMetadata = async ({
   params: Promise<{ subdomain: string }>;
 }): Promise<Metadata> => {
   const { subdomain } = await params;
-  const profile = await getProfileBySubdomain(subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
   if (!profile) {
     return {};

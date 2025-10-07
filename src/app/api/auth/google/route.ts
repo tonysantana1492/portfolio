@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import type { GoogleUserData } from "@/components/auth/auth-popup";
-import { createOrGetUser } from "@/services/user.service";
+import { userRepository } from "@/repository/user.repository";
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const user = await createOrGetUser(googleUserData);
+    const user = await userRepository.createOrGetUser(googleUserData);
 
     return NextResponse.json({
       success: true,

@@ -1,11 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import {
-  createProfile,
-  getProfileBySubdomain,
-  updateProfile,
-} from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -19,7 +15,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const profile = await getProfileBySubdomain(subdomain);
+    const profile = await profileRepository.getProfileBySubdomain(subdomain);
 
     return NextResponse.json(profile);
   } catch (error) {
@@ -31,7 +27,7 @@ export async function POST(request: NextRequest) {
   try {
     const profileData = await request.json();
 
-    const updatedProfile = await createProfile(profileData);
+    const updatedProfile = await profileRepository.createProfile(profileData);
 
     return NextResponse.json(updatedProfile);
   } catch (error) {
@@ -47,13 +43,12 @@ export async function PUT(request: NextRequest) {
   try {
     const profileData = await request.json();
 
-    const updatedProfile = await updateProfile(profileData);
+    const updatedProfile = await profileRepository.updateProfile(profileData);
 
     return NextResponse.json(updatedProfile);
   } catch (error) {
-    console.error("Error updating profile:", error);
     return NextResponse.json(
-      { error: "Failed to update profile" },
+      { error: "Failed to update profile" + error },
       { status: 500 }
     );
   }

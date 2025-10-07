@@ -1,13 +1,9 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getProfileById } from "@/services/profile.service";
-import {
-  associateSubdomainWithProfile,
-  getSubdomain,
-} from "@/services/subdomains.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { subdomainRepository } from "@/repository/subdomains.repository";
 
-// Extended type to handle the new profileId field
 interface SubdomainWithProfileId {
   id: string;
   subdomain: string;
@@ -30,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify subdomain exists
-    const existingSubdomain = await getSubdomain(subdomain);
+    const existingSubdomain = await subdomainRepository.getSubdomain(subdomain);
 
     if (!existingSubdomain) {
       return NextResponse.json(
@@ -40,14 +36,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify profile exists
-    const existingProfile = await getProfileById(profileId);
+    const existingProfile = await profileRepository.getProfileById(profileId);
 
     if (!existingProfile) {
       return NextResponse.json({ error: "Profile not found" }, { status: 404 });
     }
 
     // Associate subdomain with profile
-    const success = await associateSubdomainWithProfile(subdomain, profileId);
+    const success = await subdomainRepository.associateSubdomainWithProfile(
+      subdomain,
+      profileId
+    );
 
     if (!success) {
       return NextResponse.json(
@@ -82,7 +81,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get subdomain with profile information
-    const subdomainRecord = await getSubdomain(subdomain);
+    const subdomainRecord = await subdomainRepository.getSubdomain(subdomain);
 
     if (!subdomainRecord) {
       return NextResponse.json(
@@ -95,7 +94,9 @@ export async function GET(request: NextRequest) {
     let profileInfo = null;
 
     if (subdomainWithProfileId.profileId) {
-      const profile = await getProfileById(subdomainWithProfileId.profileId);
+      const profile = await profileRepository.getProfileById(
+        subdomainWithProfileId.profileId
+      );
       profileInfo = profile;
     }
 

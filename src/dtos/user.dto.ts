@@ -32,6 +32,6 @@ export const UserCreateSchema = z
 
 export const UserUpdateSchema = UserCreateSchema.partial().strict();
 
-export type UserBase = z.infer<typeof UserBaseSchema>;
+export type User = z.infer<typeof UserBaseSchema>;
 export type UserCreate = z.infer<typeof UserCreateSchema>;
 export type UserUpdate = z.infer<typeof UserUpdateSchema>;

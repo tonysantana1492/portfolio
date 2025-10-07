@@ -2,7 +2,7 @@ import "./print.css";
 
 import { MDX } from "@/components/shared/mdx";
 import { cvToMdx } from "@/lib/cv-to-mdx";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,7 @@ export default async function PrintPage({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const profile = await getProfileBySubdomain(slug);
+  const profile = await profileRepository.getProfileBySubdomain(slug);
 
   if (!profile) {
     return null;

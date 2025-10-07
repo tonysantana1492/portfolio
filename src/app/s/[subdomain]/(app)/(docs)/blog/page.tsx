@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import dayjs from "dayjs";
 
 import { PostItem } from "@/app/s/[subdomain]/(app)/(root)/_components/post-item";
-import { getPosts } from "@/services/blog";
+import { getPosts } from "@/lib/blog";
 
 interface RouteParams {
   params: Promise<{

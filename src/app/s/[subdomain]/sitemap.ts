@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 import dayjs from "dayjs";
 
 import { getSiteInfo } from "@/config/site.config";
-import { getPosts } from "@/services/blog";
-import { getProfileBySubdomain } from "@/services/profile.service";
+import { profileRepository } from "@/repository/profile.repository";
+import { profileService } from "@/services/profile.service";
 
 const ALL_ROUTES = ["", "/blog"];
 
@@ -26,7 +26,9 @@ export default async function sitemap({
     return [];
   }
 
-  const profile = await getProfileBySubdomain(params.subdomain);
+  const profile = await profileRepository.getProfileBySubdomain(
+    params.subdomain
+  );
 
   if (!profile) {
     return [];
@@ -34,7 +36,7 @@ export default async function sitemap({
 
   const siteInfo = getSiteInfo(profile);
 
-  const posts = getPosts().map((post) => ({
+  const posts = profileService.getPosts().map((post) => ({
     url: `${siteInfo.url}/blog/${post.slug}`,
     lastModified: dayjs(post.metadata.updatedAt).toISOString(),
   }));
