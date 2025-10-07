@@ -16,9 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Prose } from "@/components/ui/typography";
 import { getSiteInfo } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
-import { findNeighbour, type Post } from "@/lib/blog";
 import { cn } from "@/lib/utils";
 import { profileRepository } from "@/repository/profile.repository";
+import { findNeighbour, type Post } from "@/services/blog";
 import { profileService } from "@/services/profile.service";
 
 interface RouteParams {

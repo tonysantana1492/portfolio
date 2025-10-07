@@ -8,7 +8,7 @@ interface ExportOptions {
 }
 
 import path from "node:path";
-import { getMDXData } from "@/lib/blog";
+import { getMDXData } from "@/services/blog";
 
 export type CvMetadata = {
   title: string;
@@ -27,7 +27,7 @@ export type Cv = {
 };
 
 import type { Experience } from "@/content/profile";
-import type { Profile, ProfileCreate } from "@/dtos/profile.dto";
+import type { ProfileCreate } from "@/dtos/profile.dto";
 
 class ProfileService {
   async exportToPdf(options: ExportOptions): Promise<Blob> {
@@ -53,43 +53,6 @@ class ProfileService {
     }
 
     return response.blob();
-  }
-
-  getCVs() {
-    return getMDXData(path.join(process.cwd(), "src/content/cv")).sort(
-      (a, b) =>
-        new Date(b.metadata.createdAt).getTime() -
-        new Date(a.metadata.createdAt).getTime()
-    );
-  }
-
-  getLastCompany = (experiences: Experience[]) => {
-    return (
-      experiences.find((job) => job.isCurrentEmployer) ||
-      experiences.slice(-1)[0]
-    );
-  };
-
-  getCvBySlug(slug: string) {
-    return this.getCVs().find((cv) => cv.slug === slug);
-  }
-
-  getPosts() {
-    return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
-      (a, b) =>
-        new Date(b.metadata.createdAt).getTime() -
-        new Date(a.metadata.createdAt).getTime()
-    );
-  }
-
-  getPostBySlug(slug: string) {
-    return this.getPosts().find((post) => post.slug === slug);
-  }
-
-  getPostsByCategory(category: string) {
-    return this.getPosts().filter(
-      (post) => post.metadata?.category === category
-    );
   }
 
   async createProfile(profileData: ProfileCreate) {

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import type { Post } from "@/lib/blog";
+import type { Post } from "@/services/blog";
 
 export function PostKeyboardShortcuts({
   basePath,

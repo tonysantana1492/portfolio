@@ -1,11 +1,11 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-import sharp from "sharp";
 import VCard from "vcard-creator";
 
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
+import { getVCardPhoto } from "@/lib/v-card";
 import { profileRepository } from "@/repository/profile.repository";
-import { getLastCompany } from "@/services/experience.service";
+import { profileService } from "@/services/profile.service";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +42,9 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     card.addPhoto(photo.image, photo.mine);
   }
 
-  const lastCompany = getLastCompany(profile.sections.experiences?.items ?? []);
+  const lastCompany = profileService.getLastCompany(
+    profile.sections.experiences?.items ?? []
+  );
 
   if (lastCompany) {
     card
@@ -57,51 +59,4 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       "Content-Disposition": "inline; filename=contact.vcf",
     },
   });
-}
-
-async function getVCardPhoto(url: string) {
-  try {
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      return null;
-    }
-
-    const buffer = Buffer.from(await res.arrayBuffer());
-    if (buffer.length === 0) {
-      return null;
-    }
-
-    const contentType = res.headers.get("Content-Type") || "";
-    if (!contentType.startsWith("image/")) {
-      return null;
-    }
-
-    const jpegBuffer = await convertImageToJpeg(buffer);
-    const image = jpegBuffer.toString("base64");
-
-    return {
-      image,
-      mine: "jpeg",
-    };
-  } catch {
-    return null;
-  }
-}
-
-async function convertImageToJpeg(imageBuffer: Buffer): Promise<Buffer> {
-  try {
-    const jpegBuffer = await sharp(imageBuffer)
-      .jpeg({
-        quality: 90,
-        progressive: true,
-        mozjpeg: true,
-      })
-      .toBuffer();
-
-    return jpegBuffer;
-  } catch (error) {
-    console.error("Error converting image to JPEG:", error);
-    throw error;
-  }
 }

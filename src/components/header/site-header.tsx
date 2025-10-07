@@ -9,8 +9,8 @@ import { SiteHeaderMark } from "@/components/header/site-header-mark";
 import { SiteHeaderWrapper } from "@/components/header/site-header-wrapper";
 import { MAIN_NAV } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
-import { getPosts } from "@/lib/blog";
 import { cn } from "@/lib/utils";
+import { getPosts } from "@/services/blog";
 import { ToggleTheme } from "@/theme/toggle-theme";
 
 export function SiteHeader({ profile }: { profile: IProfile }) {

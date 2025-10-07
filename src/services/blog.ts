@@ -1,7 +1,10 @@
+import "server-only";
+
 import matter from "gray-matter";
 
 import fs from "node:fs";
 import path from "node:path";
+import type { Experience } from "@/content/profile";
 
 export type PostMetadata = {
   title: string;
@@ -66,4 +69,38 @@ export function findNeighbour(posts: Post[], slug: string) {
   }
 
   return { previous: null, next: null };
+}
+
+export function getCVs() {
+  return getMDXData(path.join(process.cwd(), "src/content/cv")).sort(
+    (a, b) =>
+      new Date(b.metadata.createdAt).getTime() -
+      new Date(a.metadata.createdAt).getTime()
+  );
+}
+
+export function getLastCompany(experiences: Experience[]) {
+  return (
+    experiences.find((job) => job.isCurrentEmployer) || experiences.slice(-1)[0]
+  );
+}
+
+export function getCvBySlug(slug: string) {
+  return getCVs().find((cv) => cv.slug === slug);
+}
+
+export function getPosts() {
+  return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
+    (a, b) =>
+      new Date(b.metadata.createdAt).getTime() -
+      new Date(a.metadata.createdAt).getTime()
+  );
+}
+
+export function getPostBySlug(slug: string) {
+  return getPosts().find((post) => post.slug === slug);
+}
+
+export function getPostsByCategory(category: string) {
+  return getPosts().filter((post) => post.metadata?.category === category);
 }
