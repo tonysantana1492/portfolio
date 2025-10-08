@@ -14,17 +14,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum MemberRole {
+  OWNER
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  googleId  String   @unique // Google Auth ID
-  email     String   @unique
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  deletedAt DateTime? 
+
+  googleId  String    @unique // Google Auth ID
+  email     String    @unique
   name      String
   picture   String?
-  isActive  Boolean  @default(true)
-  verified  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime? 
+  verified  Boolean   @default(false)
   
   // Relationship with profiles
   profiles  Profile[]
@@ -33,24 +41,28 @@ model User {
 }
 
 model Subdomain {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  subdomain String   @unique
-  emoji     String
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
   deletedAt DateTime?
+
+  slug      String    @unique
+  icon      String? 
   
   // Profile relationship
-  profileId String  @db.ObjectId
-  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String    @db.ObjectId
+  profile   Profile   @relation(fields: [profileId], references: [id])
 
   @@map("subdomains")
 }
 
 model Profile {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  isActive      Boolean  @default(true)
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @updatedAt
+  deletedAt     DateTime? 
   
   // User relationship
   userId        String   @db.ObjectId
@@ -63,7 +75,7 @@ model Profile {
   firstName     String
   lastName      String
   displayName   String
-  username      String   @unique
+  username      String   
   gender        String
   pronouns      String
   bio           String
@@ -84,10 +96,8 @@ model Profile {
   // SECTIONS (stored as JSON)
   sections      Json
   
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  deletedAt     DateTime? 
-
   @@map("profiles")
+  // @@unique([userId, slug])
+  @@index([userId])
 }
 

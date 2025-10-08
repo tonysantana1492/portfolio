@@ -1,6 +1,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { details } from "motion/react-m";
+import { id } from "zod/v4/locales";
+
+import { ProfileUpdateSchema } from "@/dtos/profile.dto";
 import { profileRepository } from "@/repository/profile.repository";
 
 export async function GET(request: NextRequest) {
@@ -10,7 +14,7 @@ export async function GET(request: NextRequest) {
   if (!subdomain) {
     return NextResponse.json(
       { error: "Subdomain is required" },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -34,22 +38,31 @@ export async function POST(request: NextRequest) {
     console.error("Error creating profile:", error);
     return NextResponse.json(
       { error: "Failed to create profile" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
 
 export async function PUT(request: NextRequest) {
   try {
-    const profileData = await request.json();
+    const body = await request.json();
 
-    const updatedProfile = await profileRepository.updateProfile(profileData);
+    const { success, data, error } = ProfileUpdateSchema.safeParse(body);
+
+    if (!success) {
+      return NextResponse.json(
+        { error: "Invalid profile data", issues: error?.issues },
+        { status: 400 }
+      );
+    }
+
+    const updatedProfile = await profileRepository.updateProfile(id, data);
 
     return NextResponse.json(updatedProfile);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to update profile" + error },
-      { status: 500 },
+      { error: "Failed to update profile", details: error },
+      { status: 500 }
     );
   }
 }

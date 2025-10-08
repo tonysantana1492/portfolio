@@ -1,4 +1,4 @@
-import type { Profile, ProfileCreate } from "@/dtos/profile.dto";
+import type { Profile, ProfileCreate, ProfileUpdate } from "@/dtos/profile.dto";
 import prisma from "@/lib/prisma";
 import { subdomainRepository } from "@/repository/subdomains.repository";
 
@@ -130,39 +130,21 @@ export class ProfileRepository {
     }
   }
 
-  async updateProfile(profile: Profile): Promise<Profile> {
+  async updateProfile(
+    profileId: string,
+    profile: ProfileUpdate
+  ): Promise<Profile> {
     try {
-      await prisma.profile.updateMany({
+      const profileUpdated = (await prisma.profile.updateMany({
         where: {
-          id: profile.id,
+          id: profileId,
         },
         data: {
-          isActive: profile.isActive,
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          displayName: profile.displayName,
-          username: profile.username,
-          gender: profile.gender,
-          pronouns: profile.pronouns,
-          bio: profile.bio,
-          flipSentences: profile.flipSentences,
-          twitterUsername: profile.twitterUsername,
-          githubUserName: profile.githubUserName,
-          address: profile.address,
-          phoneNumber: profile.phoneNumber,
-          email: profile.email,
-          website: profile.website,
-          otherWebsites: profile.otherWebsites,
-          jobTitle: profile.jobTitle,
-          avatar: profile.avatar,
-          ogImage: profile.ogImage,
-          keywords: profile.keywords,
-          metadata: JSON.parse(JSON.stringify(profile.metadata)),
-          sections: JSON.parse(JSON.stringify(profile.sections)),
+          ...profile,
         },
-      });
+      })) as unknown as Profile;
 
-      return profile;
+      return profileUpdated;
     } catch (error) {
       console.error("Error updating profile:", error);
       throw new Error("Failed to update profile");

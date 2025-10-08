@@ -13,19 +13,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { UserCreate } from "@/dtos/user.dto";
 
 interface AuthPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAuthSuccess: (userData: GoogleUserData) => void;
-}
-
-export interface GoogleUserData {
-  id: string;
-  email: string;
-  name: string;
-  picture?: string;
-  verified_email: boolean;
+  onAuthSuccess: (userData: UserCreate) => void;
 }
 
 export function AuthPopup({
@@ -43,12 +36,12 @@ export function AuthPopup({
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Simulate data that Google Auth normally returns
-      const mockGoogleUserData: GoogleUserData = {
-        id: `google_${Date.now()}`, // Simulate unique Google ID
+      const mockGoogleUserData: UserCreate = {
         email: "user@example.com",
         name: "John Doe",
         picture: "https://lh3.googleusercontent.com/a/default-user=s96-c",
-        verified_email: true,
+        verified: true,
+        googleId: "google-id-1234567890",
       };
 
       // Call the callback with user data
