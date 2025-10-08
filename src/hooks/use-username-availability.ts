@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { subdomainService } from "@/services/subdomain.service";
+
 interface UsernameAvailabilityResult {
   isChecking: boolean;
   isAvailable: boolean | null;
@@ -41,19 +43,10 @@ export function useUsernameAvailability(username: string, delay = 500) {
     }));
 
     try {
-      const response = await fetch(
-        `/api/username/check?username=${encodeURIComponent(usernameToCheck)}`,
-        {
-          signal: abortControllerRef.current.signal,
-        },
+      const data = await subdomainService.validateSubdomain(
+        usernameToCheck,
+        abortControllerRef.current.signal
       );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to check username");
-      }
-
-      const data = await response.json();
 
       setState({
         isChecking: false,
@@ -84,7 +77,7 @@ export function useUsernameAvailability(username: string, delay = 500) {
         checkUsername(usernameToCheck);
       }, delay);
     },
-    [checkUsername, delay],
+    [checkUsername, delay]
   );
 
   useEffect(() => {

@@ -28,7 +28,7 @@ export function isValidIcon(str: string) {
     // fall back to a simpler validation
     console.warn(
       "Emoji regex validation failed, using fallback validation",
-      error,
+      error
     );
   }
 
@@ -38,11 +38,11 @@ export function isValidIcon(str: string) {
 }
 
 class SubdomainRepository {
-  async getSubdomain(subdomain: string) {
+  async getSubdomainBySlug(slug: string) {
     try {
       return await prisma.subdomain.findUnique({
         where: {
-          subdomain: subdomain,
+          slug,
         },
       });
     } catch (error) {
@@ -58,13 +58,7 @@ class SubdomainRepository {
         },
       });
 
-      return subdomains.map(
-        (item: { subdomain: string; emoji: string; createdAt: Date }) => ({
-          subdomain: item.subdomain,
-          emoji: item.emoji || "❓",
-          createdAt: item.createdAt.getTime(),
-        }),
-      );
+      return subdomains;
     } catch (error) {
       throw new Error(`Failed to fetch all subdomains: ${error}`);
     }
@@ -72,12 +66,12 @@ class SubdomainRepository {
 
   async associateSubdomainWithProfile(
     subdomain: string,
-    profileId: string,
+    profileId: string
   ): Promise<boolean> {
     try {
       await prisma.subdomain.update({
         where: {
-          subdomain: subdomain,
+          slug: subdomain,
         },
         data: {
           profileId: profileId,
@@ -90,7 +84,7 @@ class SubdomainRepository {
   }
 
   async getProfileBySubdomainWithRelation(
-    subdomain: string,
+    subdomain: string
   ): Promise<Profile | null> {
     try {
       // Validate subdomain input
@@ -105,7 +99,7 @@ class SubdomainRepository {
       // Get the subdomain record
       const subdomainRecord = (await prisma.subdomain.findUnique({
         where: {
-          subdomain: subdomain.trim(),
+          slug: subdomain.trim(),
         },
       })) as Subdomain | null;
 
@@ -147,8 +141,8 @@ class SubdomainRepository {
     try {
       await prisma.subdomain.create({
         data: {
-          subdomain,
-          emoji,
+          slug: subdomain,
+          icon: emoji,
           profileId,
         },
       });
@@ -185,12 +179,12 @@ class SubdomainRepository {
           }
 
           return {
-            subdomain: subdomain.subdomain,
-            emoji: subdomain.emoji || "❓",
+            subdomain: subdomain.slug,
+            emoji: subdomain.icon || "❓",
             createdAt: subdomain.createdAt.getTime(),
             profile: profileInfo,
           };
-        }),
+        })
       );
 
       return subdomainsWithProfiles;

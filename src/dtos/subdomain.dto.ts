@@ -5,15 +5,16 @@ import { IsoDateSchema, ObjectIdSchema } from "@/dtos/base.dto";
 export const SubdomainSchema = z
   .object({
     id: ObjectIdSchema,
-    subdomain: z
+    slug: z
       .string()
       .min(1)
       .regex(/^[a-z0-9-]+$/i, "Only letters, numbers and hyphens"),
-    emoji: z.string().min(1),
+    icon: z.string().min(1),
     profileId: ObjectIdSchema,
     createdAt: IsoDateSchema.optional(),
     updatedAt: IsoDateSchema.optional(),
     deletedAt: IsoDateSchema.optional(),
+    isActive: z.boolean().default(true),
   })
   .strict();
 
@@ -23,6 +24,8 @@ export const SubdomainCreateSchema = z
       id: true,
       createdAt: true,
       updatedAt: true,
+      deletedAt: true,
+      isActive: true,
     }).shape,
   })
   .strict();

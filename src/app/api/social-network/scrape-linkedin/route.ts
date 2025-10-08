@@ -7,10 +7,6 @@ export async function POST() {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    // Extract username from LinkedIn URL
-    // const usernameMatch = linkedinUrl.match(/linkedin\.com\/in\/([^/]+)/);
-    // const linkedinUsername = usernameMatch ? usernameMatch[1] : "user";
-
     // Mock scraped data
     const mockProfile = PROFILE;
 
@@ -18,7 +14,7 @@ export async function POST() {
   } catch {
     return NextResponse.json(
       { error: "Error processing LinkedIn profile" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

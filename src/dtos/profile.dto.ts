@@ -181,7 +181,7 @@ export const SocialLinksSectionSchema = createSectionSchema(SocialLinkSchema);
 
 export const ProfileSchema = z.object({
   id: ObjectIdSchema,
-  isActive: z.boolean(),
+  isActive: z.boolean().default(true),
   firstName: z.string(),
   lastName: z.string(),
   displayName: z.string(),
@@ -225,6 +225,7 @@ export const ProfileCreateSchema = z
       isActive: true,
       createdAt: true,
       updatedAt: true,
+      deletedAt: true,
     }).shape,
   })
   .strict();

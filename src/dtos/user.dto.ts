@@ -14,6 +14,7 @@ export const UserSchema = z
     createdAt: IsoDateSchema.optional(),
     updatedAt: IsoDateSchema.optional(),
     deletedAt: IsoDateSchema.optional(),
+    isActive: z.boolean().default(true),
   })
   .strict();
 
@@ -23,6 +24,8 @@ export const UserCreateSchema = z
       id: true,
       createdAt: true,
       updatedAt: true,
+      deletedAt: true,
+      isActive: true,
     }).shape,
   })
   .strict();

@@ -1,5 +1,3 @@
-import type { GoogleUserData } from "@/components/auth/auth-popup";
-
 export class UserService {
   async authenticateWithGoogle(googleUserData: GoogleUserData) {
     const response = await fetch("/api/auth/google", {

@@ -123,7 +123,7 @@ const RESERVED_USERNAMES = [
 
 function validateUsername(
   network: string,
-  username: string,
+  username: string
 ): {
   isValid: boolean;
   error?: string;
@@ -179,7 +179,7 @@ function validateUsername(
 // Function to check if profile exists (basic check)
 async function checkProfileExists(
   network: string,
-  username: string,
+  username: string
 ): Promise<boolean> {
   // Note: This is a simplified check. In a real application, you might want to:
   // 1. Make actual HTTP requests to check if the profile exists
@@ -222,7 +222,7 @@ export async function GET(request: NextRequest) {
     if (!network || !username) {
       return NextResponse.json(
         { error: "Network and username are required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -253,10 +253,9 @@ export async function GET(request: NextRequest) {
       username,
     });
   } catch (error) {
-    console.error("Social URL validation error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
+      { error: "Internal server error", details: error },
+      { status: 500 }
     );
   }
 }

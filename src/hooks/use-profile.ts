@@ -28,7 +28,6 @@ export function useProfile(): UseProfileReturn {
         const profileData = await response.json();
         setProfile(profileData);
       } catch (err) {
-        console.error("Error fetching profile:", err);
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
