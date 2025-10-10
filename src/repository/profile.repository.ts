@@ -13,16 +13,6 @@ export class ProfileRepository {
     return existingProfile;
   }
 
-  async getProfileByUserName(username: string) {
-    const existingProfile = await prisma.profile.findUnique({
-      where: {
-        username,
-      },
-    });
-
-    return existingProfile;
-  }
-
   async getProfile(): Promise<Profile | null> {
     try {
       // Get the first active profile (assuming single profile for now)
@@ -69,7 +59,7 @@ export class ProfileRepository {
       // First, get the subdomain record to validate it exists
       const subdomainRecord = await prisma.subdomain.findUnique({
         where: {
-          subdomain: subdomain.trim(),
+          slug: subdomain.trim(),
         },
       });
 
@@ -98,30 +88,7 @@ export class ProfileRepository {
   async createProfile(profile: ProfileCreate): Promise<Profile> {
     try {
       const newProfile = (await prisma.profile.create({
-        data: {
-          userId: profile.userId,
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          displayName: profile.displayName,
-          username: profile.username,
-          gender: profile.gender,
-          pronouns: profile.pronouns,
-          bio: profile.bio,
-          flipSentences: profile.flipSentences,
-          twitterUsername: profile.twitterUsername,
-          githubUserName: profile.githubUserName,
-          address: profile.address,
-          phoneNumber: profile.phoneNumber,
-          email: profile.email,
-          website: profile.website,
-          otherWebsites: profile.otherWebsites,
-          jobTitle: profile.jobTitle,
-          avatar: profile.avatar,
-          ogImage: profile.ogImage,
-          keywords: profile.keywords,
-          metadata: profile.metadata,
-          sections: profile.sections,
-        },
+        data: profile,
       })) as Profile;
 
       return newProfile;
@@ -146,8 +113,7 @@ export class ProfileRepository {
 
       return profileUpdated;
     } catch (error) {
-      console.error("Error updating profile:", error);
-      throw new Error("Failed to update profile");
+      throw new Error(`Failed to update profile ${error}`);
     }
   }
 
@@ -163,8 +129,7 @@ export class ProfileRepository {
         },
       });
     } catch (error) {
-      console.error("Error deleting profile:", error);
-      throw new Error("Failed to delete profile");
+      throw new Error(`Failed to delete profile ${error}`);
     }
   }
 }

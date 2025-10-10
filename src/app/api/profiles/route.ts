@@ -1,11 +1,9 @@
 import type { NextRequest } from "next/server";
 
 import { ProfileCreateSchema } from "@/dtos/profile.dto";
-import type { User } from "@/generated/prisma";
 import { jsonError, jsonOk } from "@/lib/http";
 import { profileRepository } from "@/repository/profile.repository";
 import { subdomainRepository } from "@/repository/subdomains.repository";
-import { userRepository } from "@/repository/user.repository";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -13,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   if (!subdomain) {
     return jsonError({
-      title: "Subdomain is required",
+      message: "Subdomain is required",
       status: 400,
     });
   }
@@ -24,7 +22,7 @@ export async function GET(request: NextRequest) {
     return jsonOk({ data: profile });
   } catch (error) {
     return jsonError({
-      title: "Failed to fetch profile",
+      message: "Failed to fetch profile",
       detail: error,
       status: 500,
     });
@@ -39,56 +37,18 @@ export async function POST(request: NextRequest) {
 
     if (!success) {
       return jsonError({
-        title: "Invalid profile data",
+        message: "Invalid profile data",
         detail: error,
         status: 400,
       });
     }
 
-    // Check if username is already taken
-    const existingProfile = await profileRepository.getProfileByUserName(
-      data.username
-    );
-
-    if (existingProfile) {
-      return jsonError({ title: "Username is already taken", status: 409 });
-    }
-
-    const existingSubdomain = await subdomainRepository.getSubdomain(
+    const existingSubdomain = await subdomainRepository.getSubdomainBySlug(
       data.username
     );
 
     if (existingSubdomain) {
-      return jsonError({ title: "Username is already taken", status: 409 });
-    }
-
-    // Find or create a user
-    let user: User | null;
-    if (data.userId) {
-      user = await userRepository.getUserById(data.userId);
-
-      if (!user) {
-        return jsonError({ title: "User not found", status: 404 });
-      }
-    } else {
-      // If no userId provided, create a temporary user or find by email
-      user = await userRepository.getUserByEmail(data.email);
-
-      if (!user) {
-        // Create a new user with basic information
-        user = await userRepository.createUser({
-          googleId: `temp_${Date.now()}`, // Temporary google ID
-          email: data.email,
-          name: `${data.firstName} ${data.lastName}`,
-          picture: data.avatar,
-          verified: false,
-        });
-      }
-    }
-
-    // Ensure we have a valid user
-    if (!user) {
-      return jsonError({ title: "Failed to create or find user", status: 500 });
+      return jsonError({ message: "Username is already taken", status: 409 });
     }
 
     // Create profile in database
@@ -106,7 +66,7 @@ export async function POST(request: NextRequest) {
       await profileRepository.deleteProfileById(newProfile.id);
 
       return jsonError({
-        title: "Failed to create subdomain. Please try again.",
+        message: "Failed to create subdomain. Please try again.",
         status: 500,
       });
     }
@@ -122,7 +82,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     return jsonError({
-      title: `Failed to create profile. Please try again: ${error}`,
+      message: `Failed to create profile. Please try again: ${error}`,
       status: 500,
     });
   }

@@ -1,32 +1,53 @@
 import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
 
-import { UserCreateSchema } from "@/dtos/user.dto";
+import { jsonError, jsonOk } from "@/lib/http";
 import { userRepository } from "@/repository/user.repository";
+
+const getUserFromGoogle = async ({ email }: { email: string }) => {
+  return {
+    googleId: `temp_${Date.now()}`, // Temporary google ID
+    email,
+    name: "Tony Santana",
+    picture: "https://i.pravatar.cc/300",
+    verified: true,
+  };
+};
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const { data, success, error } = UserCreateSchema.safeParse(body);
-
-    if (!success) {
-      return NextResponse.json(
-        { error: `Invalid user data`, issues: error?.issues },
-        { status: 400 }
-      );
+    if (!body.email) {
+      return jsonError({
+        message: `Email is required`,
+        status: 400,
+      });
     }
 
-    const user = await userRepository.createOrGetUser(data);
+    const user = await getUserFromGoogle({ email: body.email });
 
-    return NextResponse.json({
-      success: true,
-      user,
+    if (!user) {
+      return jsonError({
+        message: `Invalid user data`,
+        status: 404,
+      });
+    }
+
+    const userAuth = await userRepository.createOrGetUser(user);
+
+    return jsonOk({
+      data: {
+        success: true,
+        user: userAuth,
+      },
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Internal server error", details: error },
-      { status: 500 }
-    );
+    console.log(error);
+
+    return jsonError({
+      message: "Internal server error",
+      detail: error,
+      status: 500,
+    });
   }
 }

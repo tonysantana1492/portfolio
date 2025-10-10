@@ -1,24 +1,28 @@
 import type { NextRequest } from "next/server";
 
+import { SubdomainSlugSchema } from "@/dtos/subdomain.dto";
 import { jsonError, jsonOk } from "@/lib/http";
 import { subdomainRepository } from "@/repository/subdomains.repository";
 
-export async function GET(
-  _request: NextRequest,
-  ctx: { params: { slug: string } }
-) {
+export interface ParamsWithSlug {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function GET(_request: NextRequest, { params }: ParamsWithSlug) {
   try {
-    const slug = ctx.params.slug;
+    const { slug } = await params;
 
     if (!slug) {
-      return jsonError({ title: "slug is required", status: 400 });
+      return jsonError({ message: "Slug is required", status: 400 });
     }
 
     // Validate username format (match frontend validation)
-    const usernameRegex = /^[a-z0-9-]{3,50}$/;
-    if (!usernameRegex.test(slug)) {
+    const { success } = SubdomainSlugSchema.safeParse({ slug });
+    if (!success) {
       return jsonError({
-        title: "Invalid username format",
+        message: "Invalid username format",
         status: 400,
       });
     }
@@ -37,6 +41,6 @@ export async function GET(
       },
     });
   } catch {
-    return jsonError({ title: "Internal server error", status: 500 });
+    return jsonError({ message: "Internal server error", status: 500 });
   }
 }

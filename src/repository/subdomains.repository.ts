@@ -2,15 +2,6 @@ import type { Profile } from "@/dtos/profile.dto";
 import type { Subdomain } from "@/generated/prisma";
 import prisma from "@/lib/prisma";
 
-// interface SubdomainWithProfileId {
-//   id: string;
-//   subdomain: string;
-//   emoji: string;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   profileId?: string | null;
-// }
-
 export function isValidIcon(str: string) {
   if (str.length > 10) {
     return false;
@@ -39,94 +30,78 @@ export function isValidIcon(str: string) {
 
 class SubdomainRepository {
   async getSubdomainBySlug(slug: string) {
-    try {
-      return await prisma.subdomain.findUnique({
-        where: {
-          slug,
-        },
-      });
-    } catch (error) {
-      throw new Error(`Failed to get subdomain: ${error}`);
-    }
+    return await prisma.subdomain.findUnique({
+      where: {
+        slug,
+      },
+    });
   }
 
   async getSubdomains() {
-    try {
-      const subdomains = await prisma.subdomain.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
+    const subdomains = await prisma.subdomain.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
-      return subdomains;
-    } catch (error) {
-      throw new Error(`Failed to fetch all subdomains: ${error}`);
-    }
+    return subdomains;
   }
 
   async associateSubdomainWithProfile(
     subdomain: string,
     profileId: string
   ): Promise<boolean> {
-    try {
-      await prisma.subdomain.update({
-        where: {
-          slug: subdomain,
-        },
-        data: {
-          profileId: profileId,
-        },
-      });
-      return true;
-    } catch (error) {
-      throw new Error(`Failed to associate subdomain with profile: ${error}`);
-    }
+    await prisma.subdomain.update({
+      where: {
+        slug: subdomain,
+      },
+      data: {
+        profileId: profileId,
+      },
+    });
+    return true;
   }
 
   async getProfileBySubdomainWithRelation(
     subdomain: string
   ): Promise<Profile | null> {
-    try {
-      // Validate subdomain input
-      if (
-        !subdomain ||
-        typeof subdomain !== "string" ||
-        subdomain.trim() === ""
-      ) {
-        return null;
-      }
-
-      // Get the subdomain record
-      const subdomainRecord = (await prisma.subdomain.findUnique({
-        where: {
-          slug: subdomain.trim(),
-        },
-      })) as Subdomain | null;
-
-      if (!subdomainRecord) {
-        return null;
-      }
-
-      // Check if profileId exists
-      if (!subdomainRecord.profileId) {
-        return null;
-      }
-
-      // Get the associated profile
-      const profile = (await prisma.profile.findUnique({
-        where: {
-          id: subdomainRecord.profileId,
-        },
-      })) as Profile | null;
-
-      if (!profile) {
-        return null;
-      }
-
-      return profile;
-    } catch (error) {
-      throw new Error(`Failed to get profile by subdomain: ${error}`);
+    // Validate subdomain input
+    if (
+      !subdomain ||
+      typeof subdomain !== "string" ||
+      subdomain.trim() === ""
+    ) {
+      return null;
     }
+
+    // Get the subdomain record
+    const subdomainRecord = (await prisma.subdomain.findUnique({
+      where: {
+        slug: subdomain.trim(),
+      },
+    })) as Subdomain | null;
+
+    if (!subdomainRecord) {
+      return null;
+    }
+
+    // Check if profileId exists
+    if (!subdomainRecord.profileId) {
+      return null;
+    }
+
+    // Get the associated profile
+    const profile = (await prisma.profile.findUnique({
+      where: {
+        id: subdomainRecord.profileId,
+      },
+    })) as Profile | null;
+
+    if (!profile) {
+      return null;
+    }
+
+    return profile;
   }
 
   async createSubdomainWithProfile({
@@ -138,74 +113,62 @@ class SubdomainRepository {
     emoji: string;
     profileId: string;
   }): Promise<boolean> {
-    try {
-      await prisma.subdomain.create({
-        data: {
-          slug: subdomain,
-          icon: emoji,
-          profileId,
-        },
-      });
+    await prisma.subdomain.create({
+      data: {
+        slug: subdomain,
+        icon: emoji,
+        profileId,
+      },
+    });
 
-      return true;
-    } catch (error) {
-      throw new Error(`Failed to create subdomain with profile: ${error}`);
-    }
+    return true;
   }
 
   async getSubdomainsWithProfiles() {
-    try {
-      const subdomains = (await prisma.subdomain.findMany({
-        orderBy: {
-          createdAt: "desc",
-        },
-      })) as Subdomain[];
+    const subdomains = (await prisma.subdomain.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    })) as Subdomain[];
 
-      const subdomainsWithProfiles = await Promise.all(
-        subdomains.map(async (subdomain) => {
-          let profileInfo = null;
+    const subdomainsWithProfiles = await Promise.all(
+      subdomains.map(async (subdomain) => {
+        let profileInfo = null;
 
-          if (subdomain.profileId) {
-            const profile = await prisma.profile.findUnique({
-              where: { id: subdomain.profileId },
-              select: {
-                username: true,
-                displayName: true,
-                firstName: true,
-                lastName: true,
-              },
-            });
-            profileInfo = profile;
-          }
+        if (subdomain.profileId) {
+          const profile = await prisma.profile.findUnique({
+            where: { id: subdomain.profileId },
+            select: {
+              username: true,
+              displayName: true,
+              firstName: true,
+              lastName: true,
+            },
+          });
+          profileInfo = profile;
+        }
 
-          return {
-            subdomain: subdomain.slug,
-            emoji: subdomain.icon || "❓",
-            createdAt: subdomain.createdAt.getTime(),
-            profile: profileInfo,
-          };
-        })
-      );
+        return {
+          subdomain: subdomain.slug,
+          emoji: subdomain.icon || "❓",
+          createdAt: subdomain.createdAt.getTime(),
+          profile: profileInfo,
+        };
+      })
+    );
 
-      return subdomainsWithProfiles;
-    } catch (error) {
-      throw new Error(`Failed to get all subdomains with profiles: ${error}`);
-    }
+    return subdomainsWithProfiles;
   }
 
   async deleteSubdomainById(id: string): Promise<void> {
-    try {
-      await prisma.subdomain.updateMany({
-        where: {
-          id,
-        },
-        data: {
-          isActive: false,
-        },
-      });
-    } catch (error) {
-      throw new Error(`Failed to delete subdomain: ${error}`);
-    }
+    await prisma.subdomain.updateMany({
+      where: {
+        id,
+      },
+      data: {
+        isActive: false,
+      },
+    });
   }
 }
 

@@ -1,20 +1,26 @@
+import type { User } from "@/dtos/user.dto";
+
 export class UserService {
-  async authenticateWithGoogle(googleUserData: GoogleUserData) {
-    const response = await fetch("/api/auth/google", {
+  async authenticateWithGoogle({
+    email,
+  }: {
+    email: string;
+  }): Promise<{ user: User }> {
+    const response = await fetch("/api/users/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ googleUserData }),
+      body: JSON.stringify({ email }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || "Authentication failed");
+      throw new Error(errorData.error.message || "Authentication failed");
     }
 
-    const data = await response.json();
-    return data;
+    const result = await response.json();
+    return result.data;
   }
 }
 

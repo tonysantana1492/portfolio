@@ -1,6 +1,5 @@
-import { NextResponse } from "next/server";
-
 import { PROFILE } from "@/content/profile";
+import { jsonError, jsonOk } from "@/lib/http";
 
 export async function POST() {
   try {
@@ -10,11 +9,11 @@ export async function POST() {
     // Mock scraped data
     const mockProfile = PROFILE;
 
-    return NextResponse.json(mockProfile);
+    return jsonOk({ data: mockProfile });
   } catch {
-    return NextResponse.json(
-      { error: "Error processing LinkedIn profile" },
-      { status: 500 }
-    );
+    return jsonError({
+      message: "Error processing LinkedIn profile",
+      status: 500,
+    });
   }
 }

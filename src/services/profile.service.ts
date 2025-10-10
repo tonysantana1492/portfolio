@@ -1,4 +1,4 @@
-import type { ProfileCreate } from "@/dtos/profile.dto";
+import type { Profile, ProfileCreate } from "@/dtos/profile.dto";
 
 interface ExportError {
   error: string;
@@ -11,7 +11,7 @@ interface ExportOptions {
 
 class ProfileService {
   async exportToPdf(options: ExportOptions): Promise<Blob> {
-    const response = await fetch("/api/export/pdf", {
+    const response = await fetch("/api/profiles/export/pdf", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,8 +35,10 @@ class ProfileService {
     return response.blob();
   }
 
-  async createProfile(profileData: ProfileCreate) {
-    const response = await fetch("/api/profile/create", {
+  async createProfile(
+    profileData: ProfileCreate
+  ): Promise<{ profile: Profile; success: boolean }> {
+    const response = await fetch("/api/profiles", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,8 +48,7 @@ class ProfileService {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("❌ API Error:", errorData);
-      throw new Error(errorData.error || "Error creating profile");
+      throw new Error(errorData.error.message || "Error creating profile");
     }
 
     const result = await response.json();

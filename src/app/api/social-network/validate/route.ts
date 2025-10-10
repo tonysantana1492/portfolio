@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+
+import { jsonError, jsonOk } from "@/lib/http";
 
 // Mapping of social networks to their validation patterns
 const SOCIAL_VALIDATION_PATTERNS = {
@@ -215,47 +216,43 @@ async function checkProfileExists(
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const network = searchParams.get("network");
     const username = searchParams.get("username");
 
     if (!network || !username) {
-      return NextResponse.json(
-        { error: "Network and username are required" },
-        { status: 400 }
-      );
+      return jsonError({
+        message: "Network and username are required",
+        status: 400,
+      });
     }
 
     // Validate username format
     const validation = validateUsername(network, username);
 
     if (!validation.isValid) {
-      return NextResponse.json({
-        isValid: false,
-        error: validation.error,
-        profileExists: false,
+      return jsonError({
+        message: "Invalid username",
+        detail: validation.error,
+        status: 400,
       });
     }
 
-    // Check if profile exists (optional - can be disabled if causing issues)
-    let profileExists = false;
-    try {
-      profileExists = await checkProfileExists(network, username);
-    } catch (error) {
-      // If we can't check profile existence, we'll still return that the format is valid
-      console.warn("Could not check profile existence:", error);
-    }
+    const profileExists = await checkProfileExists(network, username);
 
-    return NextResponse.json({
-      isValid: true,
-      profileExists,
-      network,
-      username,
+    return jsonOk({
+      data: {
+        isValid: true,
+        profileExists,
+        network,
+        username,
+      },
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Internal server error", details: error },
-      { status: 500 }
-    );
+    return jsonError({
+      message: "Internal server error",
+      detail: error,
+      status: 500,
+    });
   }
 }

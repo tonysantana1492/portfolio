@@ -13,18 +13,18 @@ export function jsonOk<T>({
 }
 
 export function jsonError({
-  title,
+  message,
   detail,
   status = 400,
   type = "about:blank",
 }: {
-  title: string;
+  message: string;
   detail?: unknown;
   status?: number;
   type?: string;
 }) {
   return NextResponse.json(
-    { ok: false, error: { type, title, status, detail } },
+    { ok: false, error: { type, message, status, detail } },
     { status }
   );
 }

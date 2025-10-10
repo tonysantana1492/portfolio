@@ -54,6 +54,7 @@ export function useUsernameAvailability(username: string, delay = 500) {
         error: null,
       });
     } catch (error) {
+      console.log(error);
       // Don't update state if request was aborted
       if (error instanceof Error && error.name === "AbortError") {
         return;

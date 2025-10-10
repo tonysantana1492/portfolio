@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { AuthPopup, type GoogleUserData } from "@/components/auth/auth-popup";
+import { AuthPopup } from "@/components/auth/auth-popup";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/input-group";
 import { PROFILE } from "@/content/profile";
 import { SOCIAL_NETWORKS } from "@/content/social-networks";
+import { SLUG_REGEX } from "@/dtos/subdomain.dto";
 import { SocialNetworkSelector } from "@/features/profile/social-network-selector";
 import { SocialUrlStatusIndicator } from "@/features/profile/social-url-status-indicator";
 import { UsernameStatusIndicator } from "@/features/profile/username-status-indicator";
@@ -55,7 +56,7 @@ const formSchema = z.object({
     .max(100, "Username is too long")
     .refine(
       (value) => value.trim().length > 0,
-      "Social username cannot be empty",
+      "Social username cannot be empty"
     ),
 });
 
@@ -68,7 +69,7 @@ const formatUsername = (value: string): string => {
     .normalize("NFD") // Decompose accented characters
     .replace(/[\u0300-\u036f]/g, "") // Remove accents/diacritics
     .replace(/\s+/g, "-") // Replace spaces with hyphens
-    .replace(/[^a-z0-9\-_.]/g, ""); // Allow letters, numbers, hyphens, underscores, and dots
+    .replace(SLUG_REGEX, ""); // Allow letters, numbers, hyphens, underscores, and dots
 };
 
 export function BuildProfileForm() {
@@ -127,9 +128,9 @@ export function BuildProfileForm() {
     profileExists,
   } = useSocialUrlValidation(socialNetwork, socialUsername);
 
-  const handleAuthSuccess = async (googleUserData: GoogleUserData) => {
-    const authenticatedUser = await authenticateWithGoogle(googleUserData);
-    if (authenticatedUser) {
+  const handleAuthSuccess = async ({ email }: { email: string }) => {
+    const authUser = await authenticateWithGoogle({ email });
+    if (authUser) {
       proceedWithProfileCreation();
     }
   };
@@ -163,20 +164,19 @@ export function BuildProfileForm() {
 
       if (result.success) {
         toast.success(
-          `Your portfolio will be available at: ${data.username}.${window.location.hostname}`,
+          `Your portfolio will be available at: ${data.username}.${window.location.hostname}`
         );
 
         navigateToSubdomain(data.username);
       } else {
-        throw new Error(result.message || "Error creating profile");
+        throw new Error("Error creating profile");
       }
     } catch (error) {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Error creating the profile, try again.",
+          : "Error creating the profile, try again."
       );
-      console.error("Error creating profile:", error);
     } finally {
       setIsCreatingProfile(false);
     }
@@ -208,14 +208,13 @@ export function BuildProfileForm() {
       }
 
       await proceedWithProfileCreation();
-    } catch (error) {
+    } catch {
       toast.error("Failed to create profile. Please try again.");
-      console.error("Error submitting form:", error);
     }
   };
 
   const selectedNetwork = SOCIAL_NETWORKS.find((network) =>
-    socialNetwork?.includes(network.baseUrl),
+    socialNetwork?.includes(network.baseUrl)
   );
 
   return (
@@ -267,7 +266,7 @@ export function BuildProfileForm() {
                               <InputGroupText className="text-muted-foreground text-xs">
                                 {selectedNetwork.baseUrl.replace(
                                   "https://",
-                                  "",
+                                  ""
                                 )}
                               </InputGroupText>
                             </div>
@@ -284,7 +283,7 @@ export function BuildProfileForm() {
                                   onClick={() =>
                                     window.open(
                                       selectedNetwork.baseUrl + socialUsername,
-                                      "_blank",
+                                      "_blank"
                                     )
                                   }
                                   title="View Profile"
@@ -323,7 +322,7 @@ export function BuildProfileForm() {
                           value={field.value}
                           onChange={(e) => {
                             const formattedValue = formatUsername(
-                              e.target.value,
+                              e.target.value
                             );
                             setUsername(formattedValue);
                             field.onChange(formattedValue); // Use field.onChange instead of setValue

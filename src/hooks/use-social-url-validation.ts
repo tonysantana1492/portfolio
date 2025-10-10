@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { subdomainService } from "@/services/subdomain.service";
+
 interface SocialUrlValidationResult {
   isChecking: boolean;
   isValid: boolean | null;
@@ -10,7 +12,7 @@ interface SocialUrlValidationResult {
 export function useSocialUrlValidation(
   socialNetwork: string,
   socialUsername: string,
-  delay = 800,
+  delay = 800
 ) {
   const [state, setState] = useState<SocialUrlValidationResult>({
     isChecking: false,
@@ -49,27 +51,17 @@ export function useSocialUrlValidation(
       }));
 
       try {
-        const response = await fetch(
-          `/api/social/validate?network=${encodeURIComponent(
-            network,
-          )}&username=${encodeURIComponent(username)}`,
-          {
-            signal: abortControllerRef.current.signal,
-          },
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Failed to validate social URL");
-        }
-
-        const data = await response.json();
+        const { isValid, profileExists } =
+          await subdomainService.validateSocialNetwork(
+            { network, username },
+            abortControllerRef.current.signal
+          );
 
         setState({
           isChecking: false,
-          isValid: data.isValid,
+          isValid,
           error: null,
-          profileExists: data.profileExists,
+          profileExists,
         });
       } catch (error) {
         // Don't update state if request was aborted
@@ -85,7 +77,7 @@ export function useSocialUrlValidation(
         });
       }
     },
-    [],
+    []
   );
 
   const debouncedValidateSocialUrl = useCallback(
@@ -98,7 +90,7 @@ export function useSocialUrlValidation(
         validateSocialUrl(network, username);
       }, delay);
     },
-    [validateSocialUrl, delay],
+    [validateSocialUrl, delay]
   );
 
   useEffect(() => {

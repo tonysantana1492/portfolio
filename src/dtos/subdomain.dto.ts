@@ -2,13 +2,15 @@ import { z } from "zod";
 
 import { IsoDateSchema, ObjectIdSchema } from "@/dtos/base.dto";
 
+export const SLUG_REGEX = /[^a-z0-9\-_]/g;
+
 export const SubdomainSchema = z
   .object({
     id: ObjectIdSchema,
     slug: z
       .string()
       .min(1)
-      .regex(/^[a-z0-9-]+$/i, "Only letters, numbers and hyphens"),
+      .regex(/^[a-z0-9-_]+$/i, "Only letters, numbers and hyphens"),
     icon: z.string().min(1),
     profileId: ObjectIdSchema,
     createdAt: IsoDateSchema.optional(),
@@ -17,6 +19,10 @@ export const SubdomainSchema = z
     isActive: z.boolean().default(true),
   })
   .strict();
+
+export const SubdomainSlugSchema = z.object({
+  ...SubdomainSchema.pick({ slug: true }).shape,
+});
 
 export const SubdomainCreateSchema = z
   .object({
