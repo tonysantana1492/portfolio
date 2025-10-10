@@ -82,7 +82,7 @@ export const ExperienceSchema = z.object({
   companyLogo: z.string().optional(),
   positions: z.array(ExperiencePositionSchema),
   isCurrentEmployer: z.boolean().optional(),
-  website: z.string().url().optional(),
+  website: z.url().optional(),
 });
 
 export type Experience = z.infer<typeof ExperienceSchema>;
@@ -90,11 +90,11 @@ export type Experience = z.infer<typeof ExperienceSchema>;
 export const CertificationSchema = z.object({
   title: z.string(),
   issuer: z.string(),
-  issuerLogoURL: z.string().url().optional(),
+  issuerLogoURL: z.url().optional(),
   issuerIconName: z.string().optional(),
   issueDate: z.string(),
   credentialID: z.string(),
-  credentialURL: z.string().url(),
+  credentialURL: z.url(),
 });
 
 export type Certification = z.infer<typeof CertificationSchema>;
@@ -106,7 +106,7 @@ export const AwardSchema = z.object({
   date: z.string(),
   grade: z.string(),
   description: z.string().optional(),
-  referenceLink: z.string().url().optional(),
+  referenceLink: z.url().optional(),
 });
 
 export type Award = z.infer<typeof AwardSchema>;
@@ -218,19 +218,17 @@ export const ProfileSchema = z.object({
   deletedAt: IsoDateSchema.optional(),
 });
 
-export const ProfileCreateSchema = z
-  .object({
-    ...ProfileSchema.omit({
-      id: true,
-      isActive: true,
-      createdAt: true,
-      updatedAt: true,
-      deletedAt: true,
-    }).shape,
-  })
-  .strict();
+export const ProfileCreateSchema = z.object({
+  ...ProfileSchema.omit({
+    id: true,
+    isActive: true,
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
+  }).shape,
+});
 
-export const ProfileUpdateSchema = ProfileCreateSchema.partial().strict();
+export const ProfileUpdateSchema = ProfileCreateSchema.partial();
 
 export type Profile = z.infer<typeof ProfileSchema>;
 export type ProfileCreate = z.infer<typeof ProfileCreateSchema>;

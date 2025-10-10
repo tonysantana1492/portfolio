@@ -1,5 +1,8 @@
 class SubdomainService {
-  async validateSubdomain(slug: string, signal: AbortSignal) {
+  async validateSubdomain(
+    slug: string,
+    signal: AbortSignal
+  ): Promise<{ available: boolean; slug: string }> {
     const response = await fetch(
       `/api/subdomains/slug/${encodeURIComponent(slug)}/validate`,
       {

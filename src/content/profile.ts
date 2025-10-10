@@ -1,13 +1,8 @@
-import type { Profile } from "@/dtos/profile.dto";
+import type { ProfileCreate } from "@/dtos/profile.dto";
 
-export const PROFILE: Profile = {
-  // BASE
-  id: "123456789",
-  createdAt: new Date("2025-09-23"),
-  updatedAt: new Date("2025-09-23"),
-  isActive: true,
-
+export const PROFILE: ProfileCreate = {
   // BASICS
+  userId: "233223232",
   firstName: "Tony",
   lastName: "Santana",
   displayName: "Tony Santana",

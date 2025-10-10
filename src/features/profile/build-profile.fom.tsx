@@ -34,6 +34,7 @@ import {
 import { PROFILE } from "@/content/profile";
 import { SOCIAL_NETWORKS } from "@/content/social-networks";
 import { SLUG_REGEX } from "@/dtos/subdomain.dto";
+import type { User } from "@/dtos/user.dto";
 import { SocialNetworkSelector } from "@/features/profile/social-network-selector";
 import { SocialUrlStatusIndicator } from "@/features/profile/social-url-status-indicator";
 import { UsernameStatusIndicator } from "@/features/profile/username-status-indicator";
@@ -89,6 +90,7 @@ export function BuildProfileForm() {
   });
 
   const [showAuthPopup, setShowAuthPopup] = useState(false);
+  const [isCreatingProfile, setIsCreatingProfile] = useState(false);
   const { authenticateWithGoogle, isAuthenticated, user } = useAuth();
 
   const form = useForm<FormData>({
@@ -106,8 +108,6 @@ export function BuildProfileForm() {
     setValue,
     formState: { isSubmitting },
   } = form;
-
-  const [isCreatingProfile, setIsCreatingProfile] = useState(false);
 
   // Auto-format and suggest username based on social username
   // useEffect(() => {
@@ -131,17 +131,17 @@ export function BuildProfileForm() {
   const handleAuthSuccess = async ({ email }: { email: string }) => {
     const authUser = await authenticateWithGoogle({ email });
     if (authUser) {
-      proceedWithProfileCreation();
+      proceedWithProfileCreation(authUser);
     }
   };
 
-  const proceedWithProfileCreation = async () => {
+  const proceedWithProfileCreation = async (user: User) => {
     setIsCreatingProfile(true);
 
     try {
       const data = form.getValues();
 
-      const fullName = user?.name || data.username;
+      const fullName = user.name || data.username;
       const nameParts = fullName.split(" ");
       const firstName = nameParts[0] || data.username;
       const lastName = nameParts.slice(1).join(" ") || "";
@@ -152,25 +152,20 @@ export function BuildProfileForm() {
         username: data.username,
         firstName,
         lastName,
-        email: user?.email || `${data.username}@example.com`, // Fallback temporal
+        email: user.email,
         displayName: fullName,
-        userId: user?.id ?? "",
+        userId: user.id,
         createdAt: now,
         updatedAt: now,
-        profileId: user?.id ?? "",
       };
 
-      const result = await profileService.createProfile(profileData);
+      await profileService.createProfile(profileData);
 
-      if (result.success) {
-        toast.success(
-          `Your portfolio will be available at: ${data.username}.${window.location.hostname}`
-        );
+      toast.success(
+        `Your portfolio will be available at: ${data.username}.${window.location.hostname}`
+      );
 
-        navigateToSubdomain(data.username);
-      } else {
-        throw new Error("Error creating profile");
-      }
+      navigateToSubdomain(data.username);
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -184,7 +179,7 @@ export function BuildProfileForm() {
 
   const onSubmit = async (_data: FormData) => {
     try {
-      if (!isAuthenticated) {
+      if (!user) {
         setShowAuthPopup(true);
         return;
       }
@@ -207,7 +202,7 @@ export function BuildProfileForm() {
         return;
       }
 
-      await proceedWithProfileCreation();
+      await proceedWithProfileCreation(user);
     } catch {
       toast.error("Failed to create profile. Please try again.");
     }

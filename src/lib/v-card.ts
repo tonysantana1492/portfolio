@@ -1,3 +1,5 @@
+import "server-only";
+
 import sharp from "sharp";
 import VCard from "vcard-creator";
 

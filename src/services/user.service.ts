@@ -5,7 +5,7 @@ export class UserService {
     email,
   }: {
     email: string;
-  }): Promise<{ user: User }> {
+  }): Promise<{ success: boolean; user: User }> {
     const response = await fetch("/api/users/auth/google", {
       method: "POST",
       headers: {
@@ -20,7 +20,7 @@ export class UserService {
     }
 
     const result = await response.json();
-    return result.data;
+    return result;
   }
 }
 

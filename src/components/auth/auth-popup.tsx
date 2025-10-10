@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
 import { Chrome, Lock, User } from "lucide-react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,12 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type { UserCreate } from "@/dtos/user.dto";
 
 interface AuthPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAuthSuccess: (userData: UserCreate) => void;
+  onAuthSuccess: ({ email }: { email: string }) => void;
 }
 
 export function AuthPopup({
@@ -26,35 +22,8 @@ export function AuthPopup({
   onOpenChange,
   onAuthSuccess,
 }: AuthPopupProps) {
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
-
-  const simulateGoogleAuth = async () => {
-    setIsAuthenticating(true);
-
-    try {
-      // Simulate authentication delay
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Simulate data that Google Auth normally returns
-      const mockGoogleUserData: UserCreate = {
-        email: "user@example.com",
-        name: "John Doe",
-        picture: "https://lh3.googleusercontent.com/a/default-user=s96-c",
-        verified: true,
-        googleId: "google-id-1234567890",
-      };
-
-      // Call the callback with user data
-      onAuthSuccess(mockGoogleUserData);
-
-      // Close the popup
-      onOpenChange(false);
-    } catch (error) {
-      toast.error("Authentication error. Please try again.");
-      console.error("Authentication error:", error);
-    } finally {
-      setIsAuthenticating(false);
-    }
+  const googleAuth = async () => {
+    onAuthSuccess({ email: "tonysantana1492@gmail.com" });
   };
 
   return (
@@ -83,14 +52,8 @@ export function AuthPopup({
             </div>
           </div>
 
-          <Button
-            onClick={simulateGoogleAuth}
-            disabled={isAuthenticating}
-            className="h-12 w-full"
-            size="lg"
-          >
+          <Button onClick={googleAuth} className="h-12 w-full" size="lg">
             <Chrome className="mr-2 h-5 w-5" />
-            {isAuthenticating ? "Authenticating..." : "Continue with Google"}
           </Button>
 
           <p className="text-center text-muted-foreground text-xs">

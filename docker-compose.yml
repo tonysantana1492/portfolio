@@ -6,6 +6,4 @@ services:
       - "37017:27017"
     volumes:
       - ./mongo:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=password
+    command: mongod --replSet rs0 --bind_ip_all

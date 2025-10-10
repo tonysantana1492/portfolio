@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { toast } from "sonner";
 
-import type { GoogleUserData } from "@/components/auth/auth-popup";
 import type { User } from "@/dtos/user.dto";
 import { userService } from "@/services/user.service";
 
@@ -12,27 +11,21 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const authenticateWithGoogle = async (
-    googleUserData: GoogleUserData,
-  ): Promise<User | null> => {
+  const authenticateWithGoogle = async ({
+    email,
+  }: {
+    email: string;
+  }): Promise<User | null> => {
     setIsLoading(true);
+    const data = await userService.authenticateWithGoogle({ email });
+    setIsLoading(false);
 
-    try {
-      const data = await userService.authenticateWithGoogle(googleUserData);
-
-      if (data.success && data.user) {
-        setUser(data.user);
-        return data.user;
-      } else {
-        throw new Error("Invalid response from server");
-      }
-    } catch (error) {
-      console.error("Authentication error:", error);
-      toast.error("Authentication failed. Please try again.");
-      return null;
-    } finally {
-      setIsLoading(false);
+    if (data.user) {
+      setUser(data.user);
+      return data.user;
     }
+
+    return null;
   };
 
   const logout = () => {

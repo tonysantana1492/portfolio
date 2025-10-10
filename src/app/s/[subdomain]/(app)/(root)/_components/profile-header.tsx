@@ -1,12 +1,17 @@
+import "server-only";
+
 import { FlipSentences } from "@/app/s/[subdomain]/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
 import type { Profile } from "@/dtos/profile.dto";
 import { cn } from "@/lib/utils";
+import { generateVCard } from "@/lib/v-card";
 
 export function ProfileHeader({
   profile,
   className,
 }: React.ComponentProps<"div"> & { profile: Profile }) {
+  const vCardString = generateVCard(profile);
+
   return (
     <div
       className={cn("screen-line-after flex border-edge border-x", className)}
@@ -29,7 +34,7 @@ export function ProfileHeader({
         <div
           className={cn(
             "flex grow items-end pb-1 pl-4",
-            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56",
+            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56"
           )}
         >
           <div className="line-clamp-1 flex w-full select-none justify-end font-mono text-xs text-zinc-300 max-sm:hidden dark:text-zinc-800">
@@ -37,7 +42,12 @@ export function ProfileHeader({
             <span className="inline dark:hidden">text-zinc-950</span>
             <span className="hidden dark:inline">text-zinc-50</span>
             {" font-medium"} */}
-            <VCardQR profile={profile} size={70} showDownloadButtons={false} />
+            <VCardQR
+              profile={profile}
+              size={70}
+              showDownloadButtons={false}
+              vCardString={vCardString}
+            />
           </div>
         </div>
 

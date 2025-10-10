@@ -7,12 +7,12 @@ import { QRCode } from "react-qrcode-logo";
 
 import { getSiteInfo } from "@/config/site.config";
 import type { Profile } from "@/dtos/profile.dto";
-import { generateVCard } from "@/lib/v-card";
 
 export type VCardQRProps = {
   profile: Profile;
   size?: number;
   showDownloadButtons?: boolean;
+  vCardString: string;
 };
 
 export function VCardQR({
@@ -20,17 +20,17 @@ export function VCardQR({
   size = 220,
   className,
   showDownloadButtons = true,
+  vCardString,
 }: React.ComponentProps<"div"> & VCardQRProps) {
   const { resolvedTheme } = useTheme();
 
   const siteInfo = getSiteInfo(profile);
-  const vcardString = generateVCard(profile);
   const firstName = profile.firstName;
   const lastName = profile.lastName;
 
   const vcfDataHref = useMemo(
-    () => `data:text/vcard;charset=utf-8,${encodeURIComponent(vcardString)}`,
-    [vcardString],
+    () => `data:text/vcard;charset=utf-8,${encodeURIComponent(vCardString)}`,
+    [vCardString]
   );
 
   const svgRef = useRef<SVGSVGElement | null>(null);
