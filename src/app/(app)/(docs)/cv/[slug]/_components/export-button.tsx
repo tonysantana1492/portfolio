@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { DownloadCloudIcon, type LucideIcon } from "lucide-react";
 
-import { ButtonWithTooltip } from "@/components/shared/ButtonWithTooltip";
+import { ButtonWithTooltip } from "@/components/shared/button-with-tooltip";
 import type { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import { downloadBlob } from "@/lib/download-blob";
