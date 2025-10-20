@@ -65,9 +65,15 @@ export function ExportButton({
 
       setTimeout(() => URL.revokeObjectURL(url), 1000 * 60 * 1);
     } catch (error) {
+      console.error("PDF export error:", error);
+
       const errorMessage =
         error instanceof Error ? error.message : "Failed to export PDF";
-      return `Export failed: ${errorMessage}`;
+
+      toast.error("Export failed", {
+        description: errorMessage,
+        duration: 5000,
+      });
     } finally {
       setIsLoading(false);
     }
