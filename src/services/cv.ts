@@ -21,7 +21,7 @@ export function getAllCVs() {
   return getMDXData(path.join(process.cwd(), "src/content/cv")).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime(),
+      new Date(a.metadata.createdAt).getTime()
   );
 }
 

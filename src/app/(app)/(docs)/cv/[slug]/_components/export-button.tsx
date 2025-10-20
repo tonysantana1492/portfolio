@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 
-import { DownloadCloudIcon } from "lucide-react";
+import { DownloadCloudIcon, type LucideIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { ButtonWithTooltip } from "@/components/shared/ButtonWithTooltip";
+import type { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import { downloadBlob } from "@/lib/download-blob";
 import { exportToPdf } from "@/services/export-by-slug";
@@ -12,9 +13,20 @@ import { exportToPdf } from "@/services/export-by-slug";
 interface IDownloadProps {
   slug: string;
   fileName: string;
+  icon?: LucideIcon;
+  text?: string;
 }
 
-export function ExportButton({ slug, fileName }: IDownloadProps) {
+export function ExportButton({
+  slug,
+  fileName,
+  className,
+  icon: Icon = DownloadCloudIcon,
+  text,
+  variant,
+  size,
+  ...props
+}: React.ComponentProps<typeof Button> & IDownloadProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const downloadAsPdf = async () => {
@@ -22,9 +34,8 @@ export function ExportButton({ slug, fileName }: IDownloadProps) {
 
     setIsLoading(true);
 
-    const toastId = toast.loading("Exporting PDF...");
-
     try {
+      const toastId = toast.loading("Exporting PDF...");
       const pdfBlob = await exportToPdf({ slug, format: "A4" });
       const url = downloadBlob(pdfBlob, `${fileName}.pdf`, false);
 
@@ -63,13 +74,17 @@ export function ExportButton({ slug, fileName }: IDownloadProps) {
   };
 
   return (
-    <Button
-      variant="secondary"
-      size="icon:sm"
+    <ButtonWithTooltip
+      variant={variant ?? "secondary"}
+      size={size ?? "icon:sm"}
       onClick={downloadAsPdf}
       disabled={isLoading}
+      className={className}
+      tooltipText="Download Resume"
+      {...props}
     >
-      <DownloadCloudIcon />
-    </Button>
+      <Icon />
+      {text}
+    </ButtonWithTooltip>
   );
 }

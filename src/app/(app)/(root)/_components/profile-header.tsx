@@ -1,3 +1,4 @@
+import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
 import { FlipSentences } from "@/app/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
 import { type IProfile, PROFILE } from "@/content/profile";
@@ -22,12 +23,11 @@ export function ProfileHeader({
           />
         </div>
       </div>
-
       <div className="flex flex-1 flex-col">
         <div
           className={cn(
             "flex grow items-end pb-1 pl-4",
-            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56",
+            "bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] [--pattern-foreground:var(--color-edge)]/56"
           )}
         >
           <div className="line-clamp-1 flex w-full select-none justify-end font-mono text-xs text-zinc-300 max-sm:hidden dark:text-zinc-800">
@@ -40,9 +40,15 @@ export function ProfileHeader({
         </div>
 
         <div className="border-edge border-t">
-          <h1 className="flex items-center pl-4 font-semibold text-3xl">
-            {PROFILE.displayName}
-          </h1>
+          <div className="flex items-center justify-start gap-4">
+            <h1 className="flex items-center pl-4 font-semibold text-3xl">
+              {PROFILE.displayName}
+            </h1>
+            <ExportButton
+              slug={"tony-santana"}
+              fileName={profile.displayName}
+            />
+          </div>
 
           <div className="h-12 border-edge border-t py-1 pl-4 sm:h-auto">
             <FlipSentences sentences={PROFILE.flipSentences} />

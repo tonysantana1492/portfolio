@@ -133,7 +133,7 @@ export const MAIN_NAV: INavItem[] = [
     icon: Logo,
   },
   {
-    title: "CV",
+    title: "Resume",
     href: "/cv/tony-santana",
     icon: UserStarIcon,
   },

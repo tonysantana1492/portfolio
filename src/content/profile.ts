@@ -203,10 +203,8 @@ export const PROFILE: IProfile = {
   website: "https://tonysantana1492.com",
   otherWebsites: [],
   jobTitle: "Software Engineer at OfficePuzzle",
-  avatar:
-    "https://media.licdn.com/dms/image/v2/D4E03AQF3jFFbfh-y5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1695836709614?e=1760572800&v=beta&t=cBPdNTPr6877dVwCmn5PmvkVz-aztEYHOxjv5j3M95I",
-  ogImage:
-    "https://media.licdn.com/dms/image/v2/D4E03AQF3jFFbfh-y5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1695836709614?e=1760572800&v=beta&t=cBPdNTPr6877dVwCmn5PmvkVz-aztEYHOxjv5j3M95I",
+  avatar: "/images/avatar.jpg",
+  ogImage: "/images/avatar.jpg",
   keywords: [
     "senior software engineer",
     "fullstack",
