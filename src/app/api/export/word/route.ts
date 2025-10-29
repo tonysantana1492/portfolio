@@ -4,8 +4,6 @@ import { NextResponse } from "next/server";
 import htmlToDocx from "html-to-docx";
 import { JSDOM } from "jsdom";
 
-export const runtime = "nodejs";
-
 export async function POST(req: NextRequest) {
   try {
     const { html, filename = "export.docx" } = await req.json();

@@ -24,13 +24,6 @@ import {
   type Post,
 } from "@/services/blog";
 
-export async function generateStaticParams() {
-  const posts = getAllPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
-
 export async function generateMetadata({
   params,
 }: {

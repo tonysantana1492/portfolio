@@ -1,4 +1,4 @@
-import type { TOCItemType } from "fumadocs-core/server";
+import type { TOCItemType } from "fumadocs-core/toc";
 import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
 
 import {

@@ -15,13 +15,11 @@ ${
             position.employmentPeriod.end || "Present"
           }\n\nSkills: ${skills}\n\n${position.description?.trim()}`;
         })
-        .join("\n\n"),
+        .join("\n\n")
     )
     .join("\n\n") ?? ""
 }
 `;
-
-export const dynamic = "force-static";
 
 export async function GET() {
   return new Response(content, {

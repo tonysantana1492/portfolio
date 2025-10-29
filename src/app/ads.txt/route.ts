@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-static";
-
 export function GET() {
   if (!process.env.ADS_TXT) {
     notFound();

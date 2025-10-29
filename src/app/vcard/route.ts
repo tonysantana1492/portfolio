@@ -7,8 +7,6 @@ import { PROFILE } from "@/content/profile";
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
 import { getLastCompany } from "@/services/experience";
 
-export const dynamic = "force-static";
-
 export async function GET() {
   const card = new VCard();
 

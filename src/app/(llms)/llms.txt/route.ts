@@ -26,12 +26,10 @@ const content = `# ${SITE_INFO.url}
 ${allPosts
   .map(
     (item) =>
-      `- [${item.metadata.title}](${SITE_INFO.url}/blog/${item.slug}.mdx): ${item.metadata.description}`,
+      `- [${item.metadata.title}](${SITE_INFO.url}/blog/${item.slug}.mdx): ${item.metadata.description}`
   )
   .join("\n")}
 `;
-
-export const dynamic = "force-static";
 
 export async function GET() {
   return new Response(content, {

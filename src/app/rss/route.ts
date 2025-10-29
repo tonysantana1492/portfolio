@@ -3,8 +3,6 @@ import dayjs from "dayjs";
 import { SITE_INFO } from "@/config/site.config";
 import { getAllPosts } from "@/services/blog";
 
-export const dynamic = "force-static";
-
 export function GET() {
   const allPosts = getAllPosts();
 
@@ -16,7 +14,7 @@ export function GET() {
           <link>${SITE_INFO.url}/blog/${post.slug}</link>
           <description>${post.metadata.description || ""}</description>
           <pubDate>${dayjs(post.metadata.createdAt).toISOString()}</pubDate>
-        </item>`,
+        </item>`
     )
     .join("\n");
 
