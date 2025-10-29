@@ -40,13 +40,21 @@ export function ProfileHeader({
         </div>
 
         <div className="border-edge border-t">
-          <div className="flex items-center justify-start gap-4">
-            <h1 className="flex items-center pl-4 font-semibold text-3xl">
+          <div className="flex items-center justify-start gap-4 px-2 py-1 sm:justify-between">
+            <h1 className="flex items-center font-semibold text-3xl">
               {PROFILE.displayName}
             </h1>
             <ExportButton
+              className="hidden sm:flex"
               slug={"tony-santana"}
               fileName={profile.displayName}
+              text="Download Resume"
+            />
+            <ExportButton
+              className="sm:hidden"
+              slug={"tony-santana"}
+              fileName={profile.displayName}
+              tooltipText="Download Resume"
             />
           </div>
 

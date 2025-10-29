@@ -1,13 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 
-import { cookies } from "next/headers";
+import type React from "react";
+import { Suspense } from "react";
 
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
-import { Providers } from "@/providers/providers";
-import { THEME_COOKIE_NAME } from "@/theme/theme-color.provider";
+import { ProviderCache } from "@/providers/provider-cache";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -77,21 +77,20 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const cookieStore = await cookies();
-  const activeThemeValue = cookieStore.get(THEME_COOKIE_NAME)?.value;
-
+}: React.PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content={SITE_INFO.name} />
+      <meta name="description" content={SITE_INFO.description} />
+
       <link rel="manifest" href="/manifest.webmanifest" />
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Providers activeThemeValue={activeThemeValue}>{children}</Providers>
+        <Suspense fallback={null}>
+          <ProviderCache>{children}</ProviderCache>
+        </Suspense>
       </body>
     </html>
   );

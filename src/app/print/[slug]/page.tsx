@@ -4,15 +4,7 @@ import { MDX } from "@/components/shared/mdx";
 import { PROFILE } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 
-export const dynamic = "force-dynamic";
-
-export default async function PrintPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const _slug = (await params).slug;
-
+export default async function PrintPage() {
   const mdx = cvToMdx(PROFILE);
 
   return (

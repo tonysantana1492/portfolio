@@ -5,7 +5,7 @@ import { useState } from "react";
 import { DownloadCloudIcon, type LucideIcon } from "lucide-react";
 
 import { ButtonWithTooltip } from "@/components/shared/button-with-tooltip";
-import type { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
 import { downloadBlob } from "@/lib/download-blob";
 import { exportToPdf } from "@/services/export-by-slug";
@@ -15,12 +15,14 @@ interface IDownloadProps {
   fileName: string;
   icon?: LucideIcon;
   text?: string;
+  tooltipText?: string;
 }
 
 export function ExportButton({
   slug,
   fileName,
   className,
+  tooltipText,
   icon: Icon = DownloadCloudIcon,
   text,
   variant,
@@ -79,18 +81,34 @@ export function ExportButton({
     }
   };
 
+  if (tooltipText) {
+    return (
+      <ButtonWithTooltip
+        variant={variant ?? "secondary"}
+        size={size ?? "icon:sm"}
+        onClick={downloadAsPdf}
+        disabled={isLoading}
+        className={className}
+        tooltipText={tooltipText}
+        {...props}
+        aria-label="Export as PDF"
+      >
+        <Icon />
+        {text}
+      </ButtonWithTooltip>
+    );
+  }
+
   return (
-    <ButtonWithTooltip
+    <Button
       variant={variant ?? "secondary"}
-      size={size ?? "icon:sm"}
       onClick={downloadAsPdf}
       disabled={isLoading}
       className={className}
-      tooltipText="Download Resume"
       {...props}
     >
       <Icon />
       {text}
-    </ButtonWithTooltip>
+    </Button>
   );
 }

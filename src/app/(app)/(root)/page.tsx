@@ -21,7 +21,7 @@ function getPageJsonLd(): WithContext<ProfilePage> {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
     dateCreated: dayjs(PROFILE.dateCreated).toISOString(),
-    dateModified: dayjs().toISOString(),
+    dateModified: dayjs(PROFILE.dateUpdated).toISOString(),
     mainEntity: {
       "@type": "Person",
       name: PROFILE.displayName,
