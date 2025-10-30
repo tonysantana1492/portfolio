@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
 import { FlipSentences } from "@/app/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
@@ -14,12 +16,13 @@ export function ProfileHeader({
     >
       <div className="shrink-0 border-edge border-r">
         <div className="mx-[2px] my-[3px]">
-          {/** biome-ignore lint/performance/noImgElement: <explanation > */}
-          <img
+          <Image
             className="size-32 select-none rounded-full ring-1 ring-border ring-offset-2 ring-offset-background sm:size-40"
             alt={`${profile.displayName}'s avatar`}
             src={profile.avatar}
-            fetchPriority="high"
+            width={160}
+            height={160}
+            priority
           />
         </div>
       </div>
