@@ -203,8 +203,8 @@ export const PROFILE: IProfile = {
   website: "https://tonysantana1492.com",
   otherWebsites: [],
   jobTitle: "Software Engineer at OfficePuzzle",
-  avatar: "/images/avatar.jpg",
-  ogImage: "/images/avatar.jpg",
+  avatar: "/images/avatar.webp",
+  ogImage: "/images/avatar.webp",
   keywords: [
     "senior software engineer",
     "fullstack",
@@ -503,8 +503,7 @@ Blog Features:
           id: "falabella",
           companyName: "Falabella",
           website: "https://www.falabella.com",
-          companyLogo:
-            "https://media.licdn.com/dms/image/v2/D4E0BAQETDXHhZkUquA/company-logo_100_100/B4EZV8.beSH0AU-/0/1741558495510/falabella__logo?e=1761177600&v=beta&t=PQ7V0EUO457kwytoAf1zYwcjSJOUKJ9bBYgRwKUJFw8",
+          companyLogo: "/images/link-icons/falabella.webp",
           positions: [
             {
               id: "2",

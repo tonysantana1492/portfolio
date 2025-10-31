@@ -27,7 +27,7 @@ interface ISiteInfo {
 
 export const SITE_INFO: ISiteInfo = {
   name: PROFILE.displayName,
-  url: process.env.APP_URL || "https://tonysantana.dev",
+  url: process.env.APP_URL || "https://www.tonysantana.dev",
   ogImage: PROFILE.ogImage,
   description: PROFILE.bio,
   keywords: PROFILE.keywords.join(", "),
@@ -134,7 +134,7 @@ export const MAIN_NAV: INavItem[] = [
   },
   {
     title: "Resume",
-    href: "/cv/tony-santana",
+    href: "/resume/tony-santana",
     icon: UserStarIcon,
   },
   {

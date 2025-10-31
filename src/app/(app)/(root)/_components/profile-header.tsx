@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
+import { ExportButton } from "@/app/(app)/(docs)/resume/[slug]/_components/export-button";
 import { FlipSentences } from "@/app/(app)/(root)/_components/flip-sentences";
 import { VCardQR } from "@/components/shared/v-card-qrcode";
 import { type IProfile, PROFILE } from "@/content/profile";

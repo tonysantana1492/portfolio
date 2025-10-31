@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { ArrowLeftIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
-import { ExportButton } from "@/app/(app)/(docs)/cv/[slug]/_components/export-button";
+import { ExportButton } from "@/app/(app)/(docs)/resume/[slug]/_components/export-button";
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 import { MDX } from "@/components/shared/mdx";
 import { ShareMenu } from "@/components/shared/share-menu";
@@ -17,7 +17,7 @@ import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { cvToMdx } from "@/lib/cv-to-mdx";
 import { cn } from "@/lib/utils";
-import { type Cv, getAllCVs, getCvBySlug } from "@/services/cv";
+import { type Cv, getAllCVs, getCvBySlug } from "@/services/resume";
 
 export async function generateStaticParams() {
   const cvs = getAllCVs();
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
 }
 
 function getCvUrl(cv: Cv) {
-  return `/cv/${cv.slug}`;
+  return `/resume/${cv.slug}`;
 }
 
 export async function generateMetadata({

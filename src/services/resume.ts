@@ -18,7 +18,7 @@ export type Cv = {
 };
 
 export function getAllCVs() {
-  return getMDXData(path.join(process.cwd(), "src/content/cv")).sort(
+  return getMDXData(path.join(process.cwd(), "src/content/resume")).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
       new Date(a.metadata.createdAt).getTime()

@@ -56,8 +56,8 @@ const nextConfig: NextConfig = {
         destination: "/blog.mdx/:slug",
       },
       {
-        source: "/cv/:slug.mdx",
-        destination: "/cv.mdx/:slug",
+        source: "/resume/:slug.mdx",
+        destination: "/resume.mdx/:slug",
       },
     ];
   },
