@@ -1,3 +1,5 @@
+import Script from "next/script";
+
 import dayjs from "dayjs";
 import type { ProfilePage, WithContext } from "schema-dts";
 
@@ -35,12 +37,9 @@ export default function Page() {
   const profile = PROFILE;
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd()).replace(/</g, "\\u003c"),
-        }}
-      />
+      <Script type="application/ld+json">
+        {JSON.stringify(getPageJsonLd()).replace(/</g, "\\u003c")}
+      </Script>
       <div className="mx-auto md:max-w-3xl">
         <ProfileHeader profile={profile} />
         <HeroSeparator />

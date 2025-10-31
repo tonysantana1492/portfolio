@@ -54,6 +54,17 @@ export function SiteFooter({
             <Separator />
 
             <a
+              className="flex font-medium font-mono text-muted-foreground text-xs"
+              href={`${SITE_INFO.url}/sitemap.xml`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              sitemap.xml
+            </a>
+
+            <Separator />
+
+            <a
               className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
               href={`${SITE_INFO.url}/rss`}
               target="_blank"

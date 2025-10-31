@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Script from "next/script";
 
 import dayjs from "dayjs";
 import { getTableOfContents } from "fumadocs-core/content/toc";
@@ -108,12 +109,9 @@ export default async function Page({
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(getPageJsonLd(post)).replace(/</g, "\\u003c"),
-        }}
-      />
+      <Script type="application/ld+json">
+        {JSON.stringify(getPageJsonLd(post)).replace(/</g, "\\u003c")}
+      </Script>
       <PostKeyboardShortcuts basePath="/blog" previous={previous} next={next} />
 
       <div className="flex items-center justify-between p-2 pl-4">

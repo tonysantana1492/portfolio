@@ -4,10 +4,47 @@ import "@/styles/globals.css";
 import type React from "react";
 import { Suspense } from "react";
 
+import Script from "next/script";
+
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
 import { ProviderCache } from "@/providers/provider-cache";
+
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_INFO.url}/#org`,
+      name: SITE_INFO.name,
+      url: SITE_INFO.url,
+      logo: `${SITE_INFO.url}${
+        SITE_INFO.icons?.[0]?.src || "/images/logo.svg"
+      }`,
+      sameAs: (PROFILE.sections.socialLinks?.items || []).map((s) => s.href),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_INFO.url}/#website`,
+      url: SITE_INFO.url,
+      name: SITE_INFO.name,
+      publisher: { "@id": `${SITE_INFO.url}/#org` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE_INFO.url}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_INFO.url}/#homepage`,
+      url: SITE_INFO.url,
+      name: SITE_INFO.name,
+      isPartOf: { "@id": `${SITE_INFO.url}/#website` },
+    },
+  ],
+};
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -84,6 +121,10 @@ export default async function RootLayout({
       <meta name="description" content={SITE_INFO.description} />
 
       <link rel="manifest" href="/manifest.webmanifest" />
+
+      <Script type="application/ld+json">
+        {JSON.stringify(STRUCTURED_DATA)}
+      </Script>
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
