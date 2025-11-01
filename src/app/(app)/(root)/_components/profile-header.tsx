@@ -22,7 +22,7 @@ export function ProfileHeader({
             src={profile.avatar}
             width={160}
             height={160}
-            priority
+            fetchPriority="high"
           />
         </div>
       </div>

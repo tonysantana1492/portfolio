@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cacheLife } from "next/cache";
 
 import { SITE_INFO } from "@/config/site.config";
 import { getAllPosts } from "@/services/blog";
@@ -11,6 +12,9 @@ const STATIC_ROUTES = [
 ] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  "use cache";
+  cacheLife("days");
+
   const baseUrl = (SITE_INFO.url || "").replace(/\/$/, "");
 
   const nowIso = new Date().toISOString();
