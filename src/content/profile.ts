@@ -473,6 +473,7 @@ Blog Features:
               employmentPeriod: {
                 start: "09.2024",
               },
+              location: "Miami, USA",
               employmentType: "Full-time",
               icon: "code",
               description: `- Development of scalable solutions to streamline provider–caregiver–admin interactions.
@@ -508,6 +509,7 @@ Blog Features:
             {
               id: "2",
               title: "Senior Software Engineer",
+              location: "Remote",
               employmentPeriod: {
                 start: "11.2023",
                 end: "08.2024",
@@ -553,6 +555,7 @@ Blog Features:
             {
               id: "3",
               title: "Software Engineer",
+              location: "Havana, Cuba",
               employmentPeriod: {
                 start: "05.2018",
                 end: "10.2023",
@@ -622,14 +625,13 @@ Blog Features:
       items: [
         {
           id: "education",
-          companyName: "Education",
-          companyLogo:
-            "https://media.licdn.com/dms/image/v2/C4E0BAQH1ZQoqDBwMag/company-logo_100_100/company-logo_100_100/0/1652597136359/cujaeredsocial_logo?e=1761177600&v=beta&t=zq3iuEsi8h16kFV0qJ_BOyUzyNvzTZPdsgg569oRTFY",
+          companyName: `Technological University of Havana “José Antonio Echeverría” (CUJAE)`,
+          website: "https://www.cujae.edu.cu",
           positions: [
             {
               id: "1",
               title: "Telecommunications and Electronics Engineer",
-              location: "Technological University of Havana (CUJAE)",
+              location: "Havana, Cuba",
               employmentPeriod: {
                 start: "09.2011",
                 end: "06.2016",
