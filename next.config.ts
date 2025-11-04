@@ -49,6 +49,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  trailingSlash: false,
   async rewrites() {
     return [
       {

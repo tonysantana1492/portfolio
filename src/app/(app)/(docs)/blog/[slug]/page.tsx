@@ -40,16 +40,17 @@ export async function generateMetadata({
   const { title, description, image, createdAt, updatedAt } = post.metadata;
 
   const postUrl = getPostUrl(post);
+  const fullPostUrl = `${SITE_INFO.url}${postUrl}`;
   const ogImage = image || `/og/simple?title=${encodeURIComponent(title)}`;
 
   return {
     title,
     description,
     alternates: {
-      canonical: postUrl,
+      canonical: fullPostUrl,
     },
     openGraph: {
-      url: postUrl,
+      url: fullPostUrl,
       type: "article",
       publishedTime: dayjs(createdAt).toISOString(),
       modifiedTime: dayjs(updatedAt).toISOString(),

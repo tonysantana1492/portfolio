@@ -35,6 +35,8 @@ export async function GET() {
     headers: {
       "Content-Type": "text/vcard; charset=utf-8",
       "Content-Disposition": "inline; filename=contact.vcf",
+      "Cache-Control": "public, max-age=86400, s-maxage=86400",
+      "X-Robots-Tag": "noindex, nofollow",
     },
   });
 }

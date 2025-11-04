@@ -1,7 +1,16 @@
+import type { Metadata } from "next";
 import Script from "next/script";
 
 import dayjs from "dayjs";
 import type { ProfilePage, WithContext } from "schema-dts";
+
+import { SITE_INFO } from "@/config/site.config";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_INFO.url,
+  },
+};
 
 import { About } from "@/app/(app)/(root)/_components/about";
 import { Awards } from "@/app/(app)/(root)/_components/awards";
