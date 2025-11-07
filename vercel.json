@@ -3,10 +3,6 @@
     "src/app/api/export/pdf/route.ts": {
       "maxDuration": 30,
       "memory": 1024
-    },
-    "src/app/api/export/**": {
-      "maxDuration": 30,
-      "memory": 1024
     }
   },
   "env": {
