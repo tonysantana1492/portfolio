@@ -3,9 +3,6 @@ import { type NextRequest, NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
 import puppeteer, { type Browser } from "puppeteer-core";
 
-// Configure timeout for Vercel
-export const maxDuration = 30;
-
 export async function POST(req: NextRequest) {
   try {
     const { slug } = await req.json();
@@ -20,12 +17,13 @@ export async function POST(req: NextRequest) {
 
     const url = `${baseUrl}/print/${encodeURIComponent(slug)}`;
 
-    const isVercel = !!process.env.VERCEL_ENV;
+    // Check if running on Vercel
+    const isVercel = !!process.env.VERCEL_ENV || !!process.env.VERCEL;
 
     let browser: Browser;
 
     if (isVercel) {
-      // For Vercel deployment
+      // For Vercel deployment - use @sparticuz/chromium
       browser = await puppeteer.launch({
         args: [
           ...chromium.args,
@@ -42,7 +40,7 @@ export async function POST(req: NextRequest) {
         headless: true,
       });
     } else {
-      // For local development
+      // For local development - use local puppeteer
       const puppeteerLocal = await import("puppeteer");
       browser = await puppeteerLocal.default.launch({
         headless: true,

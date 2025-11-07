@@ -9,5 +9,9 @@
       "memory": 1024
     }
   },
+  "env": {
+    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
+    "PUPPETEER_SKIP_DOWNLOAD": "true"
+  },
   "regions": ["iad1"]
 }
