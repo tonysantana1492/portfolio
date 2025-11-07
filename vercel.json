@@ -3,11 +3,17 @@
     "src/app/api/export/pdf/route.ts": {
       "maxDuration": 30,
       "memory": 1024
+    },
+    "src/app/api/test-chromium/route.ts": {
+      "maxDuration": 30,
+      "memory": 1024
     }
   },
   "env": {
     "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
-    "PUPPETEER_SKIP_DOWNLOAD": "true"
+    "PUPPETEER_SKIP_DOWNLOAD": "true",
+    "PUPPETEER_EXECUTABLE_PATH": "/tmp/chromium",
+    "CHROME_BIN": "/tmp/chromium"
   },
   "regions": ["iad1"]
 }

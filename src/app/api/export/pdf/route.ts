@@ -4,6 +4,8 @@ import chromium from "@sparticuz/chromium";
 import puppeteer, { type Browser } from "puppeteer-core";
 
 export async function POST(req: NextRequest) {
+  let browser: Browser | undefined;
+
   try {
     const { slug } = await req.json();
 
@@ -17,12 +19,20 @@ export async function POST(req: NextRequest) {
 
     const url = `${baseUrl}/print/${encodeURIComponent(slug)}`;
 
-    // Check if running on Vercel
-    const isVercel = !!process.env.VERCEL_ENV || !!process.env.VERCEL;
+    // Environment check
+    const isServerless = !!(
+      process.env.VERCEL_ENV || process.env.AWS_LAMBDA_FUNCTION_NAME
+    );
 
-    let browser: Browser;
+    console.log("Environment check:");
+    console.log("- VERCEL_ENV:", process.env.VERCEL_ENV);
+    console.log("- NODE_ENV:", process.env.NODE_ENV);
+    console.log("- Is Serverless:", isServerless);
 
-    if (isVercel) {
+    if (isServerless) {
+      const executablePath = await chromium.executablePath();
+      console.log("- Chromium executable found at:", executablePath);
+
       // For Vercel deployment - use @sparticuz/chromium
       browser = await puppeteer.launch({
         args: [
@@ -35,9 +45,15 @@ export async function POST(req: NextRequest) {
           "--no-zygote",
           "--single-process",
           "--disable-gpu",
+          "--disable-web-security",
+          "--disable-features=VizDisplayCompositor",
+          "--memory-pressure-off",
+          "--max_old_space_size=4096",
         ],
-        executablePath: await chromium.executablePath(),
+        executablePath: executablePath,
         headless: true,
+        defaultViewport: null,
+        timeout: 30000,
       });
     } else {
       // For local development - use local puppeteer
@@ -53,14 +69,18 @@ export async function POST(req: NextRequest) {
     // Set viewport for consistent rendering
     await page.setViewport({ width: 1200, height: 800 });
 
+    // Add additional timeout and error handling
+    await page.setDefaultTimeout(25000);
+    await page.setDefaultNavigationTimeout(25000);
+
     // Navigate to the print page
     await page.goto(url, {
-      waitUntil: "networkidle2",
-      timeout: 20000,
+      waitUntil: "networkidle0",
+      timeout: 25000,
     });
 
     // Wait a bit more to ensure all resources are loaded
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const pdfBuffer = await page.pdf({
       path: undefined,
@@ -73,6 +93,7 @@ export async function POST(req: NextRequest) {
         bottom: "0.5in",
         left: "0.5in",
       },
+      timeout: 25000,
     });
 
     await browser.close();
@@ -90,10 +111,31 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("PDF export error:", error);
 
+    // Log additional error details for debugging
+    if (error instanceof Error) {
+      console.error("Error name:", error.name);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+
+    // Close browser if it was opened
+    try {
+      if (browser) {
+        await browser.close();
+      }
+    } catch (closeError) {
+      console.error("Error closing browser:", closeError);
+    }
+
     return NextResponse.json(
       {
         error: "Failed to export PDF",
         details: error instanceof Error ? error.message : "Unknown error",
+        timestamp: new Date().toISOString(),
+        environment: {
+          vercelEnv: process.env.VERCEL_ENV,
+          nodeEnv: process.env.NODE_ENV,
+        },
       },
       { status: 500 }
     );
