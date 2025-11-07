@@ -38,7 +38,18 @@ export function ExportButton({
 
     try {
       const toastId = toast.loading("Exporting PDF...");
+
+      // Make sure we have a slug
+      if (!slug) {
+        throw new Error("No document slug provided");
+      }
+
       const pdfBlob = await exportToPdf({ slug, format: "A4" });
+
+      if (!pdfBlob || pdfBlob.size === 0) {
+        throw new Error("Generated PDF is empty");
+      }
+
       const url = downloadBlob(pdfBlob, `${fileName}.pdf`, false);
 
       toast.success(`${fileName}.pdf has been downloaded successfully`, {

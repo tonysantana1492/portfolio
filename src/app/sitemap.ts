@@ -5,9 +5,9 @@ import { SITE_INFO } from "@/config/site.config";
 import { getAllPosts } from "@/services/blog";
 
 const STATIC_ROUTES = [
-  { path: "/", changeFrequency: "daily", priority: 1.0 },
-  { path: "/blog", changeFrequency: "daily", priority: 0.9 },
-  { path: "/resume/tony-santana", changeFrequency: "monthly", priority: 0.6 },
+  { path: "/", changeFrequency: "yearly", priority: 1.0 },
+  { path: "/blog", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/resume/tony-santana", changeFrequency: "yearly", priority: 0.9 },
   { path: "/rss", changeFrequency: "daily", priority: 0.5 },
   { path: "/vcard", changeFrequency: "yearly", priority: 0.3 },
 ] as const;

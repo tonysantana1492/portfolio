@@ -1,13 +1,26 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
+  // External packages for serverless functions in Next.js 16
+  serverExternalPackages: [
+    "@sparticuz/chromium",
+    "puppeteer-core",
+    "puppeteer",
+  ],
+
+  // Experimental features for Next.js 16
+  experimental: {
+    // Better bundle optimization
+    optimizePackageImports: ["lucide-react"],
+  },
+
   reactStrictMode: true,
   reactCompiler: true,
   cacheComponents: true,
   transpilePackages: ["next-mdx-remote"],
   allowedDevOrigins: [],
   devIndicators: false,
+
   logging: {
     fetches: {
       fullUrl: true,

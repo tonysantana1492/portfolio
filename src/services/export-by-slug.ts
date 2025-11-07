@@ -1,5 +1,6 @@
 interface ExportError {
   error: string;
+  details?: string;
 }
 
 interface ExportOptions {
@@ -18,16 +19,33 @@ export async function exportToPdf(options: ExportOptions): Promise<Blob> {
 
   if (!response.ok) {
     let errorMessage = "Unknown error occurred";
+    let errorDetails = "";
 
     try {
       const errorData: ExportError = await response.json();
       errorMessage = errorData.error || errorMessage;
+      errorDetails = errorData.details || "";
     } catch {
       errorMessage = `HTTP ${response.status}: ${response.statusText}`;
     }
 
-    throw new Error(errorMessage);
+    const fullError = errorDetails
+      ? `${errorMessage} - ${errorDetails}`
+      : errorMessage;
+
+    throw new Error(fullError);
   }
 
-  return response.blob();
+  const blob = await response.blob();
+
+  // Validate that we got a proper PDF
+  if (!blob || blob.size === 0) {
+    throw new Error("Received empty PDF response");
+  }
+
+  if (blob.type !== "application/pdf") {
+    throw new Error(`Expected PDF but received ${blob.type}`);
+  }
+
+  return blob;
 }
