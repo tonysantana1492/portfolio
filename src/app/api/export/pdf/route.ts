@@ -25,9 +25,40 @@ export async function POST(req: NextRequest) {
 
     const isVercel = !!process.env.VERCEL_ENV;
 
+    // Configure Chromium for Vercel
+    if (isVercel) {
+      // Set Chromium binary path for Vercel
+      chromium.setGraphicsMode = false;
+    }
+
     const pptr = isVercel
       ? puppeteer
       : ((await import("puppeteer")) as unknown as typeof puppeteer);
+
+    // Get the executable path with error handling
+    let executablePath: string | undefined;
+    if (isVercel) {
+      try {
+        executablePath = await chromium.executablePath();
+        console.log(`Chromium executable path: ${executablePath}`);
+      } catch (error) {
+        console.error("Error getting Chromium executable path:", error);
+
+        // Try alternative approaches
+        try {
+          // Alternative 1: Try with local path
+          executablePath = "/opt/chromium/chromium";
+          console.log("Trying alternative Chromium path:", executablePath);
+        } catch (altError) {
+          console.error("Alternative Chromium path failed:", altError);
+          throw new Error(
+            `Chromium executable not found: ${
+              error instanceof Error ? error.message : "Unknown error"
+            }. Please ensure your Vercel deployment includes the correct Chromium binaries.`
+          );
+        }
+      }
+    }
 
     // Launch browser with enhanced configuration
     browser = await pptr.launch(
@@ -43,8 +74,11 @@ export async function POST(req: NextRequest) {
               "--no-zygote",
               "--single-process",
               "--disable-extensions",
+              "--disable-background-timer-throttling",
+              "--disable-backgrounding-occluded-windows",
+              "--disable-renderer-backgrounding",
             ],
-            executablePath: await chromium.executablePath(),
+            executablePath: executablePath as string,
             headless: true,
             timeout: 30000,
           }
