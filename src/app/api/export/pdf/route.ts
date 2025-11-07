@@ -3,6 +3,8 @@ import { type NextRequest, NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
 import puppeteer, { type Browser, type Page } from "puppeteer-core";
 
+import { PDF_CONFIG } from "@/lib/pdf-config";
+
 export async function POST(req: NextRequest) {
   let browser: Browser | undefined;
   let page: Page | undefined;
@@ -24,81 +26,64 @@ export async function POST(req: NextRequest) {
     const url = `${baseUrl}/print/${encodeURIComponent(slug)}`;
 
     const isVercel = !!process.env.VERCEL_ENV;
+    const isServerless = PDF_CONFIG.isServerless();
+    console.log(
+      `Environment: ${
+        isVercel ? "Vercel" : "Local"
+      } (Serverless: ${isServerless})`
+    );
+    console.log(`Target URL: ${url}`);
 
-    // Configure Chromium for Vercel
-    if (isVercel) {
-      // Set Chromium binary path for Vercel
+    // Configure Chromium for serverless environment
+    if (isServerless) {
+      // Disable graphics mode for serverless environment
       chromium.setGraphicsMode = false;
     }
 
-    const pptr = isVercel
+    const pptr = isServerless
       ? puppeteer
       : ((await import("puppeteer")) as unknown as typeof puppeteer);
 
     // Get the executable path with error handling
     let executablePath: string | undefined;
-    if (isVercel) {
+    if (isServerless) {
       try {
         executablePath = await chromium.executablePath();
         console.log(`Chromium executable path: ${executablePath}`);
       } catch (error) {
         console.error("Error getting Chromium executable path:", error);
-
-        // Try alternative approaches
-        try {
-          // Alternative 1: Try with local path
-          executablePath = "/opt/chromium/chromium";
-          console.log("Trying alternative Chromium path:", executablePath);
-        } catch (altError) {
-          console.error("Alternative Chromium path failed:", altError);
-          throw new Error(
-            `Chromium executable not found: ${
-              error instanceof Error ? error.message : "Unknown error"
-            }. Please ensure your Vercel deployment includes the correct Chromium binaries.`
-          );
-        }
+        throw new Error(
+          `Chromium executable not found: ${
+            error instanceof Error ? error.message : "Unknown error"
+          }. Please ensure @sparticuz/chromium is properly installed and configured.`
+        );
       }
     }
 
     // Launch browser with enhanced configuration
+    const browserArgs = PDF_CONFIG.getBrowserArgs(isServerless);
+    console.log(`Browser args: ${browserArgs.join(" ")}`);
+
     browser = await pptr.launch(
-      isVercel
+      isServerless
         ? {
-            args: [
-              ...chromium.args,
-              "--no-sandbox",
-              "--disable-setuid-sandbox",
-              "--disable-dev-shm-usage",
-              "--disable-gpu",
-              "--no-first-run",
-              "--no-zygote",
-              "--single-process",
-              "--disable-extensions",
-              "--disable-background-timer-throttling",
-              "--disable-backgrounding-occluded-windows",
-              "--disable-renderer-backgrounding",
-            ],
-            executablePath: executablePath as string,
+            args: [...chromium.args, ...browserArgs],
+            executablePath,
             headless: true,
-            timeout: 30000,
+            timeout: PDF_CONFIG.timeouts.browser,
           }
         : {
             headless: true,
-            args: [
-              ...puppeteer.defaultArgs(),
-              "--no-sandbox",
-              "--disable-setuid-sandbox",
-              "--disable-dev-shm-usage",
-            ],
-            timeout: 30000,
+            args: browserArgs,
+            timeout: PDF_CONFIG.timeouts.browser,
           }
     );
 
     page = await browser.newPage();
 
     // Set longer timeouts and viewport
-    await page.setDefaultTimeout(30000);
-    await page.setDefaultNavigationTimeout(30000);
+    await page.setDefaultTimeout(PDF_CONFIG.timeouts.page);
+    await page.setDefaultNavigationTimeout(PDF_CONFIG.timeouts.navigation);
     await page.setViewport({ width: 1200, height: 1600 });
 
     // Navigate with retry logic
@@ -110,7 +95,7 @@ export async function POST(req: NextRequest) {
         console.log(`Navigating to: ${url}`);
         await page.goto(url, {
           waitUntil: "networkidle2",
-          timeout: 30000,
+          timeout: PDF_CONFIG.timeouts.navigation,
         });
 
         // Wait for content to be rendered
@@ -175,7 +160,7 @@ export async function POST(req: NextRequest) {
         bottom: "0.5in",
         left: "0.5in",
       },
-      timeout: 30000,
+      timeout: PDF_CONFIG.timeouts.pdf,
     });
 
     const fileName = `${slug || "document"}.pdf`;
@@ -192,13 +177,30 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("PDF generation error:", error);
 
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "An unexpected error occurred during PDF generation";
+    // Log additional debugging information
+    console.log("Environment variables:");
+    console.log("- VERCEL_ENV:", process.env.VERCEL_ENV);
+    console.log("- NODE_ENV:", process.env.NODE_ENV);
+
+    let errorMessage = "An unexpected error occurred during PDF generation";
+
+    if (error instanceof Error) {
+      if (error.message.includes("executablePath")) {
+        errorMessage = `Chromium browser not found. This usually happens in serverless environments. Error: ${error.message}`;
+      } else if (error.message.includes("Navigation timeout")) {
+        errorMessage = `Page navigation timed out. The target page may be taking too long to load. Error: ${error.message}`;
+      } else if (error.message.includes("Page content not found")) {
+        errorMessage = `The page content could not be found or loaded properly. Error: ${error.message}`;
+      } else {
+        errorMessage = error.message;
+      }
+    }
 
     return NextResponse.json(
-      { error: `PDF generation failed: ${errorMessage}` },
+      {
+        error: `PDF generation failed: ${errorMessage}`,
+        details: error instanceof Error ? error.stack : undefined,
+      },
       { status: 500 }
     );
   } finally {

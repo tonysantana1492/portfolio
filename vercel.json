@@ -1,7 +1,8 @@
 {
   "functions": {
     "src/app/api/export/pdf/route.ts": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "memory": 1024
     }
   },
   "regions": ["iad1"]
