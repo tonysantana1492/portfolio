@@ -1,19 +1,21 @@
 {
   "functions": {
     "src/app/api/export/pdf/route.ts": {
-      "maxDuration": 30,
-      "memory": 1024
+      "maxDuration": 45,
+      "memory": 3008
     },
     "src/app/api/test-chromium/route.ts": {
-      "maxDuration": 30,
-      "memory": 1024
+      "maxDuration": 45,
+      "memory": 3008
     }
   },
   "env": {
     "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
     "PUPPETEER_SKIP_DOWNLOAD": "true",
     "PUPPETEER_EXECUTABLE_PATH": "/tmp/chromium",
-    "CHROME_BIN": "/tmp/chromium"
+    "CHROME_BIN": "/tmp/chromium",
+    "CHROMIUM_FLAGS": "--no-sandbox --disable-dev-shm-usage",
+    "BROWSER_LAUNCH_TIMEOUT": "30000"
   },
   "regions": ["iad1"]
 }

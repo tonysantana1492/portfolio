@@ -75,8 +75,8 @@
     "unist-util-visit": "^5.0.0"
   },
   "engines": {
-    "node": "22.x",
-    "pnpm": ">=9"
+    "node": "24.11.0",
+    "pnpm": "10.10.0"
   },
   "packageManager": "pnpm@10.10.0"
 }
