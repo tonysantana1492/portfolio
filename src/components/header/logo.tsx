@@ -1,6 +1,9 @@
+import { PROFILE } from "@/content/profile";
+
 export function Logo(props: React.ComponentProps<"svg">) {
   return (
     <svg viewBox="0 0 42 45" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <title>{PROFILE.displayName}</title>
       <g transform="translate(-101.85962,-116.3689)">
         <path
           fill="currentColor"
