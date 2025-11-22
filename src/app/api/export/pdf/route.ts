@@ -3,6 +3,44 @@ import { type NextRequest, NextResponse } from "next/server";
 import chromium from "@sparticuz/chromium";
 import puppeteer, { type Browser } from "puppeteer-core";
 
+// Helper function to launch browser with retries
+async function launchBrowserWithRetry(executablePath: string, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const browser = await puppeteer.launch({
+        args: [
+          ...chromium.args,
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-accelerated-2d-canvas",
+          "--no-first-run",
+          "--no-zygote",
+          "--single-process",
+          "--disable-gpu",
+          "--disable-web-security",
+          "--disable-features=VizDisplayCompositor",
+          "--memory-pressure-off",
+          "--max_old_space_size=4096",
+        ],
+        executablePath: executablePath,
+        headless: true,
+        defaultViewport: null,
+        timeout: 30000,
+      });
+      return browser;
+    } catch (error) {
+      console.log(`Browser launch attempt ${i + 1} failed:`, error);
+      if (i === maxRetries - 1) {
+        throw error;
+      }
+      // Wait before retrying
+      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
+    }
+  }
+  throw new Error("Failed to launch browser after all retries");
+}
+
 export async function POST(req: NextRequest) {
   let browser: Browser | undefined;
 
@@ -33,28 +71,8 @@ export async function POST(req: NextRequest) {
       const executablePath = await chromium.executablePath();
       console.log("- Chromium executable found at:", executablePath);
 
-      // For Vercel deployment - use @sparticuz/chromium
-      browser = await puppeteer.launch({
-        args: [
-          ...chromium.args,
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-accelerated-2d-canvas",
-          "--no-first-run",
-          "--no-zygote",
-          "--single-process",
-          "--disable-gpu",
-          "--disable-web-security",
-          "--disable-features=VizDisplayCompositor",
-          "--memory-pressure-off",
-          "--max_old_space_size=4096",
-        ],
-        executablePath: executablePath,
-        headless: true,
-        defaultViewport: null,
-        timeout: 30000,
-      });
+      // For Vercel deployment - use @sparticuz/chromium with retry logic
+      browser = await launchBrowserWithRetry(executablePath);
     } else {
       // For local development - use local puppeteer
       const puppeteerLocal = await import("puppeteer");
