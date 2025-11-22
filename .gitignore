@@ -40,9 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-pnpm-lock.yaml
-yarn.lock
-
 /mongo
 /src/generated
 /.unlighthouse
