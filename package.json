@@ -73,10 +73,5 @@
     "typescript": "^5",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0"
-  },
-  "engines": {
-    "node": "22.x",
-    "pnpm": "10.10.0"
-  },
-  "packageManager": "pnpm@10.10.0"
+  }
 }

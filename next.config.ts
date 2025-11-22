@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next/types";
 
 const nextConfig: NextConfig = {
   // External packages for serverless functions in Next.js 16
