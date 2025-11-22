@@ -21,7 +21,7 @@ async function launchBrowserWithRetry(executablePath: string, maxRetries = 3) {
           "--disable-web-security",
           "--disable-features=VizDisplayCompositor",
           "--memory-pressure-off",
-          "--max_old_space_size=4096",
+          "--max_old_space_size=768",
         ],
         executablePath: executablePath,
         headless: true,
