@@ -1,48 +1,23 @@
 import { type NextRequest, NextResponse } from "next/server";
 
 import chromium from "@sparticuz/chromium";
-import puppeteer, { type Browser } from "puppeteer-core";
+import puppeteer from "puppeteer-core";
 
-// Helper function to launch browser with retries
-async function launchBrowserWithRetry(executablePath: string, maxRetries = 3) {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const browser = await puppeteer.launch({
-        args: [
-          ...chromium.args,
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-accelerated-2d-canvas",
-          "--no-first-run",
-          "--no-zygote",
-          "--single-process",
-          "--disable-gpu",
-          "--disable-web-security",
-          "--disable-features=VizDisplayCompositor",
-          "--memory-pressure-off",
-          "--max_old_space_size=768",
-        ],
-        executablePath: executablePath,
-        headless: true,
-        defaultViewport: null,
-        timeout: 30000,
-      });
-      return browser;
-    } catch (error) {
-      console.log(`Browser launch attempt ${i + 1} failed:`, error);
-      if (i === maxRetries - 1) {
-        throw error;
-      }
-      // Wait before retrying
-      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
-    }
-  }
-  throw new Error("Failed to launch browser after all retries");
-}
+type PageLike = {
+  setViewport: (opts: { width: number; height: number }) => Promise<void>;
+  setDefaultTimeout: (ms: number) => void | Promise<void>;
+  setDefaultNavigationTimeout: (ms: number) => void | Promise<void>;
+  goto: (url: string, opts?: unknown) => Promise<unknown>;
+  pdf: (opts?: unknown) => Promise<Buffer>;
+};
+
+type BrowserLike = {
+  newPage: () => Promise<unknown>;
+  close: () => Promise<void>;
+};
 
 export async function POST(req: NextRequest) {
-  let browser: Browser | undefined;
+  let browser: unknown;
 
   try {
     const { slug } = await req.json();
@@ -62,36 +37,76 @@ export async function POST(req: NextRequest) {
       process.env.VERCEL_ENV || process.env.AWS_LAMBDA_FUNCTION_NAME
     );
 
-    console.log("Environment check:");
-    console.log("- VERCEL_ENV:", process.env.VERCEL_ENV);
-    console.log("- NODE_ENV:", process.env.NODE_ENV);
-    console.log("- Is Serverless:", isServerless);
+    const launchWithRetry = async (
+      launchFn: () => Promise<unknown>,
+      attempts = 3
+    ): Promise<unknown> => {
+      let lastErr: unknown;
+      for (let i = 0; i < attempts; i++) {
+        try {
+          return await launchFn();
+        } catch (err) {
+          lastErr = err;
+          // ETXTBSY may resolve after a short wait; exponential backoff
+          const backoff = 200 * 2 ** i;
+          console.warn(
+            `launch attempt ${i + 1} failed, retrying in ${backoff}ms`,
+            String(err)
+          );
+          await new Promise((r) => setTimeout(r, backoff));
+        }
+      }
+      throw lastErr;
+    };
 
     if (isServerless) {
       const executablePath = await chromium.executablePath();
       console.log("- Chromium executable found at:", executablePath);
 
-      // For Vercel deployment - use @sparticuz/chromium with retry logic
-      browser = await launchBrowserWithRetry(executablePath);
+      // For Vercel deployment - use @sparticuz/chromium
+      browser = await launchWithRetry(async () => {
+        return await puppeteer.launch({
+          args: [
+            ...chromium.args,
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-accelerated-2d-canvas",
+            "--no-first-run",
+            "--no-zygote",
+            "--single-process",
+            "--disable-gpu",
+            "--disable-web-security",
+            "--disable-features=VizDisplayCompositor",
+            "--memory-pressure-off",
+            "--max_old_space_size=4096",
+          ],
+          executablePath: executablePath,
+          headless: true,
+          defaultViewport: null,
+          timeout: 30000,
+        });
+      });
     } else {
-      // For local development - use local puppeteer
+      // For local development - use local puppeteer (fallback)
       const puppeteerLocal = await import("puppeteer");
-      browser = await puppeteerLocal.default.launch({
-        headless: true,
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+      browser = await launchWithRetry(async () => {
+        return await puppeteerLocal.default.launch({
+          headless: true,
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        });
       });
     }
 
-    const page = await browser.newPage();
+    // Create a page after browser launched
+    const page = (await (
+      browser as unknown as BrowserLike
+    ).newPage()) as unknown as PageLike;
 
-    // Set viewport for consistent rendering
     await page.setViewport({ width: 1200, height: 800 });
-
-    // Add additional timeout and error handling
     await page.setDefaultTimeout(25000);
     await page.setDefaultNavigationTimeout(25000);
 
-    // Navigate to the print page
     await page.goto(url, {
       waitUntil: "networkidle0",
       timeout: 25000,
@@ -114,7 +129,7 @@ export async function POST(req: NextRequest) {
       timeout: 25000,
     });
 
-    await browser.close();
+    await (browser as unknown as BrowserLike).close();
 
     const fileName = `${slug || "document"}.pdf`;
 
@@ -139,7 +154,7 @@ export async function POST(req: NextRequest) {
     // Close browser if it was opened
     try {
       if (browser) {
-        await browser.close();
+        await (browser as unknown as BrowserLike).close();
       }
     } catch (closeError) {
       console.error("Error closing browser:", closeError);
