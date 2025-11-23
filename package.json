@@ -10,11 +10,6 @@
     "lint": "biome check --write",
     "format": "biome format --write"
   },
-  "config": {
-    "puppeteer": {
-      "cache_dir": "./.cache/puppeteer"
-    }
-  },
   "dependencies": {
     "@bprogress/next": "^3.2.12",
     "@sparticuz/chromium": "^138.0.2",
