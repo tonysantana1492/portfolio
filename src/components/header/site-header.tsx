@@ -5,6 +5,7 @@ import { CommandMenu } from "@/components/header/command-menu";
 import { DesktopNav } from "@/components/header/desktop-nav";
 import { MobileNav } from "@/components/header/mobile-nav";
 import { NavItemGitHub } from "@/components/header/nav-item-github";
+import { NavItemLinkedIn } from "@/components/header/nav-item-linkedin";
 import { SiteHeaderMark } from "@/components/header/site-header-mark";
 import { SiteHeaderWrapper } from "@/components/header/site-header-wrapper";
 import { MAIN_NAV } from "@/config/site.config";
@@ -45,6 +46,7 @@ export function SiteHeader({ profile }: { profile: IProfile }) {
         <div className="flex items-center gap-2">
           <CommandMenu posts={posts} />
           <NavItemGitHub profile={profile} />
+          <NavItemLinkedIn profile={profile} />
           <ToggleTheme />
           <MobileNav className="sm:hidden" items={navItems} />
         </div>

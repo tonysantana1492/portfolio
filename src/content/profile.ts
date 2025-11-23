@@ -1,3 +1,4 @@
+// biome-ignore lint/suspicious/noExplicitAny: <explanation >
 export interface Section<T = any> {
   id: string;
   name: string;
@@ -151,6 +152,8 @@ export interface IProfile {
   flipSentences: string[];
   twitterUsername: string;
   githubUserName: string;
+  linkedinUserName?: string;
+  linkedinId?: string;
   address: string;
   phoneNumber: string; // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: string; // base64 encoded
@@ -197,6 +200,7 @@ export const PROFILE: IProfile = {
   ],
   twitterUsername: "@tonysantana1492",
   githubUserName: "tonysantana1492",
+  linkedinUserName: "tonysantana1492",
   address: "Miami, USA",
   phoneNumber: "KzEgNzg2IDczNSA3NzQ5", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
   email: "dG9ueXNhbnRhbmExNDkyQGdtYWlsLmNvbQ==", // base64 encoded

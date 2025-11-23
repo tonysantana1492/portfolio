@@ -6,10 +6,6 @@
     }
   },
   "env": {
-    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
-    "PUPPETEER_SKIP_DOWNLOAD": "true",
-    "PUPPETEER_EXECUTABLE_PATH": "/tmp/chromium",
-    "CHROME_BIN": "/tmp/chromium",
     "CHROMIUM_FLAGS": "--no-sandbox --disable-dev-shm-usage",
     "BROWSER_LAUNCH_TIMEOUT": "30000"
   },

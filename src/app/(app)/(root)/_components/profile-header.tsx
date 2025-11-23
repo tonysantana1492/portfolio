@@ -15,7 +15,7 @@ export function ProfileHeader({
       className={cn("screen-line-after flex border-edge border-x", className)}
     >
       <div className="shrink-0 border-edge border-r">
-        <div className="mx-[2px] my-[3px]">
+        <div className="mx-0.5 my-[3px]">
           <Image
             className="size-32 select-none rounded-full ring-1 ring-border ring-offset-2 ring-offset-background sm:size-40"
             alt={`${profile.displayName}'s avatar`}
