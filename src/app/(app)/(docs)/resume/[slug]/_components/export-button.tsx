@@ -44,13 +44,22 @@ export function ExportButton({
         throw new Error("No document slug provided");
       }
 
-      const pdfBlob = await exportToPdf({ slug, format: "A4" });
+      // const pdfBlob = await exportToPdf({ slug, format: "A4" });
 
-      if (!pdfBlob || pdfBlob.size === 0) {
-        throw new Error("Generated PDF is empty");
-      }
+      // if (!pdfBlob || pdfBlob.size === 0) {
+      //   throw new Error("Generated PDF is empty");
+      // }
 
-      const url = downloadBlob(pdfBlob, `${fileName}.pdf`, false);
+      // const url = downloadBlob(pdfBlob, `${fileName}.pdf`, false);
+
+      const element = document.createElement("a");
+      element.href = `/tony-santana.pdf`;
+      element.download = `${fileName}.pdf`;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+
+      const url = element.href;
 
       toast.success(`${fileName}.pdf has been downloaded successfully`, {
         id: toastId,
