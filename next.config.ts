@@ -2,11 +2,7 @@ import type { NextConfig } from "next/types";
 
 const nextConfig: NextConfig = {
   // External packages for serverless functions in Next.js 16
-  serverExternalPackages: [
-    "@sparticuz/chromium",
-    "puppeteer-core",
-    "puppeteer",
-  ],
+  serverExternalPackages: ["@sparticuz/chromium", "puppeteer-core"],
 
   // Experimental features for Next.js 16
   experimental: {

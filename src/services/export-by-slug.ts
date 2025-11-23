@@ -9,13 +9,14 @@ interface ExportOptions {
 }
 
 export async function exportToPdf(options: ExportOptions): Promise<Blob> {
-  const response = await fetch("/api/export/pdf", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(options),
-  });
+  const response = await fetch(
+    `/api/export/pdf?slug=${encodeURIComponent(options.slug)}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (!response.ok) {
     let errorMessage = "Unknown error occurred";
