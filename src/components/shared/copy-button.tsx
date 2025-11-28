@@ -7,6 +7,19 @@ import { CheckIcon, CircleXIcon, CopyIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+export const motionIconVariants = {
+  initial: { opacity: 0, scale: 0.8, filter: "blur(2px)" },
+  animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+  exit: { opacity: 0, scale: 0.8 },
+};
+
+export const motionIconProps = {
+  variants: motionIconVariants,
+  initial: "initial",
+  animate: "animate",
+  exit: "exit",
+};
+
 export function CopyButton({
   value,
   className,

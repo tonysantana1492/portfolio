@@ -1,4 +1,6 @@
-import type { NextConfig } from "next/types";
+import type { NextConfig } from "next";
+
+import path from "path";
 
 const nextConfig: NextConfig = {
   // External packages for serverless functions in Next.js 16
@@ -12,10 +14,14 @@ const nextConfig: NextConfig = {
 
   reactStrictMode: true,
   reactCompiler: true,
-  cacheComponents: true,
+  // cacheComponents: true,
   transpilePackages: ["next-mdx-remote"],
   allowedDevOrigins: [],
   devIndicators: false,
+
+  turbopack: {
+    root: path.join(__dirname, "."),
+  },
 
   logging: {
     fetches: {

@@ -1,10 +1,12 @@
 import type { TOCItemType } from "fumadocs-core/toc";
-import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
+import { TextIcon } from "lucide-react";
 
+import type { Collapsible } from "@/components/ui/collapsible";
 import {
-  Collapsible,
+  CollapsibleChevronsIcon,
   CollapsibleContent,
   CollapsibleTrigger,
+  CollapsibleWithContext,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
@@ -21,23 +23,20 @@ export function InlineTOC({
   }
 
   return (
-    <Collapsible
-      className={cn("not-prose rounded-lg bg-code font-sans", className)}
+    <CollapsibleWithContext
+      className={cn("not-prose rounded-xl bg-code font-sans", className)}
       {...props}
     >
-      <CollapsibleTrigger className="group/toc inline-flex w-full items-center justify-between px-4 py-3 font-medium text-sm">
-        {children ?? "Table of Contents"}
-        <div
-          className="shrink-0 text-muted-foreground [&_svg]:size-4"
-          aria-hidden
-        >
-          <ChevronsDownUpIcon className="hidden group-data-[state=open]/toc:block" />
-          <ChevronsUpDownIcon className="hidden group-data-[state=closed]/toc:block" />
+      <CollapsibleTrigger className="group/toc inline-flex w-full items-center gap-2 py-2.5 pr-2 pl-4 font-medium text-sm [&_svg]:size-4">
+        <TextIcon className="-translate-x-0.5" />
+        {children ?? "On this page"}
+        <div className="ml-auto shrink-0 text-muted-foreground" aria-hidden>
+          <CollapsibleChevronsIcon />
         </div>
       </CollapsibleTrigger>
 
-      <CollapsibleContent className="overflow-hidden duration-300 data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        <ul className="flex flex-col px-4 pb-3 text-muted-foreground text-sm">
+      <CollapsibleContent className="overflow-hidden duration-300 data-[state=closed]:animate-collapsible-fade-up data-[state=open]:animate-collapsible-fade-down">
+        <ul className="flex flex-col px-4 pb-2 text-muted-foreground text-sm">
           {items.map((item) => (
             <li
               key={item.url}
@@ -56,6 +55,6 @@ export function InlineTOC({
           ))}
         </ul>
       </CollapsibleContent>
-    </Collapsible>
+    </CollapsibleWithContext>
   );
 }

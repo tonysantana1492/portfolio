@@ -1,149 +1,76 @@
 import Image from "next/image";
+import Link from "next/link";
 
-import dayjs from "dayjs";
-import { Calendar, Clock, FileText } from "lucide-react";
+import { format } from "date-fns";
+import { PinIcon } from "lucide-react";
 
-import { TextToSpeechButton } from "./text-to-speech-button";
-import { MDX } from "@/components/shared/mdx";
-import { Tag } from "@/components/ui/tag";
-import { Prose } from "@/components/ui/typography";
-import { PROFILE } from "@/content/profile";
-import type { Post } from "@/services/blog";
+import { cn } from "@/lib/utils";
+import type { Post } from "@/types/post";
 
-export function PostItem({ post }: { post: Post }) {
-  const wordCount = post.content.split(" ").length;
-  const readingTime = Math.ceil(wordCount / 200);
-  const publishedDate = dayjs(post.metadata.createdAt);
-  const modifiedDate = dayjs(
-    post.metadata.updatedAt || post.metadata.createdAt
-  );
-
+export function PostItem({
+  post,
+  shouldPreloadImage,
+}: {
+  post: Post;
+  shouldPreloadImage?: boolean;
+}) {
   return (
-    <article
-      itemScope
-      itemType="https://schema.org/BlogPosting"
-      className="overflow-x-hidden px-2"
+    <Link
+      href={`/blog/${post.slug}`}
+      className={cn(
+        "group/post flex flex-col gap-2 p-2",
+        "max-sm:screen-line-before max-sm:screen-line-after",
+        "sm:nth-[2n+1]:screen-line-before sm:nth-[2n+1]:screen-line-after"
+      )}
     >
-      {/* Article header with metadata */}
-      <div className="mb-8">
-        <Prose className="overflow-hidden pt-6">
-          {post.metadata.tags && post.metadata.tags.length > 0 && (
-            <div className="mb-4 flex flex-wrap gap-2">
-              {post.metadata.tags.map((tag) => (
-                <Tag
-                  key={tag}
-                  className="inline-flex items-center gap-1 rounded-full border-0 px-3 py-1 font-medium text-xs"
-                  itemProp="keywords"
-                >
-                  {tag}
-                </Tag>
-              ))}
-            </div>
+      {post.metadata.image && (
+        <div className="relative select-none [&_img]:aspect-1200/630 [&_img]:rounded-xl">
+          <Image
+            src={post.metadata.image}
+            alt={post.metadata.title}
+            width={1200}
+            height={630}
+            quality={100}
+            priority={shouldPreloadImage}
+            unoptimized
+          />
+
+          <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/10 ring-inset dark:ring-white/10" />
+
+          {/* {post.metadata.new && (
+            <span className="absolute top-1.5 right-1.5 rounded-md bg-info px-1.5 font-mono text-sm font-medium text-white text-shadow-xs">
+              New
+            </span>
+          )} */}
+
+          {post.metadata.pinned && (
+            <span className="absolute top-1.5 right-1.5 flex size-6 items-center justify-center rounded-md bg-secondary">
+              <PinIcon className="size-4 rotate-45 text-secondary-foreground" />
+              <span className="sr-only">Pinned</span>
+            </span>
           )}
+        </div>
+      )}
 
-          <h1 className="mb-6 font-semibold" itemProp="headline">
-            {post.metadata.title}
-          </h1>
-
-          {/* Article metadata */}
-          <div className="mb-6 text-muted-foreground text-sm">
-            <div className="flex flex-wrap items-center gap-4">
-              <time
-                dateTime={publishedDate.toISOString()}
-                itemProp="datePublished"
-                className="flex items-center gap-1"
-              >
-                <Calendar size={18} />
-                <span>{publishedDate.format("MMM DD, YYYY")}</span>
-              </time>
-
-              {post.metadata.updatedAt && (
-                <time
-                  dateTime={modifiedDate.toISOString()}
-                  itemProp="dateModified"
-                  className="flex items-center gap-1"
-                >
-                  <FileText size={18} />
-                  <span>{`Updated: ${modifiedDate.format(
-                    "MMM DD, YYYY"
-                  )}`}</span>
-                </time>
-              )}
-
-              <span className="flex items-center gap-1">
-                <Clock size={18} />
-                <span>{`min read ${readingTime.toString()}`}</span>
-              </span>
-
-              <span className="flex items-center gap-1" itemProp="wordCount">
-                <span>•</span>
-                <span>{`words ${wordCount.toLocaleString()}`}</span>
-              </span>
-
-              <TextToSpeechButton className="ml-auto" content={post.content} />
-
-              {post.metadata.category && (
-                <span
-                  className="rounded-full bg-primary/10 px-2 py-1 text-xs"
-                  itemProp="articleSection"
-                >
-                  {post.metadata.category}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Article description */}
-          {post.metadata.description && (
-            <p className="lead mt-6 mb-6" itemProp="description">
-              {post.metadata.description}
-            </p>
+      <div className="flex flex-col gap-1 p-2">
+        <h3 className="text-balance font-medium text-lg leading-snug underline-offset-4 group-hover/post:underline">
+          {post.metadata.title}
+          {post.metadata.new && (
+            <span className="-translate-y-px ml-2 inline-block size-2 rounded-full bg-info">
+              <span className="sr-only">New</span>
+            </span>
           )}
+        </h3>
 
-          {/* Featured image with proper attributes */}
-          {post.metadata.image && (
-            <figure className="mb-4">
-              <Image
-                src={post.metadata.image}
-                alt={post.metadata.title}
-                priority
-                decoding="async"
-                fetchPriority="high"
-                width={1200}
-                height={630}
-                className="h-auto w-full rounded-lg"
-                itemProp="image"
-              />
-            </figure>
-          )}
-        </Prose>
+        <dl>
+          <dt className="sr-only">Published on</dt>
+          <dd className="text-muted-foreground text-sm">
+            <time dateTime={new Date(post.metadata.createdAt).toISOString()}>
+              {format(new Date(post.metadata.createdAt), "dd.MM.yyyy")}
+            </time>
+          </dd>
+        </dl>
       </div>
-
-      {/* Article body content */}
-      <div
-        itemProp="articleBody"
-        className="prose dark:prose-invert mx-auto mt-10 max-w-4xl overflow-x-hidden"
-      >
-        <MDX code={post.content} />
-      </div>
-
-      {/* Article footer with author and metadata */}
-      <div className="mt-12 border-t pt-8">
-        <Prose>
-          <div className="flex flex-col gap-4">
-            <div
-              itemProp="author"
-              itemScope
-              itemType="https://schema.org/Organization"
-            >
-              <p className="text-muted-foreground text-sm">
-                {`Written by ${PROFILE.firstName} ${PROFILE.lastName}. `}
-              </p>
-              <meta itemProp="url" content={PROFILE.website} />
-            </div>
-          </div>
-        </Prose>
-      </div>
-    </article>
+    </Link>
   );
 }

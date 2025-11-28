@@ -1,24 +1,8 @@
+import fs from "fs";
 import matter from "gray-matter";
+import path from "path";
 
-import fs from "node:fs";
-import path from "node:path";
-
-export type PostMetadata = {
-  title: string;
-  description: string;
-  image?: string;
-  category?: string;
-  new?: boolean;
-  createdAt: string;
-  updatedAt: string;
-  tags: string[];
-};
-
-export type Post = {
-  metadata: PostMetadata;
-  slug: string;
-  content: string;
-};
+import type { Post, PostMetadata } from "@/types/post";
 
 function parseFrontmatter(fileContent: string) {
   const file = matter(fileContent);
@@ -29,19 +13,7 @@ function parseFrontmatter(fileContent: string) {
   };
 }
 
-export function getMDXSlug(dir: string): Array<{ slug: string }> {
-  const mdxFiles = getMDXFiles(dir);
-
-  return mdxFiles.map((file) => {
-    const slug = path.basename(file, path.extname(file));
-
-    return {
-      slug,
-    };
-  });
-}
-
-export function getMDXFiles(dir: string) {
+function getMDXFiles(dir: string) {
   return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
 }
 
@@ -66,15 +38,17 @@ export function getMDXData(dir: string) {
   });
 }
 
-export function getAllPostsSlug() {
-  return getMDXSlug(path.join(process.cwd(), "src/content/blog"));
-}
-
 export function getAllPosts() {
   return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
-    (a, b) =>
-      new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime()
+    (a, b) => {
+      if (a.metadata.pinned && !b.metadata.pinned) return -1;
+      if (!a.metadata.pinned && b.metadata.pinned) return 1;
+
+      return (
+        new Date(b.metadata.createdAt).getTime() -
+        new Date(a.metadata.createdAt).getTime()
+      );
+    }
   );
 }
 

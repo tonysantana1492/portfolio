@@ -1,5 +1,3 @@
-import { cacheLife } from "next/cache";
-
 import type { Activity } from "@/components/shared/contribution-graph";
 import { PROFILE } from "@/content/profile";
 
@@ -8,9 +6,6 @@ type GitHubContributionsResponse = {
 };
 
 export async function getGitHubContributions() {
-  "use cache";
-  cacheLife("weeks");
-
   const res = await fetch(
     `https://github-contributions-api.jogruber.de/v4/${PROFILE.githubUserName}?y=last`,
     {

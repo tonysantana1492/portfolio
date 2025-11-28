@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import remarkMdx from "remark-mdx";
 
 import { remarkComponent } from "@/lib/remark-component";
-import type { Post } from "@/services/blog";
+import type { Post } from "@/types/post";
 
 const processor = remark().use(remarkMdx).use(remarkComponent).use(remarkGfm);
 

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
 
-import type { Post } from "@/services/blog";
+import { useHotkeys } from "react-hotkeys-hook";
+
+import type { Post } from "@/types/post";
 
 export function PostKeyboardShortcuts({
   basePath,
@@ -23,38 +23,8 @@ export function PostKeyboardShortcuts({
     }
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation >
-  useEffect(() => {
-    const abortController = new AbortController();
-    const { signal } = abortController;
-
-    document.addEventListener(
-      "keydown",
-      (e: KeyboardEvent) => {
-        if (["ArrowRight", "ArrowLeft"].includes(e.key)) {
-          if (
-            (e.target instanceof HTMLElement && e.target.isContentEditable) ||
-            e.target instanceof HTMLInputElement ||
-            e.target instanceof HTMLTextAreaElement ||
-            e.target instanceof HTMLSelectElement
-          ) {
-            return;
-          }
-
-          e.preventDefault();
-
-          if (e.key === "ArrowRight") {
-            navigate(next);
-          } else {
-            navigate(previous);
-          }
-        }
-      },
-      { signal }
-    );
-
-    return () => abortController.abort();
-  }, []);
+  useHotkeys("ArrowRight", () => navigate(next));
+  useHotkeys("ArrowLeft", () => navigate(previous));
 
   return null;
 }

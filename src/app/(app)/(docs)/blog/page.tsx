@@ -1,8 +1,10 @@
+import { Suspense } from "react";
+
 import type { Metadata } from "next";
 
-import dayjs from "dayjs";
-
-import { PostItem } from "@/app/(app)/(root)/_components/post-item";
+import { PostList } from "@/app/(app)/(docs)/blog/[slug]/_components/post-list";
+import { PostListWithSearch } from "@/app/(app)/(docs)/blog/[slug]/_components/post-list-with-search";
+import { PostSearchInput } from "@/app/(app)/(docs)/blog/[slug]/_components/post-search-input";
 import { SITE_INFO } from "@/config/site.config";
 import { getAllPosts } from "@/services/blog";
 
@@ -29,28 +31,19 @@ export default function Page() {
         </p>
       </div>
 
-      <div className="relative pt-4">
-        <div className="-z-1 absolute inset-0 grid grid-cols-1 gap-4 max-sm:hidden sm:grid-cols-2">
-          <div className="border-edge border-r"></div>
-          <div className="border-edge border-l"></div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {allPosts
-            .slice()
-            .sort((a, b) =>
-              dayjs(b.metadata.createdAt).diff(dayjs(a.metadata.createdAt))
-            )
-            .map((post, index) => (
-              <PostItem
-                key={post.slug}
-                post={post}
-                shouldPreloadImage={index <= 4}
-              />
-            ))}
-        </div>
+      <div className="screen-line-before screen-line-after p-2">
+        <Suspense
+          fallback={
+            <div className="flex h-9 w-full rounded-lg border border-input shadow-xs dark:bg-input/30" />
+          }
+        >
+          <PostSearchInput />
+        </Suspense>
       </div>
 
+      <Suspense fallback={<PostList posts={allPosts} />}>
+        <PostListWithSearch posts={allPosts} />
+      </Suspense>
       <div className="h-4" />
     </>
   );

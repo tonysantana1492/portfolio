@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 import { cn } from "@/lib/utils";
-import type { Post } from "@/services/blog";
+import type { Post } from "@/types/post";
 
 dayjs.extend(utc);
 
