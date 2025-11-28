@@ -28,6 +28,18 @@ function parseFrontmatter(fileContent: string) {
   };
 }
 
+export function getMDXSlug(dir: string): Array<{ slug: string }> {
+  const mdxFiles = getMDXFiles(dir);
+
+  return mdxFiles.map((file) => {
+    const slug = path.basename(file, path.extname(file));
+
+    return {
+      slug,
+    };
+  });
+}
+
 export function getMDXFiles(dir: string) {
   return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
 }
@@ -53,11 +65,15 @@ export function getMDXData(dir: string) {
   });
 }
 
+export function getAllPostsSlug() {
+  return getMDXSlug(path.join(process.cwd(), "src/content/blog"));
+}
+
 export function getAllPosts() {
   return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
     (a, b) =>
       new Date(b.metadata.createdAt).getTime() -
-      new Date(a.metadata.createdAt).getTime(),
+      new Date(a.metadata.createdAt).getTime()
   );
 }
 

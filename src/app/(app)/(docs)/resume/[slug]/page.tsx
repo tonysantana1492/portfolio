@@ -100,7 +100,7 @@ export default async function Page({
     slug: string;
   }>;
 }) {
-  const slug = (await params).slug;
+  const { slug } = await params;
   const cv = getCvBySlug(slug);
 
   if (!cv) {
@@ -150,7 +150,7 @@ export default async function Page({
         />
       </div>
 
-      <Prose className="px-12">
+      <Prose className="px-4 xl:px-16">
         <div id="mdx-print-root">
           <MDX code={mdx} />
         </div>

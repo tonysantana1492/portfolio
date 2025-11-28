@@ -21,9 +21,18 @@ import { cn } from "@/lib/utils";
 import {
   findNeighbour,
   getAllPosts,
+  getAllPostsSlug,
   getPostBySlug,
   type Post,
 } from "@/services/blog";
+
+export async function generateStaticParams() {
+  const posts = getAllPostsSlug();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export async function generateMetadata({
   params,
