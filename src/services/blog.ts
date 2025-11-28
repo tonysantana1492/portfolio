@@ -11,6 +11,7 @@ export type PostMetadata = {
   new?: boolean;
   createdAt: string;
   updatedAt: string;
+  tags: string[];
 };
 
 export type Post = {

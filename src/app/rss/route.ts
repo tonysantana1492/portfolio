@@ -25,10 +25,7 @@ export function GET() {
       <link>${SITE_INFO.url}</link>
       <description>${SITE_INFO.description}</description>
       <language>es-ES</language>
-      <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-      <atom:link href="${
-        SITE_INFO.url
-      }/rss" rel="self" type="application/rss+xml" />
+      <atom:link href="${SITE_INFO.url}/rss" rel="self" type="application/rss+xml" />
       ${itemsXml}
     </channel>
   </rss>`;

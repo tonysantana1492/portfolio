@@ -18,11 +18,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const baseUrl = (SITE_INFO.url || "").replace(/\/$/, "");
 
-  const nowIso = new Date().toISOString();
+  // const nowIso = new Date().toISOString();
 
   const staticPages: MetadataRoute.Sitemap = STATIC_ROUTES.map((r) => ({
     url: `${baseUrl}${r.path}`,
-    lastModified: nowIso,
+    // lastModified: nowIso,
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }));
@@ -32,7 +32,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((post) => post.slug)
     .map((post) => {
       const last =
-        post?.metadata?.updatedAt ?? post?.metadata?.createdAt ?? Date.now();
+        post?.metadata?.updatedAt ??
+        post?.metadata?.createdAt ??
+        "2025-11-27T00:00:00.000Z";
       return {
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: new Date(last).toISOString(),

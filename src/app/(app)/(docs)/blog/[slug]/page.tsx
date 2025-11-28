@@ -1,23 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Script from "next/script";
 
 import dayjs from "dayjs";
-import { getTableOfContents } from "fumadocs-core/content/toc";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
 
-import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
-import { InlineTOC } from "@/components/shared/inline-toc";
-import { MDX } from "@/components/shared/mdx";
-import { PostKeyboardShortcuts } from "@/components/shared/post-keyboard-shortcuts";
-import { ShareMenu } from "@/components/shared/share-menu";
-import { Button } from "@/components/ui/button";
-import { Prose } from "@/components/ui/typography";
+import { BlogPostSection } from "@/app/(app)/(docs)/blog/[slug]/_components/post-post-section";
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
-import { cn } from "@/lib/utils";
 import {
   findNeighbour,
   getAllPosts,
@@ -77,6 +67,10 @@ export async function generateMetadata({
   };
 }
 
+function getPostUrl(post: Post) {
+  return `/blog/${post.slug}`;
+}
+
 function getPageJsonLd(post: Post): WithContext<PageSchema> {
   return {
     "@context": "https://schema.org",
@@ -98,21 +92,19 @@ function getPageJsonLd(post: Post): WithContext<PageSchema> {
   };
 }
 
-export default async function Page({
+export default async function BlogPostPage({
   params,
 }: {
   params: Promise<{
     slug: string;
   }>;
 }) {
-  const slug = (await params).slug;
+  const { slug } = await params;
   const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
-
-  const toc = getTableOfContents(post.content);
 
   const allPosts = getAllPosts();
   const { previous, next } = findNeighbour(allPosts, slug);
@@ -122,78 +114,7 @@ export default async function Page({
       <Script type="application/ld+json">
         {JSON.stringify(getPageJsonLd(post)).replace(/</g, "\\u003c")}
       </Script>
-      <PostKeyboardShortcuts basePath="/blog" previous={previous} next={next} />
-
-      <div className="flex items-center justify-between p-2 pl-4">
-        <Button
-          className="h-7 gap-2 rounded-lg px-0 font-mono text-muted-foreground"
-          variant="link"
-          asChild
-        >
-          <Link href="/blog">
-            <ArrowLeftIcon />
-            Blog
-          </Link>
-        </Button>
-
-        <div className="flex items-center gap-2">
-          <LLMCopyButtonWithViewOptions
-            markdownUrl={`${getPostUrl(post)}.mdx`}
-            isComponent={post.metadata.category === "components"}
-          />
-
-          <ShareMenu url={getPostUrl(post)} />
-
-          {previous && (
-            <Button variant="secondary" size="icon:sm" asChild>
-              <Link href={`/blog/${previous.slug}`}>
-                <ArrowLeftIcon />
-                <span className="sr-only">Previous</span>
-              </Link>
-            </Button>
-          )}
-
-          {next && (
-            <Button variant="secondary" size="icon:sm" asChild>
-              <Link href={`/blog/${next.slug}`}>
-                <span className="sr-only">Next</span>
-                <ArrowRightIcon />
-              </Link>
-            </Button>
-          )}
-        </div>
-      </div>
-
-      <div className="screen-line-before screen-line-after">
-        <div
-          className={cn(
-            "h-8",
-            "before:-left-[100vw] before:-z-1 before:absolute before:h-full before:w-[200vw]",
-            "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56"
-          )}
-        />
-      </div>
-
-      <Prose className="px-4">
-        <h1 className="screen-line-after mb-6 font-semibold">
-          {post.metadata.title}
-        </h1>
-
-        <p className="lead mt-6 mb-6">{post.metadata.description}</p>
-
-        <InlineTOC items={toc} />
-
-        <div>
-          <MDX code={post.content} />
-        </div>
-      </Prose>
-
-      <div className="screen-line-before h-4 w-full" />
+      <BlogPostSection post={post} previous={previous} next={next} />
     </>
   );
-}
-
-function getPostUrl(post: Post) {
-  const isComponent = post.metadata.category === "components";
-  return isComponent ? `/components/${post.slug}` : `/blog/${post.slug}`;
 }
