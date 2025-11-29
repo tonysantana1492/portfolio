@@ -1,5 +1,4 @@
-// const CACHE_VERSION = Date.now();
-const CACHE_VERSION = 1;
+const CACHE_VERSION = "1.1.1";
 const CACHE_NAME = `portfolio-v${CACHE_VERSION}`;
 const STATIC_CACHE_NAME = `portfolio-static-v${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `portfolio-dynamic-v${CACHE_VERSION}`;
@@ -36,7 +35,7 @@ self.addEventListener("push", (event) => {
     badge: "/images/icon-192x192.png",
     vibrate: [100, 50, 100],
     data: {
-      dateOfArrival: Date.now(),
+      dateOfArrival: "2025-01-01T12:00:00Z",
       primaryKey: 1,
     },
     actions: [

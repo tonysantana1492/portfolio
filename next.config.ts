@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
 
   reactStrictMode: true,
   reactCompiler: true,
-  // cacheComponents: true,
+  cacheComponents: true,
   transpilePackages: ["next-mdx-remote"],
   allowedDevOrigins: [],
   devIndicators: false,

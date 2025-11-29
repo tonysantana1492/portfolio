@@ -15,8 +15,8 @@ importers:
         specifier: ^1.2.4
         version: 1.2.4(@types/react@19.2.7)(react@19.2.0)
       '@sparticuz/chromium':
-        specifier: ^138.0.2
-        version: 138.0.2
+        specifier: ^141.0.0
+        version: 141.0.0
       '@vercel/analytics':
         specifier: ^1.5.0
         version: 1.5.0(next@16.0.5(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
@@ -75,7 +75,7 @@ importers:
         specifier: ^2.8.1
         version: 2.8.1(next@16.0.5(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(react@19.2.0)
       puppeteer-core:
-        specifier: ^24.16.1
+        specifier: ^24.31.0
         version: 24.31.0
       radix-ui:
         specifier: ^1.4.3
@@ -172,7 +172,7 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       puppeteer:
-        specifier: ^24.16.1
+        specifier: ^24.31.0
         version: 24.31.0(typescript@5.9.3)
       shiki:
         specifier: 1.9.1
@@ -1353,8 +1353,8 @@ packages:
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
 
-  '@sparticuz/chromium@138.0.2':
-    resolution: {integrity: sha512-vs5qUiK6kFCzLCxZ2buWONcB6jdF3VWdYp6kH1tt56tZ78p51dMAxfWsfk9P62z/jAeqbVg4V6Rb3Ic4aAeOKQ==}
+  '@sparticuz/chromium@141.0.0':
+    resolution: {integrity: sha512-JsTp4AqgStkqKki4dUpEM0GoisAjQhsqZ1lQTNMSKK5A9pw6BbIuIvv2HVYMYzSZGyDdQNJYBPPDg2eggCkezA==}
     engines: {node: '>=20.11.0'}
 
   '@standard-schema/spec@1.0.0':
@@ -4484,7 +4484,7 @@ snapshots:
 
   '@shikijs/vscode-textmate@10.0.2': {}
 
-  '@sparticuz/chromium@138.0.2':
+  '@sparticuz/chromium@141.0.0':
     dependencies:
       follow-redirects: 1.15.11
       tar-fs: 3.1.1

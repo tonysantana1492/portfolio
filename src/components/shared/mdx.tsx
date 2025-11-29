@@ -176,23 +176,7 @@ const options: MDXRemoteProps["options"] = {
           }
         });
       },
-      [
-        rehypePrettyCode,
-        {
-          theme: {
-            dark: "github-dark",
-            light: "github-light",
-          },
-          keepBackground: false,
-          onVisitLine(node: LineElement) {
-            // Prevent lines from collapsing in `display: grid` mode, and allow empty
-            // lines to be copy/pasted
-            if (node.children.length === 0) {
-              node.children = [{ type: "text", value: " " }];
-            }
-          },
-        },
-      ],
+
       () => (tree) => {
         visit(tree, (node) => {
           if (node?.type === "element" && node?.tagName === "figure") {
