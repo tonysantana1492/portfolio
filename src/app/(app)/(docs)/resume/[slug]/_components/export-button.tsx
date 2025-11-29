@@ -125,6 +125,7 @@ export function ExportButton({
       onClick={downloadAsPdf}
       disabled={isLoading}
       className={className}
+      size={size}
       {...props}
     >
       <Icon />

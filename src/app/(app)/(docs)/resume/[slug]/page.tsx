@@ -128,7 +128,11 @@ export default async function Page({
         </Button>
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
-            <ExportButton slug={slug} fileName={cv.metadata.title} />
+            <ExportButton
+              size="icon:sm"
+              slug={slug}
+              fileName={cv.metadata.title}
+            />
           </div>
 
           <LLMCopyButtonWithViewOptions

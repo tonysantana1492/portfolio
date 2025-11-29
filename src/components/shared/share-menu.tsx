@@ -17,8 +17,8 @@ export function ShareMenu({ url }: { url: string }) {
   const absoluteUrl = url.startsWith("http")
     ? url
     : typeof window !== "undefined"
-      ? new URL(url, window.location.origin).toString()
-      : url;
+    ? new URL(url, window.location.origin).toString()
+    : url;
 
   const urlEncoded = encodeURIComponent(absoluteUrl);
 
