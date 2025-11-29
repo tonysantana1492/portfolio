@@ -56,8 +56,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
   title: {
-    template: `%s – ${SITE_INFO.name}`,
-    default: `${PROFILE.displayName} – ${PROFILE.jobTitle}`,
+    template: `%s | ${SITE_INFO.name}`,
+    default: `${PROFILE.jobTitle} | ${PROFILE.displayName}`,
   },
   description: SITE_INFO.description,
   keywords: SITE_INFO.keywords,

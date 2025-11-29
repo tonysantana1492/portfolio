@@ -48,7 +48,7 @@ export async function generateMetadata({
   const ogImage = image || `/og/simple?title=${encodeURIComponent(title)}`;
 
   return {
-    title,
+    title: "Resume",
     description,
     alternates: {
       canonical: cvUrl,

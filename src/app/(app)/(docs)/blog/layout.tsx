@@ -6,8 +6,8 @@ import { SITE_INFO } from "@/config/site.config";
 
 export const metadata: Metadata = {
   title: {
-    template: `%s – Blog – ${SITE_INFO.name}`,
-    default: `Blog – ${SITE_INFO.name}`,
+    template: `%s | Blog | ${SITE_INFO.name}`,
+    default: `Blog | ${SITE_INFO.name}`,
   },
   alternates: {
     canonical: "/blog",
