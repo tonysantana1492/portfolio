@@ -1,20 +1,17 @@
 import type { MDXRemoteProps } from "next-mdx-remote/rsc";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeExternalLinks from "rehype-external-links";
-import type { LineElement } from "rehype-pretty-code";
-import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
 
-import { CodeBlockCommand } from "./code-block-command";
 import { CodeTabs } from "./code-tabs";
-import { CopyButton } from "./copy-button";
 import { getIconForLanguageExtension, Icons } from "./icons";
 import { CodeCollapsibleWrapper } from "@/components/shared/code-collapsible-wrapper";
 import { ComponentPreview } from "@/components/shared/component-preview";
 import { ComponentSource } from "@/components/shared/component-source";
 import { FramedImage, YouTubeEmbed } from "@/components/shared/embed";
+
 import {
   Table,
   TableBody,
@@ -27,13 +24,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Code, Heading } from "@/components/ui/typography";
 import { UTM_PARAMS } from "@/config/site.config";
 import { rehypeAddQueryParams } from "@/lib/rehype-add-query-params";
-import { rehypeComponent } from "@/lib/rehype-component";
+// import { rehypeComponent } from "@/lib/rehype-component";
 import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
-import { remarkCodeImport } from "@/lib/remark-code-import";
-import type { NpmCommands } from "@/lib/unist";
 import { cn } from "@/lib/utils";
+import { CopyButton } from "@/components/shared/copy-button";
+import { CodeBlockCommand } from "@/components/shared/code-block-command";
+import { NpmCommands } from "@/lib/unist";
+import { remarkCodeImport } from "@/lib/remark-code-import";
+import { rehypeComponent } from "@/lib/rehype-component";
 
-const components: MDXRemoteProps["components"] = {
+export const components: MDXRemoteProps["components"] = {
   h1: (props: React.ComponentProps<"h1">) => <Heading as="h1" {...props} />,
   h2: (props: React.ComponentProps<"h2">) => <Heading as="h2" {...props} />,
   h3: (props: React.ComponentProps<"h3">) => <Heading as="h3" {...props} />,
@@ -163,7 +163,7 @@ const options: MDXRemoteProps["options"] = {
         { target: "_blank", rel: "nofollow noopener noreferrer" },
       ],
       rehypeSlug,
-      rehypeComponent,
+      // rehypeComponent,
       () => (tree) => {
         visit(tree, (node) => {
           if (node?.type === "element" && node?.tagName === "pre") {
@@ -176,7 +176,6 @@ const options: MDXRemoteProps["options"] = {
           }
         });
       },
-
       () => (tree) => {
         visit(tree, (node) => {
           if (node?.type === "element" && node?.tagName === "figure") {

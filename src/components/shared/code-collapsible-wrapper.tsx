@@ -1,12 +1,11 @@
 import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
-  Collapsible,
+  type Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  CollapsibleWithContext,
 } from "@/components/ui/collapsible";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
 export function CodeCollapsibleWrapper({
@@ -15,21 +14,27 @@ export function CodeCollapsibleWrapper({
   ...props
 }: React.ComponentProps<typeof Collapsible>) {
   return (
-    <Collapsible
+    <CollapsibleWithContext
       className={cn("group/collapsible not-prose relative my-6", className)}
       {...props}
     >
-      <CollapsibleTrigger asChild>
-        <div className="absolute top-2 right-10 z-10 flex items-center gap-2">
-          <Button className="size-6 rounded-md" variant="secondary" size="icon">
-            <ChevronsDownUpIcon className="hidden group-data-[state=open]/collapsible:block" />
-            <ChevronsUpDownIcon className="hidden group-data-[state=closed]/collapsible:block" />
-          </Button>
+      <CollapsibleTrigger>
+        <div className="absolute top-9 right-14 z-10 flex items-center gap-2">
+          <div className="size-6 rounded-md text-neutral-400 dark:text-neutral-600">
+            <ChevronsDownUpIcon
+              className="hidden group-data-[state=open]/collapsible:block"
+              size={16}
+            />
+            <ChevronsUpDownIcon
+              className="hidden group-data-[state=closed]/collapsible:block"
+              size={16}
+            />
+          </div>
 
-          <Separator
+          {/* <Separator
             className="data-[orientation=vertical]:h-4"
             orientation="vertical"
-          />
+          /> */}
         </div>
       </CollapsibleTrigger>
 
@@ -43,6 +48,6 @@ export function CodeCollapsibleWrapper({
       <CollapsibleTrigger className="absolute inset-x-0 bottom-0 flex h-24 items-end justify-center rounded-b-lg bg-linear-to-t from-25% from-code to-transparent pb-4 font-medium text-muted-foreground text-sm group-data-[state=open]/collapsible:hidden">
         Expand
       </CollapsibleTrigger>
-    </Collapsible>
+    </CollapsibleWithContext>
   );
 }

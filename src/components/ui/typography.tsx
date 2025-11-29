@@ -4,6 +4,9 @@ import { LinkIcon } from "lucide-react";
 import { Slot as SlotPrimitive } from "radix-ui";
 
 import { cn } from "@/lib/utils";
+import { CodeBlock } from "@/components/ui/code-block";
+import Mermaid from "@/components/shared/mermaid";
+import { Code as CodeInline } from "@/components/ui/typography";
 
 const Slot = SlotPrimitive.Slot;
 
@@ -24,17 +27,52 @@ function Prose({
         "prose-headings:text-balance prose-headings:font-sans prose-headings:font-semibold",
         "prose-h2:border-edge prose-h2:border-b prose-h2:pb-2 prose-h2:text-2xl",
         "prose-lead:text-base",
-        "prose-a:break-words prose-a:font-medium prose-a:text-foreground prose-a:underline prose-a:underline-offset-4",
+        "prose-a:wrap-break-words prose-a:font-medium prose-a:text-foreground prose-a:underline prose-a:underline-offset-4",
         "prose-code:rounded-md prose-code:border prose-code:bg-muted/50 prose-code:px-[0.3rem] prose-code:py-[0.2rem] prose-code:font-normal prose-code:text-sm prose-code:before:content-none prose-code:after:content-none",
         "prose-hr:border-edge",
-        className,
+        className
       )}
       {...props}
     />
   );
 }
 
-function Code({ className, ...props }: React.ComponentProps<"code">) {
+function Code(props: {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation.>
+  [key: string]: any;
+}) {
+  const { inline, className, children, ...otherProps } = props;
+
+  const match = /language-(\w+)/.exec(className || "");
+  const codeContent = children ? String(children).replace(/\n$/, "") : "";
+
+  // Handle Mermaid diagrams
+  if (!inline && match && match[1] === "mermaid") {
+    return (
+      <Mermaid
+        chart={codeContent}
+        className="w-full"
+        // zoomingEnabled={true}
+      />
+    );
+  }
+
+  // Handle SVG images
+  // if (!inline && match && match[1] === "svg") {
+  //   return <SvgPreview xmlCode={codeContent} className="w-full max-w-full" />;
+  // }
+
+  if (!inline && match) {
+    return (
+      <CodeBlock language={match[1]} codeContent={codeContent} {...otherProps}>
+        {children}
+      </CodeBlock>
+    );
+  }
+
   const isCodeBlock = "data-language" in props;
 
   return (
@@ -42,8 +80,8 @@ function Code({ className, ...props }: React.ComponentProps<"code">) {
       data-slot={isCodeBlock ? "code-block" : "code-inline"}
       className={cn(
         !isCodeBlock &&
-          "not-prose rounded-md border bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm",
-        className,
+          "not-prose rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-sm",
+        className
       )}
       {...props}
     />

@@ -183,6 +183,10 @@
   [id] {
     @apply scroll-mt-22;
   }
+
+  .prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    padding: 0px !important;
+  }
 }
 
 @utility no-scrollbar {
@@ -207,20 +211,12 @@
   @apply relative after:absolute after:bottom-0 after:-left-[100vw] after:-z-1 after:h-px after:w-[200vw] after:bg-edge;
 }
 
-@utility step {
-  counter-increment: step;
-  &::before {
-    @apply mr-2 inline-flex size-7 items-center justify-center rounded-full bg-muted text-center -indent-px text-sm font-medium text-muted-foreground md:absolute md:-mt-0.5 md:-ml-11.5 md:size-8;
-    content: counter(step);
-  }
-}
-
 @layer components {
   [data-rehype-pretty-code-figure] {
     @apply relative my-6 rounded-lg bg-code text-code-foreground;
 
     pre {
-      @apply overflow-x-auto px-4 py-4 has-data-line-numbers:px-0;
+      @apply overflow-x-auto;
     }
 
     code {

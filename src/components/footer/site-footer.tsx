@@ -66,7 +66,7 @@ export function SiteFooter({
 
             <a
               className="flex items-center text-muted-foreground transition-colors hover:text-foreground"
-              href={`${SITE_INFO.url}/rss`}
+              href={`${SITE_INFO.url}/blog/rss`}
               target="_blank"
               rel="noopener noreferrer"
             >
