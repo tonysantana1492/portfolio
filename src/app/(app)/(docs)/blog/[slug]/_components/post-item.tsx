@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { format } from "date-fns";
 import { PinIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import type { Post } from "@/types/post";
 
@@ -56,7 +55,7 @@ export function PostItem({
         <h3 className="text-balance font-medium text-lg leading-snug underline-offset-4 group-hover/post:underline">
           {post.metadata.title}
           {post.metadata.new && (
-            <span className="-translate-y-px ml-2 inline-block size-2 rounded-full bg-info">
+            <span className="ml-2 inline-block size-2 -translate-y-px rounded-full bg-info">
               <span className="sr-only">New</span>
             </span>
           )}

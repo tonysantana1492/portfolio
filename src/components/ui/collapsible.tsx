@@ -2,10 +2,9 @@
 
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 
-import { Collapsible as CollapsiblePrimitive } from "radix-ui";
-
 import type { ChevronsDownUpIconHandle } from "../animated-icons/chevrons-down-up-icon";
 import { ChevronsDownUpIcon } from "../animated-icons/chevrons-down-up-icon";
+import { Collapsible as CollapsiblePrimitive } from "radix-ui";
 
 const Collapsible = CollapsiblePrimitive.Root;
 
@@ -23,9 +22,7 @@ const useCollapsible = () => {
   const context = useContext(CollapsibleContext);
 
   if (!context) {
-    throw new Error(
-      "Collapsible components must be used within a CollapsibleWithContext"
-    );
+    throw new Error("Collapsible components must be used within a CollapsibleWithContext");
   }
 
   return context;

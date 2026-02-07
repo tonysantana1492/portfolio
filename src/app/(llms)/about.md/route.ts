@@ -22,9 +22,8 @@ ${
 ## Tech Stack
 
 ${
-  PROFILE.sections.techStack?.items
-    ?.map((item) => `- [${item.title}](${item.href})`)
-    ?.join("\n") ?? ""
+  PROFILE.sections.techStack?.items?.map((item) => `- [${item.title}](${item.href})`)?.join("\n") ??
+  ""
 }\n`;
 
 export async function GET() {

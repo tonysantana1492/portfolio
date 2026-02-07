@@ -468,8 +468,7 @@ Blog Features:
           id: "officepuzzle",
           companyName: "OfficePuzzle",
           website: "https://officepuzzle.com",
-          companyLogo:
-            "https://s3.amazonaws.com/cdn.officepuzzle.com/images/opzle-logo.png",
+          companyLogo: "https://s3.amazonaws.com/cdn.officepuzzle.com/images/opzle-logo.png",
           positions: [
             {
               id: "1",
@@ -607,13 +606,7 @@ Blog Features:
               icon: "business",
               description: `- Virtualized servers with PROMOX, accelerating deployments by 80% and reducing hardware costs.
 - Implemented a digital signature server integrated with Active Directory, saving 10% in office supplies and increasing procedure speed by 70%.`,
-              skills: [
-                "PROMOX",
-                "Virtualization",
-                "Active Directory",
-                "Linux",
-                "Networking",
-              ],
+              skills: ["PROMOX", "Virtualization", "Active Directory", "Linux", "Networking"],
             },
           ],
         },
@@ -642,12 +635,7 @@ Blog Features:
               },
               icon: "GraduationCapIcon",
               description: `Bachelor's degree in Telecommunications and Electronics Engineering.`,
-              skills: [
-                "Electronics",
-                "Telecommunications",
-                "Mathematics",
-                "Systems Design",
-              ],
+              skills: ["Electronics", "Telecommunications", "Mathematics", "Systems Design"],
               isExpanded: true,
             },
           ],

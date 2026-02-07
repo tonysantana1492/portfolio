@@ -1,5 +1,4 @@
 import { MapPinIcon } from "lucide-react";
-
 import { EmailItem } from "@/app/(app)/(root)/_components/overview/email-item";
 import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
 import { JobItem } from "@/app/(app)/(root)/_components/overview/job-item";

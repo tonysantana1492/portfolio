@@ -1,15 +1,9 @@
-import { Button } from "@/components/ui/button";
-
 import { Icons } from "./icons";
+import { Button } from "@/components/ui/button";
 
 export function OpenInV0Button({ url }: { url: string }) {
   return (
-    <Button
-      className="not-prose gap-1 rounded-md"
-      variant="secondary"
-      size="sm"
-      asChild
-    >
+    <Button className="not-prose gap-1 rounded-md" variant="secondary" size="sm" asChild>
       <a
         href={`https://v0.app/chat/api/open?url=${url}`}
         target="_blank"

@@ -2,11 +2,10 @@ import type React from "react";
 
 import { LinkIcon } from "lucide-react";
 import { Slot as SlotPrimitive } from "radix-ui";
-
-import { cn } from "@/lib/utils";
-import { CodeBlock } from "@/components/ui/code-block";
 import Mermaid from "@/components/shared/mermaid";
+import { CodeBlock } from "@/components/ui/code-block";
 import { Code as CodeInline } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 
 const Slot = SlotPrimitive.Slot;
 
@@ -79,8 +78,7 @@ function Code(props: {
     <code
       data-slot={isCodeBlock ? "code-block" : "code-inline"}
       className={cn(
-        !isCodeBlock &&
-          "not-prose rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-sm",
+        !isCodeBlock && "not-prose rounded-md border bg-muted/50 px-1.5 py-0.5 font-mono text-sm",
         className
       )}
       {...props}
@@ -105,10 +103,7 @@ function Heading<T extends HeadingTypes = "h1">({
   }
 
   return (
-    <Comp
-      className={cn("flex flex-row items-center gap-2", className)}
-      {...props}
-    >
+    <Comp className={cn("flex flex-row items-center gap-2", className)} {...props}>
       <a href={`#${props.id}`} className="peer not-prose w-full">
         {props.children}
       </a>

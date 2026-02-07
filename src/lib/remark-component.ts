@@ -1,7 +1,6 @@
-import { visit } from "unist-util-visit";
-
 import fs from "node:fs";
 import path from "node:path";
+import { visit } from "unist-util-visit";
 import type { UnistNode, UnistTree } from "@/lib/unist";
 
 export function remarkComponent() {
@@ -56,10 +55,7 @@ export function remarkComponent() {
           source = source.replaceAll("export default", "export");
 
           const title = getNodeAttributeByName(node, "title");
-          const showLineNumbers = getNodeAttributeByName(
-            node,
-            "showLineNumbers",
-          );
+          const showLineNumbers = getNodeAttributeByName(node, "showLineNumbers");
 
           const codeBlock = {
             type: "code",

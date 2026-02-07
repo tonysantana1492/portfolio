@@ -1,9 +1,8 @@
-import stripIndent from "strip-indent";
-import { visit } from "unist-util-visit";
-
 import fs from "node:fs";
 import { EOL } from "node:os";
 import path from "node:path";
+import stripIndent from "strip-indent";
+import { visit } from "unist-util-visit";
 
 function extractLines(
   content: string,
@@ -64,9 +63,7 @@ export function remarkCodeImport(options: RemarkCodeImport = {}) {
 
       const res =
         // @ts-expect-error
-        /^file=(?<path>.+?)(?:(?:#(?:L(?<from>\d+)(?<dash>-)?)?)(?:L(?<to>\d+))?)?$/.exec(
-          fileMeta
-        );
+        /^file=(?<path>.+?)(?:(?:#(?:L(?<from>\d+)(?<dash>-)?)?)(?:L(?<to>\d+))?)?$/.exec(fileMeta);
 
       if (!res || !res.groups || !res.groups.path) {
         throw new Error(`Unable to parse file path ${fileMeta}`);
@@ -74,17 +71,13 @@ export function remarkCodeImport(options: RemarkCodeImport = {}) {
 
       const filePath = res.groups.path;
 
-      const fromLine = res.groups.from
-        ? parseInt(res.groups.from, 10)
-        : undefined;
+      const fromLine = res.groups.from ? parseInt(res.groups.from, 10) : undefined;
 
       const hasDash = !!res.groups.dash || fromLine === undefined;
 
       const toLine = res.groups.to ? parseInt(res.groups.to, 10) : undefined;
 
-      const normalizedFilePath = filePath
-        .replace(/^@/, rootDir)
-        .replace(/\\ /g, " ");
+      const normalizedFilePath = filePath.replace(/^@/, rootDir).replace(/\\ /g, " ");
 
       const fileAbsPath = path.resolve(file.dirname, normalizedFilePath);
 

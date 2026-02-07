@@ -1,5 +1,4 @@
 import { LoaderIcon } from "lucide-react";
-
 import { GraphChildren } from "@/app/(app)/(root)/_components/github-contributions/graph-children";
 import { ContributionGraph } from "@/components/shared/contribution-graph";
 import { getGitHubContributions } from "@/content/github-contributions";

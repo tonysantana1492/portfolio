@@ -24,7 +24,7 @@ export function TeckStack({
         className={cn(
           "[--pattern-foreground:var(--color-zinc-950)]/5 dark:[--pattern-foreground:var(--color-white)]/5",
           "bg-[radial-gradient(var(--pattern-foreground)_1px,transparent_0)] bg-center bg-size-[10px_10px]",
-          "bg-zinc-950/0.75 dark:bg-white/0.75",
+          "bg-zinc-950/0.75 dark:bg-white/0.75"
         )}
       >
         <ul className="flex select-none flex-wrap gap-4">

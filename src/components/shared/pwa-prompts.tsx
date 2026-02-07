@@ -2,22 +2,13 @@
 
 import { useState } from "react";
 
-import { Download, RefreshCw, Wifi, WifiOff, X } from "lucide-react";
-
+import { RefreshCw, Wifi, WifiOff, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePWA } from "@/hooks/use-pwa";
 
 export function PWAPrompts() {
-  const {
-    isInstallable,
-    isOffline,
-    isUpdateAvailable,
-    isSupported,
-    install,
-    skipWaiting,
-  } = usePWA();
+  const { isOffline, isUpdateAvailable, isSupported, skipWaiting } = usePWA();
 
-  const [dismissedInstall, setDismissedInstall] = useState(false);
   const [dismissedUpdate, setDismissedUpdate] = useState(false);
 
   if (!isSupported) return null;
@@ -82,9 +73,7 @@ export function PWAPrompts() {
               </div>
               <div className="space-y-1">
                 <p className="font-medium text-sm">Update Available</p>
-                <p className="text-muted-foreground text-xs">
-                  A new version of the app is ready
-                </p>
+                <p className="text-muted-foreground text-xs">A new version of the app is ready</p>
               </div>
             </div>
             <Button

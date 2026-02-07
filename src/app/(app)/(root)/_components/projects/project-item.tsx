@@ -1,19 +1,9 @@
 import Image from "next/image";
 
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  InfinityIcon,
-  LinkIcon,
-} from "lucide-react";
-
+import { ChevronsDownUpIcon, ChevronsUpDownIcon, InfinityIcon, LinkIcon } from "lucide-react";
 import { Icons } from "@/components/shared/icons";
 import { Markdown } from "@/components/shared/markdown";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tag } from "@/components/ui/tag";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { Prose } from "@/components/ui/typography";
@@ -21,13 +11,7 @@ import { UTM_PARAMS } from "@/config/site.config";
 import type { Project } from "@/content/profile";
 import { addQueryParams } from "@/lib/url";
 
-export function ProjectItem({
-  className,
-  project,
-}: {
-  className?: string;
-  project: Project;
-}) {
+export function ProjectItem({ className, project }: { className?: string; project: Project }) {
   const { start, end } = project.period;
   const isOngoing = !end;
 
@@ -58,9 +42,7 @@ export function ProjectItem({
           <div className="flex-1 border-edge border-l border-dashed">
             <CollapsibleTrigger className="group/project flex w-full select-none items-center gap-4 p-4 pr-2 text-left">
               <div className="flex-1">
-                <h3 className="mb-1 text-balance font-medium leading-snug">
-                  {project.title}
-                </h3>
+                <h3 className="mb-1 text-balance font-medium leading-snug">{project.title}</h3>
 
                 <dl className="text-muted-foreground text-sm">
                   <dt className="sr-only">Period</dt>
@@ -69,10 +51,7 @@ export function ProjectItem({
                     <span className="font-mono">—</span>
                     {isOngoing ? (
                       <>
-                        <InfinityIcon
-                          className="size-4.5 translate-y-[0.5px]"
-                          aria-hidden
-                        />
+                        <InfinityIcon className="size-4.5 translate-y-[0.5px]" aria-hidden />
                         <span className="sr-only">Present</span>
                       </>
                     ) : (
@@ -84,7 +63,7 @@ export function ProjectItem({
 
               <SimpleTooltip content="Open Project Link">
                 <a
-                  className="after:-inset-2 relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute hover:text-foreground"
+                  className="relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
                   href={addQueryParams(project.link, UTM_PARAMS)}
                   target="_blank"
                   rel="noopener"
@@ -94,10 +73,7 @@ export function ProjectItem({
                 </a>
               </SimpleTooltip>
 
-              <div
-                className="shrink-0 text-muted-foreground [&_svg]:size-4"
-                aria-hidden
-              >
+              <div className="shrink-0 text-muted-foreground [&_svg]:size-4" aria-hidden>
                 <ChevronsDownUpIcon className="hidden group-data-[state=open]/project:block" />
                 <ChevronsUpDownIcon className="hidden group-data-[state=closed]/project:block" />
               </div>

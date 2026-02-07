@@ -1,5 +1,4 @@
 import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
-
 import {
   type Collapsible,
   CollapsibleContent,

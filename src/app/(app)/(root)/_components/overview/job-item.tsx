@@ -1,9 +1,4 @@
-import {
-  BriefcaseBusinessIcon,
-  CodeXmlIcon,
-  LightbulbIcon,
-} from "lucide-react";
-
+import { BriefcaseBusinessIcon, CodeXmlIcon, LightbulbIcon } from "lucide-react";
 import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
 import { UTM_PARAMS } from "@/config/site.config";
 import { addQueryParams } from "@/lib/url";

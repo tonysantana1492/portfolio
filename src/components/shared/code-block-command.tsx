@@ -7,12 +7,7 @@ import { getIconForPackageManager } from "./icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { NpmCommands } from "@/lib/unist";
 
-export function CodeBlockCommand({
-  __pnpm__,
-  __yarn__,
-  __npm__,
-  __bun__,
-}: NpmCommands) {
+export function CodeBlockCommand({ __pnpm__, __yarn__, __npm__, __bun__ }: NpmCommands) {
   // const [config, setConfig] = useConfig();
 
   const packageManager = "pnpm"; // config.packageManager || "pnpm";
@@ -73,10 +68,7 @@ export function CodeBlockCommand({
         })}
       </Tabs>
 
-      <CopyButton
-        className="absolute top-2 right-2"
-        value={tabs[packageManager] || ""}
-      />
+      <CopyButton className="absolute top-2 right-2" value={tabs[packageManager] || ""} />
     </div>
   );
 }

@@ -185,6 +185,7 @@
   }
 
   .prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    /* biome-ignore lint/complexity/noImportantStyles: <explanation > */
     padding: 0px !important;
   }
 }

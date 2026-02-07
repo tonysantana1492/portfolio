@@ -1,12 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import {
-  CircleUserIcon,
-  type LucideProps,
-  RssIcon,
-  UserStarIcon,
-} from "lucide-react";
-
+import { CircleUserIcon, type LucideProps, RssIcon, UserStarIcon } from "lucide-react";
 import { Logo } from "@/components/header/logo";
 import { getIcon } from "@/components/shared/icons";
 import { PROFILE } from "@/content/profile";
@@ -159,17 +153,13 @@ export type CommandLinkItem = {
   openInNewTab?: boolean;
 };
 
-const sections = Object.entries(PROFILE.sections).map(
-  ([_key, section]) => section
-);
+const sections = Object.entries(PROFILE.sections).map(([_key, section]) => section);
 
-const PORTFOLIO_LINKS_FROM_SECTIONS: CommandLinkItem[] = sections.map(
-  (section) => ({
-    title: section.name,
-    href: `/#${section.id}`,
-    icon: getIcon(section.icon),
-  })
-);
+const PORTFOLIO_LINKS_FROM_SECTIONS: CommandLinkItem[] = sections.map((section) => ({
+  title: section.name,
+  href: `/#${section.id}`,
+  icon: getIcon(section.icon),
+}));
 
 export const PORTFOLIO_LINKS: CommandLinkItem[] = [
   ...PORTFOLIO_LINKS_FROM_SECTIONS,

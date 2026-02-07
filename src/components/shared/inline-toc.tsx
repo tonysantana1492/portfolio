@@ -1,6 +1,5 @@
 import type { TOCItemType } from "fumadocs-core/toc";
 import { TextIcon } from "lucide-react";
-
 import type { Collapsible } from "@/components/ui/collapsible";
 import {
   CollapsibleChevronsIcon,

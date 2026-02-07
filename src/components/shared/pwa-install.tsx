@@ -1,7 +1,6 @@
 "use client";
 
 import { Download, Smartphone } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { usePWA } from "@/hooks/use-pwa";
 

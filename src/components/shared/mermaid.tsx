@@ -9,7 +9,6 @@ import type React from "react";
 import { useEffect, useRef, useState } from "react";
 
 import mermaid from "mermaid";
-
 import { cn } from "@/lib/utils";
 
 mermaid.initialize({
@@ -180,16 +179,16 @@ const FullScreenModal: React.FC<{
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4">
       <div
         ref={modalRef}
-        className="bg-[var(--card-bg)] rounded-lg shadow-custom max-w-5xl max-h-[90vh] w-full overflow-hidden flex flex-col card-japanese"
+        className="card-japanese flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-[var(--card-bg)] shadow-custom"
       >
         {/* Modal header with controls */}
-        <div className="flex items-center justify-between p-4 border-b border-[var(--border-color)]">
-          <div className="font-medium text-[var(--foreground)] font-serif"></div>
+        <div className="flex items-center justify-between border-[var(--border-color)] border-b p-4">
+          <div className="font-medium font-serif text-[var(--foreground)]"></div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setZoom(Math.max(0.5, zoom - 0.1))}
-                className="text-[var(--foreground)] hover:bg-[var(--accent-primary)]/10 p-2 rounded-md border border-[var(--border-color)] transition-colors"
+                className="rounded-md border border-[var(--border-color)] p-2 text-[var(--foreground)] transition-colors hover:bg-[var(--accent-primary)]/10"
                 aria-label="Zoom out"
               >
                 <svg
@@ -203,17 +202,16 @@ const FullScreenModal: React.FC<{
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
+                  <title>zoom out</title>
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   <line x1="8" y1="11" x2="14" y2="11"></line>
                 </svg>
               </button>
-              <span className="text-sm text-[var(--muted)]">
-                {Math.round(zoom * 100)}%
-              </span>
+              <span className="text-[var(--muted)] text-sm">{Math.round(zoom * 100)}%</span>
               <button
                 onClick={() => setZoom(Math.min(2, zoom + 0.1))}
-                className="text-[var(--foreground)] hover:bg-[var(--accent-primary)]/10 p-2 rounded-md border border-[var(--border-color)] transition-colors"
+                className="rounded-md border border-[var(--border-color)] p-2 text-[var(--foreground)] transition-colors hover:bg-[var(--accent-primary)]/10"
                 aria-label="Zoom in"
               >
                 <svg
@@ -227,6 +225,7 @@ const FullScreenModal: React.FC<{
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
+                  <title>zoom in</title>
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                   <line x1="11" y1="8" x2="11" y2="14"></line>
@@ -235,7 +234,7 @@ const FullScreenModal: React.FC<{
               </button>
               <button
                 onClick={() => setZoom(1)}
-                className="text-[var(--foreground)] hover:bg-[var(--accent-primary)]/10 p-2 rounded-md border border-[var(--border-color)] transition-colors"
+                className="rounded-md border border-[var(--border-color)] p-2 text-[var(--foreground)] transition-colors hover:bg-[var(--accent-primary)]/10"
                 aria-label="Reset zoom"
               >
                 <svg
@@ -249,14 +248,14 @@ const FullScreenModal: React.FC<{
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+                  <title>reset zoom</title>
                   <path d="M21 3v5h-5"></path>
                 </svg>
               </button>
             </div>
             <button
               onClick={onClose}
-              className="text-[var(--foreground)] hover:bg-[var(--accent-primary)]/10 p-2 rounded-md border border-[var(--border-color)] transition-colors"
+              className="rounded-md border border-[var(--border-color)] p-2 text-[var(--foreground)] transition-colors hover:bg-[var(--accent-primary)]/10"
               aria-label="Close"
             >
               <svg
@@ -270,6 +269,7 @@ const FullScreenModal: React.FC<{
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
+                <title>close</title>
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
@@ -278,7 +278,7 @@ const FullScreenModal: React.FC<{
         </div>
 
         {/* Modal content with zoom */}
-        <div className="overflow-auto p-6 flex-1 flex items-center justify-center bg-[var(--background)]/50">
+        <div className="flex flex-1 items-center justify-center overflow-auto bg-[var(--background)]/50 p-6">
           <div
             style={{
               transform: `scale(${zoom})`,
@@ -294,11 +294,7 @@ const FullScreenModal: React.FC<{
   );
 };
 
-const Mermaid: React.FC<MermaidProps> = ({
-  chart,
-  className,
-  zoomingEnabled = false,
-}) => {
+const Mermaid: React.FC<MermaidProps> = ({ chart, className, zoomingEnabled = false }) => {
   const [svg, setSvg] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -368,10 +364,7 @@ const Mermaid: React.FC<MermaidProps> = ({
 
         let processedSvg = renderedSvg;
         if (isDarkModeRef.current) {
-          processedSvg = processedSvg.replace(
-            "<svg ",
-            '<svg data-theme="dark" '
-          );
+          processedSvg = processedSvg.replace("<svg ", '<svg data-theme="dark" ');
         }
 
         setSvg(processedSvg);
@@ -414,17 +407,18 @@ const Mermaid: React.FC<MermaidProps> = ({
   if (error) {
     return (
       <div
-        className={`border border-[var(--highlight)]/30 rounded-md p-4 bg-[var(--highlight)]/5 ${className}`}
+        className={`rounded-md border border-[var(--highlight)]/30 bg-[var(--highlight)]/5 p-4 ${className}`}
       >
-        <div className="flex items-center mb-3">
-          <div className="text-[var(--highlight)] text-xs font-medium flex items-center">
+        <div className="mb-3 flex items-center">
+          <div className="flex items-center font-medium text-[var(--highlight)] text-xs">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-2"
+              className="mr-2 h-4 w-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
+              <title>error</title>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -435,8 +429,8 @@ const Mermaid: React.FC<MermaidProps> = ({
             Diagram rendering error
           </div>
         </div>
-        <div ref={mermaidRef} className="text-xs overflow-auto"></div>
-        <div className="mt-3 text-xs text-[var(--muted)] font-serif">
+        <div ref={mermaidRef} className="overflow-auto text-xs"></div>
+        <div className="mt-3 font-serif text-[var(--muted)] text-xs">
           The diagram contains a syntax error and cannot be rendered.
         </div>
       </div>
@@ -445,14 +439,12 @@ const Mermaid: React.FC<MermaidProps> = ({
 
   if (!svg) {
     return (
-      <div className={`flex justify-center items-center p-4 ${className}`}>
+      <div className={`flex items-center justify-center p-4 ${className}`}>
         <div className="flex items-center space-x-2">
-          <div className="w-2 h-2 bg-[var(--accent-primary)]/70 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-[var(--accent-primary)]/70 rounded-full animate-pulse delay-75"></div>
-          <div className="w-2 h-2 bg-[var(--accent-primary)]/70 rounded-full animate-pulse delay-150"></div>
-          <span className="text-[var(--muted)] text-xs ml-2 font-serif">
-            Rendering diagram...
-          </span>
+          <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--accent-primary)]/70"></div>
+          <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--accent-primary)]/70 delay-75"></div>
+          <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--accent-primary)]/70 delay-150"></div>
+          <span className="ml-2 font-serif text-[var(--muted)] text-xs">Rendering diagram...</span>
         </div>
       </div>
     );
@@ -462,18 +454,15 @@ const Mermaid: React.FC<MermaidProps> = ({
     <>
       <div
         ref={containerRef}
-        className={cn(
-          "w-full bg-neutral-800 rounded-xl my-4 p-1",
-          zoomingEnabled && "h-[600px]"
-        )}
+        className={cn("my-4 w-full rounded-xl bg-neutral-800 p-1", zoomingEnabled && "h-[600px]")}
       >
         <div
-          className={`relative group ${
+          className={`group relative ${
             zoomingEnabled ? "h-full rounded-lg border-2 border-black" : ""
           }`}
         >
           <div
-            className={`flex justify-center overflow-auto text-center my-2 cursor-pointer hover:shadow-md transition-shadow duration-200 rounded-md ${className} ${
+            className={`my-2 flex cursor-pointer justify-center overflow-auto rounded-md text-center transition-shadow duration-200 hover:shadow-md ${className} ${
               zoomingEnabled ? "h-full" : ""
             }`}
             dangerouslySetInnerHTML={{ __html: svg }}
@@ -482,7 +471,7 @@ const Mermaid: React.FC<MermaidProps> = ({
           />
 
           {!zoomingEnabled && (
-            <div className="absolute top-2 right-2 bg-gray-700/70 dark:bg-gray-900/70 text-white p-1.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1.5 text-xs shadow-md pointer-events-none">
+            <div className="pointer-events-none absolute top-2 right-2 flex items-center gap-1.5 rounded-md bg-gray-700/70 p-1.5 text-white text-xs opacity-0 shadow-md transition-opacity duration-200 group-hover:opacity-100 dark:bg-gray-900/70">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="12"
@@ -494,6 +483,7 @@ const Mermaid: React.FC<MermaidProps> = ({
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
+                <title>zoom in</title>
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 <line x1="11" y1="8" x2="11" y2="14"></line>
@@ -506,10 +496,8 @@ const Mermaid: React.FC<MermaidProps> = ({
       </div>
 
       {!zoomingEnabled && (
-        <FullScreenModal
-          isOpen={isFullscreen}
-          onClose={() => setIsFullscreen(false)}
-        >
+        <FullScreenModal isOpen={isFullscreen} onClose={() => setIsFullscreen(false)}>
+          {/** biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation > */}
           <div dangerouslySetInnerHTML={{ __html: svg }} />
         </FullScreenModal>
       )}

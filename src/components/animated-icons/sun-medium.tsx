@@ -5,7 +5,6 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 
 import type { Variants } from "motion/react";
 import { m, useAnimation } from "motion/react";
-
 import { cn } from "@/lib/utils";
 
 export interface SunMediumIconHandle {
@@ -81,6 +80,7 @@ const SunMediumIcon = forwardRef<SunMediumIconHandle, SunMediumIconProps>(
           strokeLinecap="round"
           strokeLinejoin="round"
         >
+          <title>Sun icon</title>
           <circle cx="12" cy="12" r="4" />
           {[
             "M12 3v1",
@@ -92,13 +92,7 @@ const SunMediumIcon = forwardRef<SunMediumIconHandle, SunMediumIconProps>(
             "m5.636 5.636.707.707",
             "m17.657 17.657.707.707",
           ].map((d, index) => (
-            <m.path
-              key={d}
-              d={d}
-              animate={controls}
-              variants={pathVariants}
-              custom={index + 1}
-            />
+            <m.path key={d} d={d} animate={controls} variants={pathVariants} custom={index + 1} />
           ))}
         </svg>
       </div>

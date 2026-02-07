@@ -9,8 +9,7 @@ import type {
 import { formatPhone } from "@/lib/libphonenumber";
 import { formatPhoneNumber } from "@/lib/string";
 
-const esc = (s?: string) =>
-  (s ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const esc = (s?: string) => (s ?? "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const b64 = (s?: string) => {
   if (!s) return "";
@@ -32,8 +31,7 @@ const toBullets = (text?: string) => {
 
 const fmtDate = (s?: string) => {
   if (!s) return "";
-  if (/^\d{2}\.\d{4}$/.test(s) || /^\d{4}-\d{2}$/.test(s) || /^\d{4}$/.test(s))
-    return s;
+  if (/^\d{2}\.\d{4}$/.test(s) || /^\d{4}-\d{2}$/.test(s) || /^\d{4}$/.test(s)) return s;
   const m = s.match(/^(\d{4})-(\d{2})(?:-\d{2})?/);
   if (m) return `${m[1]}-${m[2]}`;
   return s;
@@ -60,24 +58,17 @@ function groupTechByCategory(items: TechStack[]) {
 }
 
 function inlineLinks(techs: TechStack[]) {
-  return techs
-    .map((t) => (t.href ? `[${esc(t.title)}](${t.href})` : esc(t.title)))
-    .join(", ");
+  return techs.map((t) => (t.href ? `[${esc(t.title)}](${t.href})` : esc(t.title))).join(", ");
 }
 
-const mdxLink = (title: string, href?: string) =>
-  href ? `[${esc(title)}](${href})` : esc(title);
+const mdxLink = (title: string, href?: string) => (href ? `[${esc(title)}](${href})` : esc(title));
 
 export function cvToMdx(profile: IProfile) {
   const lines: string[] = [];
 
   // ===== Header =====
   lines.push("<Center>");
-  lines.push(
-    `# ${esc(
-      profile.displayName || `${profile.firstName} ${profile.lastName}`
-    )}`
-  );
+  lines.push(`# ${esc(profile.displayName || `${profile.firstName} ${profile.lastName}`)}`);
 
   const emailPlain = b64(profile.email);
   const phonePlain = b64(profile.phoneNumber);
@@ -95,11 +86,7 @@ export function cvToMdx(profile: IProfile) {
     );
   if (phonePlain)
     metaParts.push(
-      `[${formatPhoneNumber(phonePlain)}](tel:${formatPhone(
-        phonePlain,
-        undefined,
-        "e164"
-      )})`
+      `[${formatPhoneNumber(phonePlain)}](tel:${formatPhone(phonePlain, undefined, "e164")})`
     );
   if (metaParts.length) lines.push(metaParts.join(" • "));
   lines.push("</Center>");
@@ -125,9 +112,7 @@ export function cvToMdx(profile: IProfile) {
 
     for (const cat of cats) {
       const techs = grouped.get(cat) ?? [];
-      catParts.push(
-        `${esc(cat)}: ${techs.map((tech) => `**${tech.title}**`).join(", ")}`
-      );
+      catParts.push(`${esc(cat)}: ${techs.map((tech) => `**${tech.title}**`).join(", ")}`);
     }
 
     lines.push(catParts.join(" • "));
@@ -146,13 +131,8 @@ export function cvToMdx(profile: IProfile) {
       const companyTitle = esc(company.companyName);
 
       for (const pos of company.positions ?? []) {
-        const when = fmtRange(
-          pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end
-        );
-        const rightBits = [when, pos.employmentType]
-          .filter(Boolean)
-          .join(" • ");
+        const when = fmtRange(pos.employmentPeriod?.start, pos.employmentPeriod?.end);
+        const rightBits = [when, pos.employmentType].filter(Boolean).join(" • ");
 
         lines.push(`### ${esc(companyTitle)}`);
         if (rightBits) lines.push(`<Right>${esc(rightBits)}</Right>`);
@@ -203,10 +183,7 @@ export function cvToMdx(profile: IProfile) {
     lines.push("");
     for (const ed of eduSec.items as Experience[]) {
       for (const pos of ed.positions ?? []) {
-        const when = fmtRange(
-          pos.employmentPeriod?.start,
-          pos.employmentPeriod?.end
-        );
+        const when = fmtRange(pos.employmentPeriod?.start, pos.employmentPeriod?.end);
         lines.push(`### ${esc(pos.title || ed.companyName)}`);
         if (when) lines.push(`<Right>${esc(when)}</Right>`);
         lines.push(`*${esc(pos.location)}*`);
@@ -236,9 +213,7 @@ export function cvToMdx(profile: IProfile) {
       lines.push(`_${issuer}_`);
 
       const id = c.credentialID ? `**ID:** ${esc(c.credentialID)}` : "";
-      const url = c.credentialURL
-        ? `**URL:** ${mdxLink("credential", c.credentialURL)}`
-        : "";
+      const url = c.credentialURL ? `**URL:** ${mdxLink("credential", c.credentialURL)}` : "";
       if (id || url) lines.push([id, url].filter(Boolean).join(" · "));
       lines.push("");
     }
@@ -257,8 +232,7 @@ export function cvToMdx(profile: IProfile) {
       lines.push(`_${esc(a.title)}_`);
       const bullets = toBullets(a.description);
       if (bullets.length) lines.push(...bullets);
-      if (a.referenceLink)
-        lines.push(`*Reference:* ${mdxLink("link", a.referenceLink)}`);
+      if (a.referenceLink) lines.push(`*Reference:* ${mdxLink("link", a.referenceLink)}`);
       lines.push("");
     }
   }
@@ -277,9 +251,7 @@ export function cvToMdx(profile: IProfile) {
     } else {
       // inline (except for social medias)
       lines.push(
-        (socialSec.items as SocialLink[])
-          .map((s) => mdxLink(s.title, s.href))
-          .join(" • ")
+        (socialSec.items as SocialLink[]).map((s) => mdxLink(s.title, s.href)).join(" • ")
       );
     }
     lines.push("");

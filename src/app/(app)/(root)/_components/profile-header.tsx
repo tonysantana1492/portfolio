@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import Image from "next/image";
 
 import { ExportButton } from "@/app/(app)/(docs)/resume/[slug]/_components/export-button";
@@ -11,9 +13,7 @@ export function ProfileHeader({
   className,
 }: React.ComponentProps<"div"> & { profile: IProfile }) {
   return (
-    <div
-      className={cn("screen-line-after flex border-edge border-x", className)}
-    >
+    <div className={cn("screen-line-after flex border-edge border-x", className)}>
       <div className="shrink-0 border-edge border-r">
         <div className="mx-0.5 my-[3px]">
           <Image
@@ -38,15 +38,15 @@ export function ProfileHeader({
             <span className="inline dark:hidden">text-zinc-950</span>
             <span className="hidden dark:inline">text-zinc-50</span>
             {" font-medium"} */}
-            <VCardQR size={70} showDownloadButtons={false} />
+            <Suspense>
+              <VCardQR size={70} showDownloadButtons={false} />
+            </Suspense>
           </div>
         </div>
 
         <div className="border-edge border-t">
           <div className="flex items-center justify-start gap-4 px-2 py-1 sm:justify-between">
-            <h1 className="flex items-center font-semibold text-3xl">
-              {PROFILE.displayName}
-            </h1>
+            <h1 className="flex items-center font-semibold text-3xl">{PROFILE.displayName}</h1>
             <ExportButton
               className="hidden sm:flex"
               slug={"tony-santana"}

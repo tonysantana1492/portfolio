@@ -4,7 +4,6 @@ import { useEffect } from "react";
 
 import { XIcon } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
-
 import { useSearchQuery } from "@/app/(app)/(docs)/blog/[slug]/_hooks/use-search-query";
 import { Icons } from "@/components/shared/icons";
 import {

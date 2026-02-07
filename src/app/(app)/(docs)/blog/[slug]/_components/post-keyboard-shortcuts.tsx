@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 
 import { useHotkeys } from "react-hotkeys-hook";
-
 import type { Post } from "@/types/post";
 
 export function PostKeyboardShortcuts({

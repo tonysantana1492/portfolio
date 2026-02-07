@@ -9,14 +9,11 @@ interface ExportOptions {
 }
 
 export async function exportToPdf(options: ExportOptions): Promise<Blob> {
-  const response = await fetch(
-    `/api/export/pdf?slug=${encodeURIComponent(options.slug)}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetch(`/api/export/pdf?slug=${encodeURIComponent(options.slug)}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!response.ok) {
     let errorMessage = "Unknown error occurred";
@@ -30,9 +27,7 @@ export async function exportToPdf(options: ExportOptions): Promise<Blob> {
       errorMessage = `HTTP ${response.status}: ${response.statusText}`;
     }
 
-    const fullError = errorDetails
-      ? `${errorMessage} - ${errorDetails}`
-      : errorMessage;
+    const fullError = errorDetails ? `${errorMessage} - ${errorDetails}` : errorMessage;
 
     throw new Error(fullError);
   }

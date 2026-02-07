@@ -1,8 +1,7 @@
 // Environment configuration for PDF generation
 export const PDF_CONFIG = {
   // Chromium configuration for different environments
-  isServerless: () =>
-    !!(process.env.VERCEL_ENV || process.env.AWS_LAMBDA_FUNCTION_NAME),
+  isServerless: () => !!(process.env.VERCEL_ENV || process.env.AWS_LAMBDA_FUNCTION_NAME),
 
   // Default timeouts
   timeouts: {

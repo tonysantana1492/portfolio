@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 import { useMotionValueEvent, useScroll } from "motion/react";
 import * as motion from "motion/react-m";
-
 import { Logo } from "@/components/header/logo";
 
 export function SiteHeaderMark() {
@@ -53,6 +52,7 @@ function MarkMotion() {
       }}
       transition={{ duration: 0.3 }}
     >
+      <title>Site Logo</title>
       <Logo className="h-8 w-8" />
     </motion.svg>
   );

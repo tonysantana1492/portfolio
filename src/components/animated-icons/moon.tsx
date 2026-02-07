@@ -5,7 +5,6 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 
 import type { Transition, Variants } from "motion/react";
 import { m, useAnimation } from "motion/react";
-
 import { cn } from "@/lib/utils";
 
 export interface MoonIconHandle {
@@ -89,6 +88,7 @@ const MoonIcon = forwardRef<MoonIconHandle, MoonIconProps>(
           animate={controls}
           transition={svgTransition}
         >
+          <title>Moon icon</title>
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
         </m.svg>
       </div>

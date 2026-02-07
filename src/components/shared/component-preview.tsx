@@ -1,21 +1,16 @@
 "use client";
 
-import { CodeXmlIcon, EyeIcon, RepeatIcon } from "lucide-react";
-import { useTheme } from "next-themes";
 import React, { useMemo, useState } from "react";
 
-import { cn } from "@/lib/utils";
-import { Code as CodeInline } from "@/components/ui/typography";
-
 import { CodeCollapsibleWrapper } from "./code-collapsible-wrapper";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
+import { CodeXmlIcon, EyeIcon, RepeatIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { OpenInV0Button } from "@/components/shared/v0-open-button";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Code as CodeInline } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 
 export function ComponentPreview({
   className,
@@ -47,7 +42,7 @@ export function ComponentPreview({
 
     if (!Component) {
       return (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Component <CodeInline>{name}</CodeInline> not found in registry.
         </p>
       );
@@ -57,10 +52,7 @@ export function ComponentPreview({
   }, [name]);
 
   return (
-    <div
-      className={cn("my-[1.25em]", notProse && "not-prose", className)}
-      {...props}
-    >
+    <div className={cn("my-[1.25em]", notProse && "not-prose", className)} {...props}>
       <Tabs defaultValue="preview" className="gap-4">
         <TabsList>
           <TabsTrigger className="px-2.5" value="preview">
@@ -105,15 +97,13 @@ export function ComponentPreview({
             )}
 
             <div
-              key={`${replay}-${
-                remountOnThemeChange ? resolvedTheme ?? "system" : "static"
-              }`}
+              key={`${replay}-${remountOnThemeChange ? (resolvedTheme ?? "system") : "static"}`}
               data-slot="component-preview"
               className="flex min-h-72 items-center justify-center font-sans"
             >
               <React.Suspense
                 fallback={
-                  <div className="flex items-center justify-center text-sm text-muted-foreground">
+                  <div className="flex items-center justify-center text-muted-foreground text-sm">
                     Loading...
                   </div>
                 }
@@ -128,9 +118,7 @@ export function ComponentPreview({
 
         <TabsContent value="code" className="[&>figure]:m-0">
           {codeCollapsible ? (
-            <CodeCollapsibleWrapper className="my-0">
-              {Code}
-            </CodeCollapsibleWrapper>
+            <CodeCollapsibleWrapper className="my-0">{Code}</CodeCollapsibleWrapper>
           ) : (
             Code
           )}

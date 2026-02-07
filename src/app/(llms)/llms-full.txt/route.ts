@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { getLLMText } from "@/lib/get-llm-text";
@@ -21,15 +20,11 @@ ${PROFILE.sections.about?.content?.trim() ?? ""}
 
 ### Social Links
 
-${PROFILE.sections.socialLinks?.items
-  .map((item) => `- [${item.title}](${item.href})`)
-  .join("\n")}
+${PROFILE.sections.socialLinks?.items.map((item) => `- [${item.title}](${item.href})`).join("\n")}
 
 ### Tech Stack
 
-${PROFILE.sections.techStack?.items
-  .map((item) => `- [${item.title}](${item.href})`)
-  .join("\n")}\n`;
+${PROFILE.sections.techStack?.items.map((item) => `- [${item.title}](${item.href})`).join("\n")}\n`;
 
 const experienceText = `## Experience
 
@@ -37,8 +32,7 @@ ${PROFILE.sections.experiences?.items
   .map((item) =>
     item.positions
       .map((position) => {
-        const skills =
-          position.skills?.map((skill) => skill).join(", ") || "N/A";
+        const skills = position.skills?.map((skill) => skill).join(", ") || "N/A";
         return `### ${position.title} | ${item.companyName}\n\nDuration: ${
           position.employmentPeriod.start
         } - ${
@@ -55,9 +49,7 @@ const projectsText = `## Projects
 ${PROFILE.sections.projects?.items
   .map((item) => {
     const skills = `\n\nSkills: ${item.skills.join(", ")}`;
-    const description = item.description
-      ? `\n\n${item.description.trim()}`
-      : "";
+    const description = item.description ? `\n\n${item.description.trim()}` : "";
     return `### ${item.title}\n\nProject URL: ${item.link}${skills}${description}`;
   })
   .join("\n\n")}
@@ -84,9 +76,7 @@ async function getBlogContent() {
           item.metadata.description
         }"\nlast_updated: "${dayjs(item.metadata.updatedAt).format(
           "MMMM D, YYYY"
-        )}"\nsource: "${SITE_INFO.url}/blog/${
-          item.slug
-        }"\n---\n\n${await getLLMText(item)}`
+        )}"\nsource: "${SITE_INFO.url}/blog/${item.slug}"\n---\n\n${await getLLMText(item)}`
     )
   );
   return text.join("\n\n");

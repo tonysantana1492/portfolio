@@ -25,9 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((post) => post.slug)
     .map((post) => {
       const last =
-        post?.metadata?.updatedAt ??
-        post?.metadata?.createdAt ??
-        "2025-11-27T00:00:00.000Z";
+        post?.metadata?.updatedAt ?? post?.metadata?.createdAt ?? "2025-11-27T00:00:00.000Z";
       return {
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: new Date(last).toISOString(),

@@ -2,7 +2,6 @@ import Image from "next/image";
 
 import dayjs from "dayjs";
 import { ArrowUpRightIcon } from "lucide-react";
-
 import { Icon } from "@/components/shared/icons";
 import { Separator } from "@/components/ui/separator";
 import type { Certification } from "@/content/profile";
@@ -56,10 +55,7 @@ export function CertificationItem({
             </dd>
           </dl>
 
-          <Separator
-            className="data-[orientation=vertical]:h-4"
-            orientation="vertical"
-          />
+          <Separator className="data-[orientation=vertical]:h-4" orientation="vertical" />
 
           <dl>
             <dt className="sr-only">Issued on</dt>
@@ -73,10 +69,7 @@ export function CertificationItem({
       </div>
 
       {certification.credentialURL && (
-        <ArrowUpRightIcon
-          className="size-4 text-muted-foreground"
-          aria-hidden
-        />
+        <ArrowUpRightIcon className="size-4 text-muted-foreground" aria-hidden />
       )}
     </a>
   );

@@ -13,8 +13,8 @@ export default function OfflinePage() {
         <h1 className="mb-4 font-bold text-2xl">You're Offline</h1>
 
         <p className="mb-8 max-w-md text-muted-foreground">
-          It looks like you've lost your internet connection. You can still
-          browse previously visited pages while offline.
+          It looks like you've lost your internet connection. You can still browse previously
+          visited pages while offline.
         </p>
 
         <div className="space-y-4">

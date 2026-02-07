@@ -1,15 +1,16 @@
+import "server-only";
+
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 
 import type React from "react";
-import { Suspense } from "react";
 
 import Script from "next/script";
 
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { fontMono, fontSans } from "@/lib/fonts";
-import { ProviderCache } from "@/providers/provider-cache";
+import { Providers } from "@/providers/providers";
 
 const STRUCTURED_DATA = {
   "@context": "https://schema.org",
@@ -19,9 +20,7 @@ const STRUCTURED_DATA = {
       "@id": `${SITE_INFO.url}/#org`,
       name: SITE_INFO.name,
       url: SITE_INFO.url,
-      logo: `${SITE_INFO.url}${
-        SITE_INFO.icons?.[0]?.src || "/images/logo.svg"
-      }`,
+      logo: `${SITE_INFO.url}${SITE_INFO.icons?.[0]?.src || "/images/logo.svg"}`,
       sameAs: (PROFILE.sections.socialLinks?.items || []).map((s) => s.href),
     },
     {
@@ -109,9 +108,7 @@ export const metadata: Metadata = {
   icons: SITE_INFO.metadataIcons,
 };
 
-export default async function RootLayout({
-  children,
-}: React.PropsWithChildren) {
+export default async function RootLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en" suppressHydrationWarning>
       <meta name="apple-mobile-web-app-title" content={SITE_INFO.name} />
@@ -119,16 +116,12 @@ export default async function RootLayout({
 
       <link rel="manifest" href="/manifest.webmanifest" />
 
-      <Script type="application/ld+json">
-        {JSON.stringify(STRUCTURED_DATA)}
-      </Script>
+      <Script type="application/ld+json">{JSON.stringify(STRUCTURED_DATA)}</Script>
       <body
         className={`${fontSans.variable} ${fontMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <Suspense fallback={null}>
-          <ProviderCache>{children}</ProviderCache>
-        </Suspense>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,8 +1,7 @@
 import Link from "next/link";
 
-import { ArrowRightIcon } from "lucide-react";
-
 import { Panel, PanelHeader, PanelTitle } from "./panel";
+import { ArrowRightIcon } from "lucide-react";
 import { PostItem } from "@/app/(app)/(root)/_components/post-item";
 import { Button } from "@/components/ui/button";
 import { getAllPosts } from "@/services/blog";
@@ -17,7 +16,7 @@ export function Blog({ className }: React.ComponentProps<typeof Panel>) {
       </PanelHeader>
 
       <div className="relative py-4">
-        <div className="-z-1 pointer-events-none absolute inset-0 grid grid-cols-1 gap-4 max-sm:hidden sm:grid-cols-2">
+        <div className="pointer-events-none absolute inset-0 -z-1 grid grid-cols-1 gap-4 max-sm:hidden sm:grid-cols-2">
           <div className="border-edge border-r"></div>
           <div className="border-edge border-l"></div>
         </div>

@@ -24,9 +24,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
           )}
         </div>
 
-        <h3 className="font-medium text-lg leading-snug">
-          {experience.companyName}
-        </h3>
+        <h3 className="font-medium text-lg leading-snug">{experience.companyName}</h3>
 
         {experience.isCurrentEmployer && (
           <span className="relative flex items-center justify-center">

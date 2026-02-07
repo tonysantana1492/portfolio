@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-m";
-
 import { cn } from "@/lib/utils";
 
 export function FlipSentences({
@@ -42,7 +41,7 @@ export function FlipSentences({
           startAnimation(); // Restart the interval when the tab becomes visible
         }
       },
-      { signal },
+      { signal }
     );
 
     return () => {
@@ -60,7 +59,7 @@ export function FlipSentences({
         key={`current-sentence-${currentSentence}`}
         className={cn(
           "select-none text-balance font-mono text-muted-foreground text-sm",
-          className,
+          className
         )}
         initial={{
           y: 8,

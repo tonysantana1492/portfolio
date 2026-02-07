@@ -1,13 +1,9 @@
-import {
-  AsYouType,
-  isValidPhoneNumber,
-  parsePhoneNumber,
-} from "libphonenumber-js/min";
+import { AsYouType, isValidPhoneNumber, parsePhoneNumber } from "libphonenumber-js/min";
 
 export function formatPhone(
   input: string,
   defaultCountry: import("libphonenumber-js").CountryCode = "US",
-  style: "international" | "national" | "e164" = "international",
+  style: "international" | "national" | "e164" = "international"
 ): string {
   try {
     const p = parsePhoneNumber(input, defaultCountry);

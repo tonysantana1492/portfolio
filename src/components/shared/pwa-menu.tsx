@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 
-import {
-  Download,
-  RefreshCw,
-  Share,
-  Smartphone,
-  Wifi,
-  WifiOff,
-} from "lucide-react";
-
+import { Download, RefreshCw, Share, Smartphone, Wifi, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -66,7 +58,7 @@ export function PWAMenu() {
             <Smartphone className="h-4 w-4" />
           )}
           {(isInstallable || isUpdateAvailable) && (
-            <span className="-right-1 -top-1 absolute h-2 w-2 rounded-full bg-blue-500" />
+            <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-blue-500" />
           )}
         </Button>
       </DropdownMenuTrigger>
@@ -107,9 +99,7 @@ export function PWAMenu() {
         )}
 
         {!isInstallable && !isInstalled && (
-          <DropdownMenuItem
-            onClick={() => setShowInstructions(!showInstructions)}
-          >
+          <DropdownMenuItem onClick={() => setShowInstructions(!showInstructions)}>
             <Download className="mr-2 h-4 w-4" />
             Install instructions
           </DropdownMenuItem>

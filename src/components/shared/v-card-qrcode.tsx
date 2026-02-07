@@ -4,7 +4,6 @@ import { useMemo, useRef } from "react";
 
 import { useTheme } from "next-themes";
 import { QRCode } from "react-qrcode-logo";
-
 import { SITE_INFO } from "@/config/site.config";
 import { PROFILE } from "@/content/profile";
 import { generateVCard } from "@/lib/v-card";
@@ -15,11 +14,7 @@ export type VCardQRProps = {
   showDownloadButtons?: boolean;
 };
 
-export function VCardQR({
-  size = 220,
-  className,
-  showDownloadButtons = true,
-}: VCardQRProps) {
+export function VCardQR({ size = 220, className, showDownloadButtons = true }: VCardQRProps) {
   const { resolvedTheme } = useTheme();
 
   const vcardString = generateVCard();
@@ -28,7 +23,7 @@ export function VCardQR({
 
   const vcfDataHref = useMemo(
     () => `data:text/vcard;charset=utf-8,${encodeURIComponent(vcardString)}`,
-    [vcardString],
+    [vcardString]
   );
 
   const svgRef = useRef<SVGSVGElement | null>(null);

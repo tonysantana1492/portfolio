@@ -1,7 +1,6 @@
 "use client";
 
 import dayjs from "dayjs";
-
 import {
   ContributionGraphBlock,
   ContributionGraphCalendar,
@@ -9,11 +8,7 @@ import {
   ContributionGraphLegend,
   ContributionGraphTotalCount,
 } from "@/components/shared/contribution-graph";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { PROFILE } from "@/content/profile";
 
 export const GraphChildren = () => {
@@ -41,8 +36,8 @@ export const GraphChildren = () => {
 
             <TooltipContent className="font-sans" sideOffset={0}>
               <p>
-                {activity.count} contribution{activity.count > 1 ? "s" : null}{" "}
-                on {dayjs(activity.date).format("DD.MM.YYYY")}
+                {activity.count} contribution{activity.count > 1 ? "s" : null} on{" "}
+                {dayjs(activity.date).format("DD.MM.YYYY")}
               </p>
             </TooltipContent>
           </Tooltip>

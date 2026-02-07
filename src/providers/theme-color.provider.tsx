@@ -9,7 +9,6 @@ const DEFAULT_THEME = "default";
 function setThemeCookie(theme: string) {
   if (typeof window === "undefined") return;
 
-  // biome-ignore lint/suspicious/noDocumentCookie: <explanation >
   document.cookie = `${THEME_COOKIE_NAME}=${theme}; path=/; max-age=31536000; SameSite=Lax; ${
     window.location.protocol === "https:" ? "Secure;" : ""
   }`;

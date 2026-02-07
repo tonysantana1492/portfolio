@@ -1,5 +1,4 @@
 import { RssIcon } from "lucide-react";
-
 import { SITE_INFO } from "@/config/site.config";
 import type { IProfile } from "@/content/profile";
 import { cn } from "@/lib/utils";

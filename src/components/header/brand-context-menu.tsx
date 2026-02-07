@@ -2,7 +2,6 @@
 
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
-
 import { getLogoSVG, Logo } from "@/components/header/logo";
 import {
   ContextMenu,

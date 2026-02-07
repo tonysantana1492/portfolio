@@ -7,14 +7,8 @@ import { useRouter } from "next/navigation";
 
 import { useCommandState } from "cmdk";
 import type { LucideProps } from "lucide-react";
-import {
-  CornerDownLeftIcon,
-  MoonStarIcon,
-  SunIcon,
-  TextIcon,
-} from "lucide-react";
+import { CornerDownLeftIcon, MoonStarIcon, SunIcon, TextIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-
 import { Logo } from "@/components/header/logo";
 import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
@@ -111,12 +105,7 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
         )}
         onClick={() => setOpen(true)}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 16 16"
-          aria-hidden
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" aria-hidden="true">
           <path
             d="M10.278 11.514a5.824 5.824 0 1 1 1.235-1.235l3.209 3.208A.875.875 0 0 1 14.111 15a.875.875 0 0 1-.624-.278l-3.209-3.208Zm.623-4.69a4.077 4.077 0 1 1-8.154 0 4.077 4.077 0 0 1 8.154 0Z"
             fill="currentColor"
@@ -125,16 +114,12 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
           />
         </svg>
 
-        <span className="font-medium font-sans text-sm/4 sm:hidden">
-          Search
-        </span>
+        <span className="font-medium font-sans text-sm/4 sm:hidden">Search</span>
 
         <CommandMenuKbd className="hidden tracking-wider sm:in-[.os-macos_&]:flex">
           ⌘K
         </CommandMenuKbd>
-        <CommandMenuKbd className="hidden sm:not-[.os-macos_&]:flex">
-          Ctrl K
-        </CommandMenuKbd>
+        <CommandMenuKbd className="hidden sm:not-[.os-macos_&]:flex">Ctrl K</CommandMenuKbd>
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -143,11 +128,7 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
         <CommandList className="min-h-80">
           <CommandEmpty>No results found.</CommandEmpty>
 
-          <CommandLinkGroup
-            heading="Menu"
-            links={MAIN_NAV}
-            onLinkSelect={handleOpenLink}
-          />
+          <CommandLinkGroup heading="Menu" links={MAIN_NAV} onLinkSelect={handleOpenLink} />
 
           <CommandSeparator />
 
@@ -179,24 +160,15 @@ export function CommandMenu({ posts }: { posts: Post[] }) {
           <CommandSeparator />
 
           <CommandGroup heading="Theme">
-            <CommandItem
-              keywords={["theme"]}
-              onSelect={() => handleThemeChange("light")}
-            >
+            <CommandItem keywords={["theme"]} onSelect={() => handleThemeChange("light")}>
               <SunIcon />
               Light
             </CommandItem>
-            <CommandItem
-              keywords={["theme"]}
-              onSelect={() => handleThemeChange("dark")}
-            >
+            <CommandItem keywords={["theme"]} onSelect={() => handleThemeChange("dark")}>
               <MoonStarIcon />
               Dark
             </CommandItem>
-            <CommandItem
-              keywords={["theme"]}
-              onSelect={() => handleThemeChange("system")}
-            >
+            <CommandItem keywords={["theme"]} onSelect={() => handleThemeChange("system")}>
               <Icons.contrast />
               Auto
             </CommandItem>
@@ -313,10 +285,7 @@ function CommandMenuFooter() {
           <CommandMenuKbd>
             <CornerDownLeftIcon />
           </CommandMenuKbd>
-          <Separator
-            orientation="vertical"
-            className="data-[orientation=vertical]:h-4"
-          />
+          <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
           <span className="text-muted-foreground">Exit</span>
           <CommandMenuKbd>Esc</CommandMenuKbd>
         </div>

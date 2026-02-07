@@ -24,9 +24,7 @@ export function EducationItem({ education }: { education: Experience }) {
           )}
         </div>
 
-        <h3 className="font-medium text-lg leading-snug">
-          {education.companyName}
-        </h3>
+        <h3 className="font-medium text-lg leading-snug">{education.companyName}</h3>
 
         {education.isCurrentEmployer && (
           <span className="relative flex items-center justify-center">

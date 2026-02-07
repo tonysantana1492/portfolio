@@ -4,14 +4,10 @@ import { useState } from "react";
 
 import { ArrowUpIcon } from "lucide-react";
 import { useMotionValueEvent, useScroll } from "motion/react";
-
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function ScrollTop({
-  className,
-  ...props
-}: React.ComponentProps<"button">) {
+export function ScrollTop({ className, ...props }: React.ComponentProps<"button">) {
   const { scrollY } = useScroll();
 
   const [visible, setVisible] = useState(false);
@@ -33,7 +29,7 @@ export function ScrollTop({
         "[--bottom:1rem] lg:[--bottom:2rem]",
         "fixed right-4 bottom-[calc(var(--bottom,1rem)+env(safe-area-inset-bottom,0px))] z-50 lg:right-8",
         "duration-300 data-[scroll-direction=down]:opacity-30 data-[scroll-direction=up]:opacity-100 data-[visible=false]:opacity-0",
-        className,
+        className
       )}
       variant="secondary"
       size="icon"

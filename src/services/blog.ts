@@ -1,7 +1,6 @@
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
-
 import type { Post, PostMetadata } from "@/types/post";
 
 function parseFrontmatter(fileContent: string) {
@@ -39,17 +38,12 @@ export function getMDXData(dir: string) {
 }
 
 export function getAllPosts() {
-  return getMDXData(path.join(process.cwd(), "src/content/blog")).sort(
-    (a, b) => {
-      if (a.metadata.pinned && !b.metadata.pinned) return -1;
-      if (!a.metadata.pinned && b.metadata.pinned) return 1;
+  return getMDXData(path.join(process.cwd(), "src/content/blog")).sort((a, b) => {
+    if (a.metadata.pinned && !b.metadata.pinned) return -1;
+    if (!a.metadata.pinned && b.metadata.pinned) return 1;
 
-      return (
-        new Date(b.metadata.createdAt).getTime() -
-        new Date(a.metadata.createdAt).getTime()
-      );
-    }
-  );
+    return new Date(b.metadata.createdAt).getTime() - new Date(a.metadata.createdAt).getTime();
+  });
 }
 
 export function getPostBySlug(slug: string) {

@@ -1,12 +1,6 @@
 import { ImageZoom } from "./kibo-ui/image-zoom";
 
-export function YouTubeEmbed({
-  videoId,
-  title,
-}: {
-  videoId: string;
-  title: string;
-}) {
+export function YouTubeEmbed({ videoId, title }: { videoId: string; title: string }) {
   return (
     <div className="relative">
       <iframe

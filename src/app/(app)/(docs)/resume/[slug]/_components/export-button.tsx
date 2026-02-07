@@ -3,12 +3,9 @@
 import { useState } from "react";
 
 import { DownloadCloudIcon, type LucideIcon } from "lucide-react";
-
 import { ButtonWithTooltip } from "@/components/shared/button-with-tooltip";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/sonner";
-import { downloadBlob } from "@/lib/download-blob";
-import { exportToPdf } from "@/services/export-by-slug";
 
 interface IDownloadProps {
   slug: string;
@@ -89,8 +86,7 @@ export function ExportButton({
     } catch (error) {
       console.error("PDF export error:", error);
 
-      const errorMessage =
-        error instanceof Error ? error.message : "Failed to export PDF";
+      const errorMessage = error instanceof Error ? error.message : "Failed to export PDF";
 
       toast.error("Export failed", {
         description: errorMessage,

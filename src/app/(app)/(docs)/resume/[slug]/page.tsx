@@ -6,7 +6,6 @@ import Script from "next/script";
 import dayjs from "dayjs";
 import { ArrowLeftIcon } from "lucide-react";
 import type { BlogPosting as PageSchema, WithContext } from "schema-dts";
-
 import { ExportButton } from "@/app/(app)/(docs)/resume/[slug]/_components/export-button";
 import { LLMCopyButtonWithViewOptions } from "@/components/ai/page-actions";
 import { MDX } from "@/components/shared/mdx";
@@ -78,9 +77,7 @@ function getPageJsonLd(cv: Cv): WithContext<PageSchema> {
     "@type": "BlogPosting",
     headline: cv.metadata.title,
     description: cv.metadata.description,
-    image:
-      cv.metadata.image ||
-      `/og/simple?title=${encodeURIComponent(cv.metadata.title)}`,
+    image: cv.metadata.image || `/og/simple?title=${encodeURIComponent(cv.metadata.title)}`,
     url: `${SITE_INFO.url}${getCvUrl(cv)}`,
     datePublished: dayjs(cv.metadata.createdAt).toISOString(),
     dateModified: dayjs(cv.metadata.updatedAt).toISOString(),
@@ -128,17 +125,10 @@ export default async function Page({
         </Button>
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
-            <ExportButton
-              size="icon:sm"
-              slug={slug}
-              fileName={cv.metadata.title}
-            />
+            <ExportButton size="icon:sm" slug={slug} fileName={cv.metadata.title} />
           </div>
 
-          <LLMCopyButtonWithViewOptions
-            markdownUrl={`${getCvUrl(cv)}.mdx`}
-            isComponent={false}
-          />
+          <LLMCopyButtonWithViewOptions markdownUrl={`${getCvUrl(cv)}.mdx`} isComponent={false} />
 
           <ShareMenu url={getCvUrl(cv)} />
         </div>
@@ -148,7 +138,7 @@ export default async function Page({
         <div
           className={cn(
             "h-8",
-            "before:-left-[100vw] before:-z-1 before:absolute before:h-full before:w-[200vw]",
+            "before:absolute before:-left-[100vw] before:-z-1 before:h-full before:w-[200vw]",
             "before:bg-[repeating-linear-gradient(315deg,var(--pattern-foreground)_0,var(--pattern-foreground)_1px,transparent_0,transparent_50%)] before:bg-size-[10px_10px] before:[--pattern-foreground:var(--color-edge)]/56"
           )}
         />

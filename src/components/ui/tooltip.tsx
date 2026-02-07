@@ -3,7 +3,6 @@
 import type * as React from "react";
 
 import { Tooltip as TooltipPrimitive } from "radix-ui";
-
 import { cn } from "@/lib/utils";
 
 function TooltipProvider({
@@ -19,9 +18,7 @@ function TooltipProvider({
   );
 }
 
-function Tooltip({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
   return (
     <TooltipProvider>
       <TooltipPrimitive.Root data-slot="tooltip" {...props} />
@@ -29,9 +26,7 @@ function Tooltip({
   );
 }
 
-function TooltipTrigger({
-  ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
@@ -47,7 +42,7 @@ const TooltipContent = ({
       sideOffset={sideOffset}
       className={cn(
         "fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 z-50 max-w-sm animate-in rounded-lg bg-primary px-4 py-2 font-mono text-primary-foreground text-sm data-[state=closed]:animate-out",
-        className,
+        className
       )}
       {...props}
     >
@@ -72,10 +67,4 @@ function SimpleTooltip({
   );
 }
 
-export {
-  SimpleTooltip,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-};
+export { SimpleTooltip, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };

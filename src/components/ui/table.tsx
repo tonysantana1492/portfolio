@@ -8,10 +8,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     >
       <table
         data-slot="table"
-        className={cn(
-          "relative w-full overflow-hidden border-none text-sm",
-          className,
-        )}
+        className={cn("relative w-full overflow-hidden border-none text-sm", className)}
         {...props}
       />
     </div>
@@ -19,13 +16,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-  return (
-    <thead
-      data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
-      {...props}
-    />
-  );
+  return <thead data-slot="table-header" className={cn("[&_tr]:border-b", className)} {...props} />;
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
@@ -42,10 +33,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
       data-slot="table-row"
-      className={cn(
-        "border-edge border-b transition-colors hover:bg-muted/50",
-        className,
-      )}
+      className={cn("border-edge border-b transition-colors hover:bg-muted/50", className)}
       {...props}
     />
   );
@@ -57,7 +45,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       data-slot="table-head"
       className={cn(
         "h-10 whitespace-nowrap px-2 text-left align-middle font-medium font-sans text-muted-foreground",
-        className,
+        className
       )}
       {...props}
     />

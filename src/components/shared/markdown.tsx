@@ -1,24 +1,15 @@
 import { MarkdownAsync } from "react-markdown";
 import rehypeExternalLinks from "rehype-external-links";
+import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-
-import { UTM_PARAMS } from "@/config/site.config";
-import { rehypeAddQueryParams } from "@/lib/rehype-add-query-params";
-import { CodeBlock } from "@/components/ui/code-block";
-import Mermaid from "@/components/shared/mermaid";
-import rehypeSlug from "rehype-slug";
-import { rehypeComponent } from "@/lib/rehype-component";
 import { visit } from "unist-util-visit";
-import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
-import { Code, Heading, Prose } from "@/components/ui/typography";
-import { ComponentPreview } from "@/components/shared/component-preview";
-import { ComponentSource } from "@/components/shared/component-source";
 import { CodeCollapsibleWrapper } from "@/components/shared/code-collapsible-wrapper";
 import { CodeTabs } from "@/components/shared/code-tabs";
-import { cn } from "@/lib/utils";
+import { ComponentPreview } from "@/components/shared/component-preview";
+import { ComponentSource } from "@/components/shared/component-source";
 import {
   Table,
   TableBody,
@@ -27,11 +18,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Code, Heading, Prose } from "@/components/ui/typography";
+import { UTM_PARAMS } from "@/config/site.config";
+import { rehypeAddQueryParams } from "@/lib/rehype-add-query-params";
+import { rehypeComponent } from "@/lib/rehype-component";
+import { rehypeNpmCommand } from "@/lib/rehype-npm-command";
+import { cn } from "@/lib/utils";
 
 export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
-  const MarkdownComponents: React.ComponentProps<
-    typeof MarkdownAsync
-  >["components"] & {
+  const MarkdownComponents: React.ComponentProps<typeof MarkdownAsync>["components"] & {
     ComponentPreview: typeof ComponentPreview;
     ComponentSource: typeof ComponentSource;
     CodeCollapsibleWrapper: typeof CodeCollapsibleWrapper;
@@ -48,20 +43,14 @@ export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
     h6: (props: React.ComponentProps<"h6">) => <Heading as="h6" {...props} />,
     ul({ children, ...props }: { children?: React.ReactNode }) {
       return (
-        <ul
-          className="mb-4 list-disc space-y-2 pl-6 text-sm dark:text-white"
-          {...props}
-        >
+        <ul className="mb-4 list-disc space-y-2 pl-6 text-sm dark:text-white" {...props}>
           {children}
         </ul>
       );
     },
     ol({ children, ...props }: { children?: React.ReactNode }) {
       return (
-        <ol
-          className="mb-4 list-decimal space-y-2 pl-6 text-sm dark:text-white"
-          {...props}
-        >
+        <ol className="mb-4 list-decimal space-y-2 pl-6 text-sm dark:text-white" {...props}>
           {children}
         </ol>
       );
@@ -73,14 +62,7 @@ export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
         </li>
       );
     },
-    a({
-      children,
-      href,
-      ...props
-    }: {
-      children?: React.ReactNode;
-      href?: string;
-    }) {
+    a({ children, href, ...props }: { children?: React.ReactNode; href?: string }) {
       return (
         <a href={href} className="text-blue-400" {...props}>
           {children}
@@ -105,10 +87,7 @@ export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
     td: TableCell,
     code: Code,
     Right: ({ className, ...props }: React.ComponentProps<"span">) => (
-      <span
-        className={cn("float-right text-muted-foreground text-sm", className)}
-        {...props}
-      />
+      <span className={cn("float-right text-muted-foreground text-sm", className)} {...props} />
     ),
     Center: ({ className, ...props }: React.ComponentProps<"div">) => (
       <div className={cn("text-balance text-center", className)} {...props} />
@@ -126,16 +105,10 @@ export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
       rehypePlugins={[
         rehypeKatex,
         rehypeRaw,
-        [
-          rehypeExternalLinks,
-          { target: "_blank", rel: "nofollow noopener noreferrer" },
-        ],
+        [rehypeExternalLinks, { target: "_blank", rel: "nofollow noopener noreferrer" }],
         [rehypeAddQueryParams, UTM_PARAMS],
 
-        [
-          rehypeExternalLinks,
-          { target: "_blank", rel: "nofollow noopener noreferrer" },
-        ],
+        [rehypeExternalLinks, { target: "_blank", rel: "nofollow noopener noreferrer" }],
         rehypeSlug,
         rehypeComponent,
         () => (tree) => {
@@ -162,9 +135,8 @@ export function Markdown(props: React.ComponentProps<typeof MarkdownAsync>) {
                 return;
               }
 
-              preElement.properties["__withMeta__"] =
-                node.children.at(0).tagName === "figcaption";
-              preElement.properties["__rawString__"] = node.__rawString__;
+              preElement.properties.__withMeta__ = node.children.at(0).tagName === "figcaption";
+              preElement.properties.__rawString__ = node.__rawString__;
             }
           });
         },

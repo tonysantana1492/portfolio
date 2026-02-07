@@ -2,7 +2,6 @@
 
 import { LinkIcon, Share2Icon, ShareIcon } from "lucide-react";
 import { toast } from "sonner";
-
 import { Icons } from "@/components/shared/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,8 +16,8 @@ export function ShareMenu({ url }: { url: string }) {
   const absoluteUrl = url.startsWith("http")
     ? url
     : typeof window !== "undefined"
-    ? new URL(url, window.location.origin).toString()
-    : url;
+      ? new URL(url, window.location.origin).toString()
+      : url;
 
   const urlEncoded = encodeURIComponent(absoluteUrl);
 
@@ -70,11 +69,7 @@ export function ShareMenu({ url }: { url: string }) {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <a
-            href={`https://x.com/intent/tweet?url=${urlEncoded}`}
-            target="_blank"
-            rel="noopener"
-          >
+          <a href={`https://x.com/intent/tweet?url=${urlEncoded}`} target="_blank" rel="noopener">
             <Icons.x />
             Share on X
           </a>

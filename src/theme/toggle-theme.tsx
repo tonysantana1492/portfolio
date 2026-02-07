@@ -4,7 +4,6 @@ import { useCallback } from "react";
 
 import { MoonStarIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-
 import { Button } from "@/components/ui/button";
 
 export function ToggleTheme() {

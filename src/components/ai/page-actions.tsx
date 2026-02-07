@@ -2,13 +2,6 @@
 
 import { useMemo, useOptimistic, useTransition } from "react";
 
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  CopyIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
-
 import { Button, buttonVariants } from "../ui/button";
 import {
   DropdownMenu,
@@ -16,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { CheckIcon, ChevronDownIcon, CopyIcon, TriangleAlertIcon } from "lucide-react";
 import { Icons } from "@/components/shared/icons";
 import { cn } from "@/lib/utils";
 
@@ -24,9 +18,7 @@ const cache = new Map<string, string>();
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function LLMCopyButton({ markdownUrl }: { markdownUrl: string }) {
-  const [state, setState] = useOptimistic<
-    "idle" | "fetching" | "copied" | "failed"
-  >("idle");
+  const [state, setState] = useOptimistic<"idle" | "fetching" | "copied" | "failed">("idle");
   const [, startTransition] = useTransition();
 
   const handleCopy = () => {
@@ -161,10 +153,7 @@ export function ViewOptions({
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent
-        align="end"
-        onCloseAutoFocus={(e) => e.preventDefault()}
-      >
+      <DropdownMenuContent align="end" onCloseAutoFocus={(e) => e.preventDefault()}>
         {items.map(({ title, href, icon: Icon }) => (
           <DropdownMenuItem key={href} asChild>
             <a href={href} rel="noreferrer noopener" target="_blank">
@@ -192,7 +181,7 @@ export function LLMCopyButtonWithViewOptions({
           size: "sm",
           variant: "secondary",
           className: "gap-0 divide-x px-0 font-sans dark:divide-white/10",
-        }),
+        })
       )}
     >
       <LLMCopyButton markdownUrl={markdownUrl} />

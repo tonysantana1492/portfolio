@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,25 +7,92 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": [
+      "**",
+      "!**/components/ui",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/build",
+      "!**/.cache",
+      "!**/coverage",
+      "!**/.nyc_output",
+      "!**/pnpm-lock.yaml",
+      "!**/package-lock.json",
+      "!**/yarn.lock",
+      "!**/*.generated.*",
+      "!**/*.d.ts",
+      "!**/turbo",
+      "!**/.git",
+      "!**/chunks",
+      "!**/static",
+      "!**/.vercel",
+      "!**/public/sw.js",
+      "**/src"
+    ]
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   },
   "formatter": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/build",
+      "!**/.cache",
+      "!**/coverage",
+      "!**/.nyc_output",
+      "!**/pnpm-lock.yaml",
+      "!**/package-lock.json",
+      "!**/yarn.lock",
+      "!**/*.generated.*",
+      "!**/*.d.ts",
+      "!**/turbo",
+      "!**/.git",
+      "!**/chunks",
+      "!**/static",
+      "!**/.vercel",
+      "!**/public/sw.js"
+    ],
     "enabled": true,
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "formatWithErrors": false
   },
   "linter": {
     "enabled": true,
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/build",
+      "!**/.cache",
+      "!**/.turbo",
+      "!**/coverage",
+      "!**/.nyc_output",
+      "!**/pnpm-lock.yaml",
+      "!**/package-lock.json",
+      "!**/yarn.lock",
+      "!**/*.generated.*",
+      "!**/*.d.ts",
+      "!**/turbo",
+      "!**/.git",
+      "!**/chunks",
+      "!**/static",
+      "!**/.vercel",
+      "!**/public/sw.js"
+    ],
     "rules": {
       "recommended": true,
-      "security": {
-        "noDangerouslySetInnerHtml": "off"
-      },
-      "suspicious": {
-        "noUnknownAtRules": "off"
-      },
-      "a11y": {
-        "noSvgWithoutTitle": "off"
+      "correctness": {
+        "useExhaustiveDependencies": "warn",
+        "noUnusedVariables": "warn"
       },
       "nursery": {
         "useSortedClasses": {
@@ -37,10 +104,19 @@
           }
         }
       }
-    },
-    "domains": {
-      "next": "recommended",
-      "react": "recommended"
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "trailingCommas": "es5",
+      "semicolons": "always",
+      "arrowParentheses": "always"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
     }
   },
   "assist": {
@@ -55,27 +131,6 @@
               ":BLANK_LINE:",
 
               ["next", "next/**"],
-
-              ":BLANK_LINE:",
-
-              [":PACKAGE:", "!@repo", "!@repo/**"],
-
-              ":BLANK_LINE:",
-
-              ["@repo/design-system", "@repo/design-system/**"],
-
-              [
-                "@repo/ui",
-                "@repo/ui/**",
-                "@repo/ui-table",
-                "@repo/ui-table/**",
-                "@repo/ui-richtext",
-                "@repo/ui-richtext/**"
-              ],
-
-              ["@repo/i18n", "@repo/i18n/**"],
-
-              ["@repo", "@repo/**"],
 
               ":BLANK_LINE:",
 

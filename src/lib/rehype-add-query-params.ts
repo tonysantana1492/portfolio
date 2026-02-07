@@ -1,16 +1,11 @@
 import { visit } from "unist-util-visit";
-
 import type { UnistNode, UnistTree } from "@/lib/unist";
 import { addQueryParams } from "@/lib/url";
 
 export function rehypeAddQueryParams(params: Record<string, string>) {
   return (tree: UnistTree) => {
     visit(tree, (node: UnistNode) => {
-      if (
-        node.type !== "element" ||
-        node?.tagName !== "a" ||
-        !node?.properties?.href
-      ) {
+      if (node.type !== "element" || node?.tagName !== "a" || !node?.properties?.href) {
         return;
       }
 

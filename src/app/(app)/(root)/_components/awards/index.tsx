@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-
 import { AwardItem } from "@/app/(app)/(root)/_components/awards/award-item";
 import { CollapsibleList } from "@/components/shared/collapsible-list";
 import { Panel, PanelHeader, PanelTitle } from "@/components/ui/panel";
@@ -9,11 +8,9 @@ export function Awards({
   className,
   profile,
 }: React.ComponentProps<typeof Panel> & { profile: IProfile }) {
-  const SORTED_AWARDS = [...(profile.sections.awards?.items ?? [])].sort(
-    (a, b) => {
-      return dayjs(b.date).diff(dayjs(a.date));
-    },
-  );
+  const SORTED_AWARDS = [...(profile.sections.awards?.items ?? [])].sort((a, b) => {
+    return dayjs(b.date).diff(dayjs(a.date));
+  });
 
   return (
     <Panel className={className} id={profile.sections.awards?.id}>

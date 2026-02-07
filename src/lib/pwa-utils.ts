@@ -75,11 +75,7 @@ export function getInstallInstructions(): {
   };
 }
 
-export function shareContent(data: {
-  title?: string;
-  text?: string;
-  url?: string;
-}) {
+export function shareContent(data: { title?: string; text?: string; url?: string }) {
   if (typeof window === "undefined") return false;
 
   if (navigator.share) {

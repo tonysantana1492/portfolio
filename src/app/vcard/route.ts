@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 import sharp from "sharp";
 import VCard from "vcard-creator";
-
 import { PROFILE } from "@/content/profile";
 import { decodeEmail, decodePhoneNumber } from "@/lib/string";
 import { getLastCompany } from "@/services/experience";
@@ -25,9 +24,7 @@ export async function GET() {
   const lastCompany = getLastCompany(PROFILE.sections.experiences?.items ?? []);
 
   if (lastCompany) {
-    card
-      .addCompany(lastCompany.companyName)
-      .addJobtitle(lastCompany.positions[0].title);
+    card.addCompany(lastCompany.companyName).addJobtitle(lastCompany.positions[0].title);
   }
 
   return new NextResponse(card.toString(), {

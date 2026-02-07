@@ -3,7 +3,6 @@ import Script from "next/script";
 
 import dayjs from "dayjs";
 import type { ProfilePage, WithContext } from "schema-dts";
-
 import { SITE_INFO } from "@/config/site.config";
 
 export const metadata: Metadata = {

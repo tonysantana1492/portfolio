@@ -1,29 +1,14 @@
 import dayjs from "dayjs";
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  FileCheckIcon,
-} from "lucide-react";
-
+import { ChevronsDownUpIcon, ChevronsUpDownIcon, FileCheckIcon } from "lucide-react";
 import { Icons } from "@/components/shared/icons";
 import { Markdown } from "@/components/shared/markdown";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { SimpleTooltip } from "@/components/ui/tooltip";
 import { Prose } from "@/components/ui/typography";
 import type { Award } from "@/content/profile";
 
-export function AwardItem({
-  className,
-  award,
-}: {
-  className?: string;
-  award: Award;
-}) {
+export function AwardItem({ className, award }: { className?: string; award: Award }) {
   const canExpand = !!award.description;
 
   return (
@@ -40,9 +25,7 @@ export function AwardItem({
           <div className="flex-1 border-edge border-l border-dashed">
             <CollapsibleTrigger className="group/award flex w-full select-none items-center gap-4 p-4 pr-2 text-left">
               <div className="flex-1">
-                <h3 className="mb-1 text-balance font-medium leading-snug">
-                  {award.title}
-                </h3>
+                <h3 className="mb-1 text-balance font-medium leading-snug">{award.title}</h3>
 
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground text-sm">
                   <dl>
@@ -50,10 +33,7 @@ export function AwardItem({
                     <dd>{award.prize}</dd>
                   </dl>
 
-                  <Separator
-                    className="data-[orientation=vertical]:h-4"
-                    orientation="vertical"
-                  />
+                  <Separator className="data-[orientation=vertical]:h-4" orientation="vertical" />
 
                   <dl>
                     <dt className="sr-only">Awarded in</dt>
@@ -64,10 +44,7 @@ export function AwardItem({
                     </dd>
                   </dl>
 
-                  <Separator
-                    className="data-[orientation=vertical]:h-4"
-                    orientation="vertical"
-                  />
+                  <Separator className="data-[orientation=vertical]:h-4" orientation="vertical" />
 
                   <dl>
                     <dt className="sr-only">Received in Grade</dt>
@@ -79,25 +56,19 @@ export function AwardItem({
               {award.referenceLink && (
                 <SimpleTooltip content="Open Reference Attachment">
                   <a
-                    className="after:-inset-2 relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute hover:text-foreground"
+                    className="relative flex size-6 shrink-0 items-center justify-center text-muted-foreground after:absolute after:-inset-2 hover:text-foreground"
                     href={award.referenceLink}
                     target="_blank"
                     rel="noopener"
                   >
-                    <FileCheckIcon
-                      className="pointer-events-none size-4"
-                      aria-hidden
-                    />
+                    <FileCheckIcon className="pointer-events-none size-4" aria-hidden />
                     <span className="sr-only">Open Reference Attachment</span>
                   </a>
                 </SimpleTooltip>
               )}
 
               {canExpand && (
-                <div
-                  className="shrink-0 text-muted-foreground [&_svg]:size-4"
-                  aria-hidden
-                >
+                <div className="shrink-0 text-muted-foreground [&_svg]:size-4" aria-hidden>
                   <ChevronsDownUpIcon className="hidden group-data-[state=open]/award:block" />
                   <ChevronsUpDownIcon className="hidden group-data-[state=closed]/award:block" />
                 </div>

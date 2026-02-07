@@ -1,7 +1,6 @@
 "use client";
 
 import { MessagesSquare } from "lucide-react";
-
 import { ButtonWithTooltip } from "@/components/shared/button-with-tooltip";
 import type { IProfile } from "@/content/profile";
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { MailIcon } from "lucide-react";
-
 import { IntroItem } from "@/app/(app)/(root)/_components/overview/intro-item";
 import { useIsClient } from "@/hooks/use-is-client";
 import { decodeEmail } from "@/lib/string";

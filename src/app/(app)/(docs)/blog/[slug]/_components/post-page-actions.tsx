@@ -2,14 +2,8 @@
 
 import { useMemo, useOptimistic, useTransition } from "react";
 
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  CopyIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { CheckIcon, ChevronDownIcon, CopyIcon, TriangleAlertIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-
 import { motionIconProps } from "@/components/shared/copy-button";
 import { Icons } from "@/components/shared/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -159,10 +153,7 @@ export function ViewOptions({
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent
-        align="end"
-        onCloseAutoFocus={(e) => e.preventDefault()}
-      >
+      <DropdownMenuContent align="end" onCloseAutoFocus={(e) => e.preventDefault()}>
         {items.map(({ title, href, icon: Icon }) => (
           <DropdownMenuItem key={href} asChild>
             <a href={href} rel="noreferrer noopener" target="_blank">
@@ -189,8 +180,7 @@ export function LLMCopyButtonWithViewOptions({
         buttonVariants({
           size: "sm",
           variant: "secondary",
-          className:
-            "gap-0 divide-x px-0 font-sans active:scale-none dark:divide-white/10",
+          className: "gap-0 divide-x px-0 font-sans active:scale-none dark:divide-white/10",
         })
       )}
     >

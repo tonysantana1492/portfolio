@@ -3,7 +3,6 @@
 import { useOptimistic, useTransition } from "react";
 
 import { CheckIcon, CircleXIcon, CopyIcon } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -20,14 +19,7 @@ export const motionIconProps = {
   exit: "exit",
 };
 
-export function CopyButton({
-  value,
-  className,
-  ...props
-}: {
-  value: string;
-  className?: string;
-}) {
+export function CopyButton({ value, className, ...props }: { value: string; className?: string }) {
   const [state, setState] = useOptimistic<"idle" | "copied" | "failed">("idle");
   const [, startTransition] = useTransition();
 

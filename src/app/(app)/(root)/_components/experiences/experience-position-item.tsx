@@ -1,27 +1,14 @@
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  InfinityIcon,
-} from "lucide-react";
-
+import { ChevronsDownUpIcon, ChevronsUpDownIcon, InfinityIcon } from "lucide-react";
 import { Icon } from "@/components/shared/icons";
 import { Markdown } from "@/components/shared/markdown";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { Tag } from "@/components/ui/tag";
 import { Prose } from "@/components/ui/typography";
 import type { ExperiencePosition } from "@/content/profile";
 import { cn } from "@/lib/utils";
 
-export function ExperiencePositionItem({
-  position,
-}: {
-  position: ExperiencePosition;
-}) {
+export function ExperiencePositionItem({ position }: { position: ExperiencePosition }) {
   const { start, end } = position.employmentPeriod;
   const isOngoing = !end;
 
@@ -31,7 +18,7 @@ export function ExperiencePositionItem({
         <CollapsibleTrigger
           className={cn(
             "group/experience block w-full select-none text-left",
-            "after:-top-1 after:-right-1 after:-bottom-1.5 after:-z-1 relative after:absolute after:left-7 after:rounded-lg hover:after:bg-accent/50"
+            "relative after:absolute after:-top-1 after:-right-1 after:-bottom-1.5 after:left-7 after:-z-1 after:rounded-lg hover:after:bg-accent/50"
           )}
         >
           <div className="relative z-1 mb-1 flex items-center gap-3">
@@ -42,14 +29,9 @@ export function ExperiencePositionItem({
               <Icon name={position.icon} className="size-4" />
             </div>
 
-            <h4 className="flex-1 text-balance font-medium">
-              {position.title}
-            </h4>
+            <h4 className="flex-1 text-balance font-medium">{position.title}</h4>
 
-            <div
-              className="shrink-0 text-muted-foreground [&_svg]:size-4"
-              aria-hidden
-            >
+            <div className="shrink-0 text-muted-foreground [&_svg]:size-4" aria-hidden>
               <ChevronsDownUpIcon className="hidden group-data-[state=open]/experience:block" />
               <ChevronsUpDownIcon className="hidden group-data-[state=closed]/experience:block" />
             </div>
@@ -63,10 +45,7 @@ export function ExperiencePositionItem({
                   <dd>{position.employmentType}</dd>
                 </dl>
 
-                <Separator
-                  className="data-[orientation=vertical]:h-4"
-                  orientation="vertical"
-                />
+                <Separator className="data-[orientation=vertical]:h-4" orientation="vertical" />
               </>
             )}
 
@@ -77,10 +56,7 @@ export function ExperiencePositionItem({
                 <span className="font-mono">—</span>
                 {isOngoing ? (
                   <>
-                    <InfinityIcon
-                      className="size-4.5 translate-y-[0.5px]"
-                      aria-hidden
-                    />
+                    <InfinityIcon className="size-4.5 translate-y-[0.5px]" aria-hidden />
                     <span className="sr-only">Present</span>
                   </>
                 ) : (

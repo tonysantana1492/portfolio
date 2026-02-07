@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import remarkMdx from "remark-mdx";
-
 import { remarkComponent } from "@/lib/remark-component";
 import type { Post } from "@/types/post";
 

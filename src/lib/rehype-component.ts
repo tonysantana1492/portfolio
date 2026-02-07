@@ -1,8 +1,7 @@
-import { u } from "unist-builder";
-import { visit } from "unist-util-visit";
-
 import fs from "node:fs";
 import path from "node:path";
+import { u } from "unist-builder";
+import { visit } from "unist-util-visit";
 import type { UnistNode, UnistTree } from "@/lib/unist";
 
 export function rehypeComponent() {
@@ -57,10 +56,7 @@ export function rehypeComponent() {
           source = source.replaceAll("export default", "export");
 
           const title = getNodeAttributeByName(node, "title");
-          const showLineNumbers = getNodeAttributeByName(
-            node,
-            "showLineNumbers",
-          );
+          const showLineNumbers = getNodeAttributeByName(node, "showLineNumbers");
 
           // Add code as children so that rehype can take over at build time.
           node.children?.push(
@@ -87,7 +83,7 @@ export function rehypeComponent() {
                   ],
                 }),
               ],
-            }),
+            })
           );
         } catch (error) {
           console.error(error);

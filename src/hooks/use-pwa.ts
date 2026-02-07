@@ -31,10 +31,8 @@ export function usePWA(): PWAState & PWAActions {
   const [isOffline, setIsOffline] = useState(false);
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] =
-    useState<BeforeInstallPromptEvent | null>(null);
-  const [registration, setRegistration] =
-    useState<ServiceWorkerRegistration | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
     // Check if PWA is supported
@@ -88,10 +86,7 @@ export function usePWA(): PWAState & PWAActions {
             const newWorker = reg.installing;
             if (newWorker) {
               newWorker.addEventListener("statechange", () => {
-                if (
-                  newWorker.state === "installed" &&
-                  navigator.serviceWorker.controller
-                ) {
+                if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
                   setIsUpdateAvailable(true);
                 }
               });
@@ -109,10 +104,7 @@ export function usePWA(): PWAState & PWAActions {
     }
 
     return () => {
-      window.removeEventListener(
-        "beforeinstallprompt",
-        handleBeforeInstallPrompt
-      );
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       window.removeEventListener("appinstalled", handleAppInstalled);
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);

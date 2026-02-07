@@ -7,8 +7,7 @@ ${
     ?.map((item) =>
       item.positions
         .map((position) => {
-          const skills =
-            position.skills?.map((skill) => skill).join(", ") || "N/A";
+          const skills = position.skills?.map((skill) => skill).join(", ") || "N/A";
           return `## ${position.title} | ${item.companyName}\n\nDuration: ${
             position.employmentPeriod.start
           } - ${

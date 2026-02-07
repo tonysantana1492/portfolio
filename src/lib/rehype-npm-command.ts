@@ -1,5 +1,4 @@
 import { visit } from "unist-util-visit";
-
 import type { UnistNode, UnistTree } from "@/lib/unist";
 
 export function rehypeNpmCommand() {
@@ -12,32 +11,17 @@ export function rehypeNpmCommand() {
       // npm install
       if (node.properties?.["__rawString__"]?.startsWith("npm install")) {
         const npmCommand = node.properties?.["__rawString__"];
-        node.properties["__pnpm__"] = npmCommand.replace(
-          "npm install",
-          "pnpm add",
-        );
-        node.properties["__yarn__"] = npmCommand.replace(
-          "npm install",
-          "yarn add",
-        );
+        node.properties["__pnpm__"] = npmCommand.replace("npm install", "pnpm add");
+        node.properties["__yarn__"] = npmCommand.replace("npm install", "yarn add");
         node.properties["__npm__"] = npmCommand;
-        node.properties["__bun__"] = npmCommand.replace(
-          "npm install",
-          "bun add",
-        );
+        node.properties["__bun__"] = npmCommand.replace("npm install", "bun add");
       }
 
       // npx create-
       if (node.properties?.["__rawString__"]?.startsWith("npx create-")) {
         const npmCommand = node.properties?.["__rawString__"];
-        node.properties["__pnpm__"] = npmCommand.replace(
-          "npx create-",
-          "pnpm create ",
-        );
-        node.properties["__yarn__"] = npmCommand.replace(
-          "npx create-",
-          "yarn create ",
-        );
+        node.properties["__pnpm__"] = npmCommand.replace("npx create-", "pnpm create ");
+        node.properties["__yarn__"] = npmCommand.replace("npx create-", "yarn create ");
         node.properties["__npm__"] = npmCommand;
         node.properties["__bun__"] = npmCommand.replace("npx", "bunx --bun");
       }
@@ -45,19 +29,10 @@ export function rehypeNpmCommand() {
       // npm create
       if (node.properties?.["__rawString__"]?.startsWith("npm create")) {
         const npmCommand = node.properties?.["__rawString__"];
-        node.properties["__pnpm__"] = npmCommand.replace(
-          "npm create",
-          "pnpm create",
-        );
-        node.properties["__yarn__"] = npmCommand.replace(
-          "npm create",
-          "yarn create",
-        );
+        node.properties["__pnpm__"] = npmCommand.replace("npm create", "pnpm create");
+        node.properties["__yarn__"] = npmCommand.replace("npm create", "yarn create");
         node.properties["__npm__"] = npmCommand;
-        node.properties["__bun__"] = npmCommand.replace(
-          "npm create",
-          "bun create",
-        );
+        node.properties["__bun__"] = npmCommand.replace("npm create", "bun create");
       }
 
       // npx

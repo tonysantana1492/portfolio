@@ -8,8 +8,7 @@ const matchesQuery = (post: Post, normalizedQuery: string) => {
   const normalizedDescription = normalize(post.metadata.description);
 
   return (
-    normalizedTitle.includes(normalizedQuery) ||
-    normalizedDescription.includes(normalizedQuery)
+    normalizedTitle.includes(normalizedQuery) || normalizedDescription.includes(normalizedQuery)
   );
 };
 
