@@ -1,7 +1,5 @@
 import "server-only";
 
-import type { PropsWithChildren } from "react";
-
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { LazyMotion, domMax as loadFeatures } from "motion/react";
@@ -12,11 +10,11 @@ import { Toaster } from "@/components/ui/sonner";
 import { AppProgressProvider } from "@/providers/app-progress.provider";
 import { ThemeColorProvider } from "@/providers/theme-color.provider";
 
-interface Props extends PropsWithChildren {
-  activeThemeValue: string | undefined;
+interface Props {
+  children: React.ReactNode;
 }
 
-export const Providers = ({ children, activeThemeValue }: Props) => {
+export const Providers = ({ children }: Props) => {
   return (
     <AppProgressProvider>
       <ThemeProvider
@@ -26,7 +24,7 @@ export const Providers = ({ children, activeThemeValue }: Props) => {
         disableTransitionOnChange
         enableColorScheme
       >
-        <ThemeColorProvider initialTheme={activeThemeValue}>
+        <ThemeColorProvider>
           <LazyMotion features={loadFeatures} strict>
             <NuqsAdapter>{children}</NuqsAdapter>
           </LazyMotion>

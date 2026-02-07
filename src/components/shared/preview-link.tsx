@@ -19,6 +19,8 @@ interface IProps {
 
 export const PreviewLink = ({ href, children, className, ...props }: IProps) => {
   const data = use(glimpse(href ?? ""));
+  const title = data.title ?? "Image";
+  const image = data.image ?? "images/apple-touch-icon.png";
 
   return (
     <Glimpse closeDelay={0} openDelay={0}>
@@ -28,7 +30,7 @@ export const PreviewLink = ({ href, children, className, ...props }: IProps) => 
         </a>
       </GlimpseTrigger>
       <GlimpseContent className="w-80">
-        <GlimpseImage src={data.image ?? "images/apple-touch-icon.png"} />
+        <GlimpseImage alt={title} src={image} />
         <GlimpseTitle>{data.title}</GlimpseTitle>
         <GlimpseDescription>{data.description}</GlimpseDescription>
       </GlimpseContent>
