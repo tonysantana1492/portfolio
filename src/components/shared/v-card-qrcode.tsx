@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useTheme } from "next-themes";
@@ -18,7 +18,12 @@ export type VCardQRProps = {
 export function VCardQR({ size = 220, className, showDownloadButtons = true }: VCardQRProps) {
   const { resolvedTheme } = useTheme();
 
-  const vcardString = generateVCard();
+  const [vcardString, setVcardString] = useState("");
+
+  useEffect(() => {
+    setVcardString(generateVCard());
+  }, []);
+
   const firstName = PROFILE.firstName;
   const lastName = PROFILE.lastName;
 
