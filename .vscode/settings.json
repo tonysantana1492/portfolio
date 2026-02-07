@@ -18,5 +18,8 @@
   // files.associations
   "files.associations": {
     "*.css": "tailwindcss"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

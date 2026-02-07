@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useTheme } from "next-themes";
 import { QRCode } from "react-qrcode-logo";
 import { SITE_INFO } from "@/config/site.config";
@@ -23,7 +24,7 @@ export function VCardQR({ size = 220, className, showDownloadButtons = true }: V
 
   const vcfDataHref = useMemo(
     () => `data:text/vcard;charset=utf-8,${encodeURIComponent(vcardString)}`,
-    [vcardString]
+    [vcardString],
   );
 
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -56,35 +57,58 @@ export function VCardQR({ size = 220, className, showDownloadButtons = true }: V
     img.src = image64;
   };
 
-  return (
-    <div className={className}>
-      <QRCode
-        value={`${SITE_INFO.url}/vcard`}
-        size={size}
-        fgColor={resolvedTheme === "dark" ? "white" : "black"}
-        bgColor="transparent"
-        qrStyle="dots"
-        eyeRadius={20}
-      />
+  const [isQRDialogOpen, setIsQRDialogOpen] = useState(false);
 
-      {showDownloadButtons && (
-        <div className="mt-3 flex items-center gap-2">
-          <a
-            href={vcfDataHref}
-            download={`contact_${firstName}_${lastName}.vcf`}
-            className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-50"
-          >
-            Download vCard (.vcf)
-          </a>
-          <button
-            type="button"
-            onClick={downloadPng}
-            className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-50"
-          >
-            Download QR (.png)
-          </button>
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsQRDialogOpen(true)}
+        className="cursor-pointer transition-transform hover:scale-105"
+      >
+        <div className={className}>
+          <QRCode
+            value={`${SITE_INFO.url}/vcard`}
+            size={size}
+            fgColor={resolvedTheme === "dark" ? "white" : "black"}
+            bgColor="transparent"
+            qrStyle="dots"
+            eyeRadius={20}
+          />
+
+          {showDownloadButtons && (
+            <div className="mt-3 flex items-center gap-2">
+              <a
+                href={vcfDataHref}
+                download={`contact_${firstName}_${lastName}.vcf`}
+                className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-50"
+              >
+                Download vCard (.vcf)
+              </a>
+              <button
+                type="button"
+                onClick={downloadPng}
+                className="rounded-lg border px-3 py-1 text-sm hover:bg-gray-50"
+              >
+                Download QR (.png)
+              </button>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </button>
+      <Dialog open={isQRDialogOpen} onOpenChange={setIsQRDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Contact Code</DialogTitle>
+            <DialogDescription>
+              Scan this QR code to save the contact information to your device
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex items-center justify-center py-4">
+            <VCardQR size={280} showDownloadButtons={true} />
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
