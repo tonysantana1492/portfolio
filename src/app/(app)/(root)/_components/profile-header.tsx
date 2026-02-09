@@ -35,7 +35,7 @@ export function ProfileHeader({
           )}
         >
           <div className="line-clamp-1 flex w-full select-none justify-end font-mono text-xs text-zinc-300 max-sm:hidden dark:text-zinc-800">
-            <VCardQR size={70} showDownloadButtons={false} />
+            <VCardQR size={70} />
           </div>
         </div>
 
